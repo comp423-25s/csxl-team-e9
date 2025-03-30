@@ -41,6 +41,22 @@
   </mat-pane>
 }
 
+<mat-pane>
+  <div class="reserve-room-content">
+    <div class="reserve-room-text">
+      <mat-card-title>"Git" Together</mat-card-title>
+      <p>Find Partners to work with for classes, Hackathons, and side projects!</p>
+    </div>
+    <button
+      id="new-room-reservation-button"
+      mat-stroked-button
+      type="submit"
+      color="primary">
+      Go
+    </button>
+  </div>
+</mat-pane>
+
 @if (upcomingReservations().length > 0) {
   <mat-pane>
     <mat-card-header>
