@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.gzip import GZipMiddleware
 
 from backend.services.coworking.reservation import ReservationException
+from backend.api.coworking import gittogether
 
 from .api.events import events
 
@@ -105,6 +106,7 @@ feature_apis = [
     article,
     signage,
     websocket,
+    gittogether,
 ]
 
 for feature_api in feature_apis:

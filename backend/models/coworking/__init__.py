@@ -15,6 +15,8 @@ from .reservation import (
     ReservationIdentity,
 )
 
+from .gittogether import FormResponse, InitialForm, Match
+
 from .availability_list import AvailabilityList
 from .availability import RoomState, SeatAvailability, RoomAvailability
 
