@@ -15,6 +15,7 @@ export class IFService {
     four: number,
     five: number
   ): void {
+    console.log(one);
     this.http
       .post<IFService>(this.apiUrl, {
         one: one,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { IFService } from './initial-form.service';
 
 @Component({
   selector: 'app-initial-form',
@@ -17,7 +18,10 @@ export class InitialFormComponent {
     component: InitialFormComponent
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private ifservice: IFService
+  ) {
     this.form = this.fb.group({
       one: [3],
       two: [3],
@@ -28,10 +32,12 @@ export class InitialFormComponent {
   }
 
   onSubmit() {
-    const one = this.form.value.one;
-    const two = this.form.value.two;
-    const three = this.form.value.three;
-    const four = this.form.value.four;
-    const five = this.form.value.five;
+    this.ifservice.generate_answers(
+      this.form.value.one,
+      this.form.value.two,
+      this.form.value.three,
+      this.form.value.four,
+      this.form.value.five
+    );
   }
 }
