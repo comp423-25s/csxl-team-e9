@@ -16,7 +16,7 @@ openapi_tags = {
 
 @api.post("/", tags=["Coworking"])
 def initial_form(formResponses: InitialForm):
-    return formResponses.one
+    return formResponses.pid
 
 
 @api.post("/specific", tags=["Coworking"])

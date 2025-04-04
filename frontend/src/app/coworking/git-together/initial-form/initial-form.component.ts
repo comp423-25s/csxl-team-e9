@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IFService } from './initial-form.service';
+import { Profile, ProfileService } from 'src/app/profile/profile.service';
+import { ActivatedRoute } from '@angular/router';
+import { profileResolver } from 'src/app/profile/profile.resolver';
 
 @Component({
   selector: 'app-initial-form',
@@ -15,12 +18,17 @@ export class InitialFormComponent {
   public static Route = {
     path: 'initialForm',
     title: 'Initial Form',
-    component: InitialFormComponent
+    component: InitialFormComponent,
+    resolve: {
+      profile: profileResolver
+    }
   };
+  profile: Profile;
 
   constructor(
     private fb: FormBuilder,
-    private ifservice: IFService
+    private ifservice: IFService,
+    private route: ActivatedRoute
   ) {
     this.form = this.fb.group({
       one: [3],
@@ -29,6 +37,11 @@ export class InitialFormComponent {
       four: [3],
       five: [3]
     });
+
+    const data = this.route.snapshot.data as {
+      profile: Profile;
+    };
+    this.profile = data.profile;
   }
 
   onSubmit() {
@@ -37,7 +50,8 @@ export class InitialFormComponent {
       this.form.value.two,
       this.form.value.three,
       this.form.value.four,
-      this.form.value.five
+      this.form.value.five,
+      this.profile.pid
     );
   }
 }

@@ -6,24 +6,25 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class IFService {
-  private apiUrl = '';
+  private apiUrl = 'http://localhost:1560/api/coworking/gittogether/';
   constructor(private http: HttpClient) {}
   generate_answers(
     one: number,
     two: number,
     three: number,
     four: number,
-    five: number
+    five: number,
+    pid: number
   ): void {
-    console.log(one);
     this.http
       .post<IFService>(this.apiUrl, {
         one: one,
         two: two,
         three: three,
         four: four,
-        five: five
+        five: five,
+        pid: pid
       })
-      .subscribe();
+      .subscribe((x) => console.log(x));
   }
 }

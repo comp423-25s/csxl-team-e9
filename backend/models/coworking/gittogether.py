@@ -9,6 +9,7 @@ class InitialForm(BaseModel):
     three: int
     four: int
     five: int
+    pid: int
 
 
 class FormResponse(BaseModel):
