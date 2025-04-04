@@ -19,15 +19,19 @@ export class InitialFormComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      deadlines: [3],
-      divisionOfWork: [3],
-      leadershipComfort: [3],
-      meetingFrequency: [3],
-      conflictApproach: [3]
+      one: [3],
+      two: [3],
+      three: [3],
+      four: [3],
+      five: [3]
     });
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    const one = this.form.value.one;
+    const two = this.form.value.two;
+    const three = this.form.value.three;
+    const four = this.form.value.four;
+    const five = this.form.value.five;
   }
 }
