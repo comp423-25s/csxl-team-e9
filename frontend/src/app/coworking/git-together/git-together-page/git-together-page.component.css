@@ -1,0 +1,23 @@
+.preferences-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .preferences-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 16px;
+  
+    p {
+      margin-bottom: 0px;
+    }
+  }
+  
+  #preferences-button {
+    margin-left: auto;
+    margin-right: 16px;
+  }

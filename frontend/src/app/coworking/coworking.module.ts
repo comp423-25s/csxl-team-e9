@@ -37,6 +37,9 @@ import { SpecificFormComponent } from './git-together/specific-form/specific-for
 import { MatSelectModule } from '@angular/material/select'; // Add for form selects
 import { MatSnackBarModule } from '@angular/material/snack-bar'; // Add for notifications
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Add for loading spinner
+import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
+import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
+
 
 @NgModule({
   declarations: [
@@ -54,7 +57,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
     DateSelector,
     OperatingHoursDialog,
     ReservationFactsWidget,
-    SpecificFormComponent // Add the new component to declarations
+    SpecificFormComponent
+    GitTogetherPageComponent
   ],
   imports: [
     CommonModule,
