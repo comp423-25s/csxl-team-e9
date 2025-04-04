@@ -33,13 +33,12 @@ import { AmbassadorRoomComponent } from './ambassador-home/ambassador-room/ambas
 import { ReservationFactsWidget } from './widgets/reservation-facts/reservation-facts.widget';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
-import { SpecificFormComponent } from './git-together/specific-form/specific-form.component'; // Add this import
 import { MatSelectModule } from '@angular/material/select'; // Add for form selects
 import { MatSnackBarModule } from '@angular/material/snack-bar'; // Add for notifications
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Add for loading spinner
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
-
+import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 
 @NgModule({
   declarations: [
@@ -57,8 +56,9 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
     DateSelector,
     OperatingHoursDialog,
     ReservationFactsWidget,
-    SpecificFormComponent
-    GitTogetherPageComponent
+    GitTogetherPageComponent,
+    SpecificFormComponent,
+    InitialFormComponent
   ],
   imports: [
     CommonModule,
@@ -90,7 +90,8 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
     ReactiveFormsModule, // Already present but ensuring it's here for forms
     MatSelectModule, // Add for the select dropdowns
     MatSnackBarModule, // Add for notifications
-    MatProgressSpinnerModule // Add for loading spinner
+    MatProgressSpinnerModule, // Add for loading spinner
+    ReactiveFormsModule
   ]
 })
 export class CoworkingModule {}

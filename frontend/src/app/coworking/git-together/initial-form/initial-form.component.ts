@@ -4,8 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-initial-form',
-  standalone: true,
-  imports: [ReactiveFormsModule],
   templateUrl: './initial-form.component.html',
   styleUrl: './initial-form.component.css'
 })

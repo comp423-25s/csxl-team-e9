@@ -1,21 +1,19 @@
 // src/app/coworking/git-together/specific-form/specific-form.component.ts
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-specific-form',
-  standalone: true,
-  imports: [ReactiveFormsModule],
   templateUrl: './specific-form.component.html',
   styleUrls: ['./specific-form.component.css']
 })
 export class SpecificFormComponent {
+  public static Route = {
+    path: 'specificForm',
+    title: 'Specific Form',
+    component: SpecificFormComponent
+  };
   specificForm: FormGroup;
   isLoading = false;
 
