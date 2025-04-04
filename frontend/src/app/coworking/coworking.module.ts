@@ -60,7 +60,7 @@ import { SpecificFormComponent } from './git-together/specific-form/specific-for
     ReservationFactsWidget,
     GitTogetherPageComponent,
     InitialFormComponent,
-    PrefFormSubmittedComponent
+    PrefFormSubmittedComponent,
     SpecificFormComponent,
     InitialFormComponent
   ],
@@ -91,7 +91,7 @@ import { SpecificFormComponent } from './git-together/specific-form/specific-for
     MatTabsModule,
     MatDialogModule,
     ReactiveFormsModule,
-    MatSliderModule
+    MatSliderModule,
     FormsModule,
     ReactiveFormsModule, // Already present but ensuring it's here for forms
     MatSelectModule, // Add for the select dropdowns
