@@ -12,6 +12,14 @@ class InitialForm(BaseModel):
     pid: int
 
 
+class InitialFormAnswer(BaseModel):
+    one: int
+    two: int
+    three: int
+    four: int
+    five: int
+
+
 class FormResponse(BaseModel):
     value: str
 

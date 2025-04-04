@@ -1,4 +1,9 @@
-from backend.models.coworking.gittogether import FormResponse, InitialForm, Match
+from backend.models.coworking.gittogether import (
+    FormResponse,
+    InitialForm,
+    Match,
+    InitialFormAnswer,
+)
 
 initialFormAnswers = {}
 
@@ -8,7 +13,14 @@ classSpecficFormAnswers = {}
 class GitTogetherService:
 
     def initial_form(self, formResponses: InitialForm):
-        initialFormAnswers[formResponses.pid] = formResponses.pid
+        i = InitialFormAnswer(
+            formResponses.one,
+            formResponses.two,
+            formResponses.three,
+            formResponses.four,
+            formResponses.five,
+        )
+        initialFormAnswers[formResponses.pid] = i
         return initialFormAnswers[formResponses.pid]
 
     def class_specific_form(self, formResponse: FormResponse):
