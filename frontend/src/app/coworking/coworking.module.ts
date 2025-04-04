@@ -35,7 +35,8 @@ import { DialogModule } from '@angular/cdk/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
-
+import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/pref-form-submitted.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,9 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
     DateSelector,
     OperatingHoursDialog,
     ReservationFactsWidget,
-    GitTogetherPageComponent
+    GitTogetherPageComponent,
+    InitialFormComponent,
+    PrefFormSubmittedComponent
   ],
   imports: [
     CommonModule,
@@ -81,7 +84,9 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
     MatFormFieldModule,
     MatTooltipModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatSliderModule
   ]
 })
 export class CoworkingModule {}

@@ -6,6 +6,7 @@ import { NewReservationPageComponent } from './room-reservation/new-reservation-
 import { ConfirmReservationComponent } from './room-reservation/confirm-reservation/confirm-reservation.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
+import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/pref-form-submitted.component';
 
 const routes: Routes = [
   CoworkingPageComponent.Route,
@@ -14,6 +15,7 @@ const routes: Routes = [
   ConfirmReservationComponent.Route,
   GitTogetherPageComponent.Route,
   InitialFormComponent.Route,
+  PrefFormSubmittedComponent.Route,
   {
     path: 'ambassador',
     title: 'Ambassador',

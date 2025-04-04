@@ -26,6 +26,10 @@ export class GitTogetherPageComponent implements OnInit {
   }
 
   navigateToPreferences() {
-    this.router.navigateByUrl('/coworking/initialForm');
+    this.router.navigateByUrl('/coworking/initial-form');
+  }
+
+  navigateToCoworking() {
+    this.router.navigateByUrl('/coworking');
   }
 }
