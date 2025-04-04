@@ -5,12 +5,15 @@ import { ReservationComponent } from './reservation/reservation.component';
 import { NewReservationPageComponent } from './room-reservation/new-reservation-page/new-reservation-page.component';
 import { ConfirmReservationComponent } from './room-reservation/confirm-reservation/confirm-reservation.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
+import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
+
 
 const routes: Routes = [
   CoworkingPageComponent.Route,
   ReservationComponent.Route,
   NewReservationPageComponent.Route,
   ConfirmReservationComponent.Route,
+  InitialFormComponent.Route,
   GitTogetherPageComponent.Route,
   {
     path: 'ambassador',

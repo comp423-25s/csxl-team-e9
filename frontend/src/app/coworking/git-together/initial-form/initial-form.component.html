@@ -1,0 +1,37 @@
+
+
+<p>initial-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      <label>How close to deadlines do you usually work?</label>
+      <p><small>In advance → Last Minute</small></p>
+      <input type="range" min="1" max="5" formControlName="deadlines" />
+    </div>
+  
+    <div>
+      <label>How do you prefer to divide work in a group project?</label>
+      <p><small>Independent → Collaborative</small></p>
+      <input type="range" min="1" max="5" formControlName="divisionOfWork" />
+    </div>
+  
+    <div>
+      <label>How comfortable are you with taking a leadership role?</label>
+      <p><small>Not comfortable → Very comfortable</small></p>
+      <input type="range" min="1" max="5" formControlName="leadershipComfort" />
+    </div>
+  
+    <div>
+      <label>How frequently do you like to meet with your group?</label>
+      <p><small>Only when necessary → Daily check-ins</small></p>
+      <input type="range" min="1" max="5" formControlName="meetingFrequency" />
+    </div>
+  
+    <div>
+      <label>How do you approach conflicts in a group?</label>
+      <p><small>Avoid conflict → Directly address issues</small></p>
+      <input type="range" min="1" max="5" formControlName="conflictApproach" />
+    </div>
+  
+    <button type="submit">Submit</button>
+  </form>
+  
