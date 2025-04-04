@@ -13,10 +13,13 @@
         margin-top: 10px;
         margin-bottom: 10px;
     }
+
+    p {
+      margin-bottom: 10px;
+    }
   }
 
   #preferences-button {
-    margin-left: auto;
+    margin-left: 16px;
     margin-right: 16px;
-    margin-top: 10px;
   }

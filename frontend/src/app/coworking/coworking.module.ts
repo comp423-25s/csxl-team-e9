@@ -38,6 +38,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'; // Add for noti
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Add for loading spinner
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
+import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/pref-form-submitted.component';
+import { MatSliderModule } from '@angular/material/slider';
 import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 
 @NgModule({
@@ -57,6 +59,8 @@ import { SpecificFormComponent } from './git-together/specific-form/specific-for
     OperatingHoursDialog,
     ReservationFactsWidget,
     GitTogetherPageComponent,
+    InitialFormComponent,
+    PrefFormSubmittedComponent
     SpecificFormComponent,
     InitialFormComponent
   ],
@@ -86,6 +90,8 @@ import { SpecificFormComponent } from './git-together/specific-form/specific-for
     MatTooltipModule,
     MatTabsModule,
     MatDialogModule,
+    ReactiveFormsModule,
+    MatSliderModule
     FormsModule,
     ReactiveFormsModule, // Already present but ensuring it's here for forms
     MatSelectModule, // Add for the select dropdowns
