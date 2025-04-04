@@ -34,6 +34,8 @@ import { ReservationFactsWidget } from './widgets/reservation-facts/reservation-
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
+import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
+
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { InitialFormComponent } from './git-together/initial-form/initial-form.c
     NewReservationPageComponent,
     DateSelector,
     OperatingHoursDialog,
-    ReservationFactsWidget
+    ReservationFactsWidget,
+    GitTogetherPageComponent
   ],
   imports: [
     CommonModule,
