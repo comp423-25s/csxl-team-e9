@@ -117,11 +117,7 @@ export class CoworkingPageComponent implements OnInit, OnDestroy {
   reserve(seatSelection: SeatAvailability[]) {
     this.coworkingService.draftReservation(seatSelection).subscribe({
       error: (response) => {
-        this.snackBar.open(
-          response.error.message,
-          '',
-          { duration: 8000 }
-        );
+        this.snackBar.open(response.error.message, '', { duration: 8000 });
       },
       next: (reservation) => {
         this.router.navigateByUrl(`/coworking/reservation/${reservation.id}`);
@@ -131,5 +127,9 @@ export class CoworkingPageComponent implements OnInit, OnDestroy {
 
   navigateToNewReservation() {
     this.router.navigateByUrl('/coworking/new-reservation');
+  }
+
+  navigateToGitTogether() {
+    this.router.navigateByUrl('/coworking/git-together');
   }
 }
