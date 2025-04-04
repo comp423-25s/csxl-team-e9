@@ -23,7 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { OperatingHoursDialog } from './widgets/operating-hours-dialog/operating-hours-dialog.widget';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from '../shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -33,10 +33,14 @@ import { AmbassadorRoomComponent } from './ambassador-home/ambassador-room/ambas
 import { ReservationFactsWidget } from './widgets/reservation-facts/reservation-facts.widget';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select'; // Add for form selects
+import { MatSnackBarModule } from '@angular/material/snack-bar'; // Add for notifications
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Add for loading spinner
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
 import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/pref-form-submitted.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +61,8 @@ import { MatSliderModule } from '@angular/material/slider';
     GitTogetherPageComponent,
     InitialFormComponent,
     PrefFormSubmittedComponent
+    SpecificFormComponent,
+    InitialFormComponent
   ],
   imports: [
     CommonModule,
@@ -76,7 +82,6 @@ import { MatSliderModule } from '@angular/material/slider';
     MatAutocompleteModule,
     MatCardModule,
     AsyncPipe,
-    AsyncPipe,
     SharedModule,
     MatDatepickerModule,
     MatInputModule,
@@ -87,6 +92,12 @@ import { MatSliderModule } from '@angular/material/slider';
     MatDialogModule,
     ReactiveFormsModule,
     MatSliderModule
+    FormsModule,
+    ReactiveFormsModule, // Already present but ensuring it's here for forms
+    MatSelectModule, // Add for the select dropdowns
+    MatSnackBarModule, // Add for notifications
+    MatProgressSpinnerModule, // Add for loading spinner
+    ReactiveFormsModule
   ]
 })
 export class CoworkingModule {}
