@@ -8,7 +8,8 @@ classSpecficFormAnswers = {}
 class GitTogetherService:
 
     def initial_form(self, formResponses: InitialForm):
-        print(formResponses.one)
+        initialFormAnswers[formResponses.pid] = formResponses.pid
+        return initialFormAnswers[formResponses.pid]
 
     def class_specific_form(self, formResponse: FormResponse):
         print(formResponse)
