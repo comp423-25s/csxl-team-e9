@@ -1,0 +1,60 @@
+<!-- src/app/coworking/git-together/specific-form/specific-form.component.html -->
+<div class="specific-form-container">
+    <h2>Specific Partner Requirements</h2>
+    <p>Tell us exactly what you're looking for in a project partner</p>
+  
+    <form [formGroup]="specificForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Collaboration Type</mat-label>
+        <mat-select formControlName="collaborationType" required>
+          <mat-option value="class">Class Project</mat-option>
+          <mat-option value="hackathon">Hackathon</mat-option>
+          <mat-option value="personal">Personal Project</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Class/Project Name</mat-label>
+        <input matInput formControlName="className" required>
+        <mat-hint>e.g. COMP110, HackNC, My Startup</mat-hint>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Specific Requirements</mat-label>
+        <textarea matInput formControlName="specificRequirements" required rows="5"></textarea>
+        <mat-hint>Be specific about what you're looking for in a partner (minimum 20 characters)</mat-hint>
+        <mat-error *ngIf="specificForm.get('specificRequirements')?.hasError('minlength')">
+          Please provide more details (at least 20 characters)
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Preferred Communication</mat-label>
+        <mat-select formControlName="preferredCommunication" required>
+          <mat-option value="slack">Slack</mat-option>
+          <mat-option value="discord">Discord</mat-option>
+          <mat-option value="email">Email</mat-option>
+          <mat-option value="in-person">In Person</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Time Commitment</mat-label>
+        <mat-select formControlName="timeCommitment" required>
+          <mat-option value="light">Light (1-5 hrs/week)</mat-option>
+          <mat-option value="moderate">Moderate (5-10 hrs/week)</mat-option>
+          <mat-option value="heavy">Heavy (10+ hrs/week)</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        [disabled]="specificForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Submit Requirements</span>
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      </button>
+    </form>
+  </div>
