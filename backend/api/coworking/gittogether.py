@@ -21,7 +21,6 @@ openapi_tags = {
 
 @api.post("/", tags=["Coworking"])
 def initial_form(formResponses: InitialForm, service: GitTogetherServiceDI):
-
     return service.initial_form(formResponses=formResponses)
 
 
