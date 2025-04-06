@@ -4,15 +4,28 @@ from backend.models.user import User
 
 
 class InitialForm(BaseModel):
-    one: str
-    two: str
-    three: str
-    four: str
-    five: str
+    one: int
+    two: int
+    three: int
+    four: int
+    five: int
+    pid: int
+
+
+class InitialFormAnswer(BaseModel):
+    one: int
+    two: int
+    three: int
+    four: int
+    five: int
 
 
 class FormResponse(BaseModel):
     value: str
+    pid: int
+    contact_info: str
+    clas: str
+    first_name: str
 
 
 class Match(BaseModel):

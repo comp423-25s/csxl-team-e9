@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { IFService } from './initial-form.service';
+import { Profile, ProfileService } from 'src/app/profile/profile.service';
+import { ActivatedRoute } from '@angular/router';
+import { profileResolver } from 'src/app/profile/profile.resolver';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,23 +16,34 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class InitialFormComponent {
   form: FormGroup;
   public static Route = {
-    path: 'initial-form',
-    title: 'Git Together',
-    component: InitialFormComponent
+    path: 'initialForm',
+    title: 'Initial Form',
+    component: InitialFormComponent,
+    resolve: {
+      profile: profileResolver
+    }
   };
+  profile: Profile;
 
   constructor(
     private fb: FormBuilder,
+    private ifservice: IFService,
+    private route: ActivatedRoute
     private router: Router,
     private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
-      deadlineProximity: [3, Validators.required],
-      workStyle: [3, Validators.required],
-      leadershipComfort: [3, Validators.required],
-      meetingFrequency: [3, Validators.required],
-      conflictResolution: [3, Validators.required]
+      one: [3, Validators.required],
+      two: [3, Validators.required],
+      three: [3, Validators.required],
+      four: [3, Validators.required],
+      five: [3, Validators.required]
     });
+
+    const data = this.route.snapshot.data as {
+      profile: Profile;
+    };
+    this.profile = data.profile;
   }
 
   navigateToGitTogether() {
@@ -35,6 +51,14 @@ export class InitialFormComponent {
   }
 
   onSubmit() {
+    this.ifservice.generate_answers(
+      this.form.value.one,
+      this.form.value.two,
+      this.form.value.three,
+      this.form.value.four,
+      this.form.value.five,
+      this.profile.pid
+    );
     if (this.form.valid) {
       // Enhanced logging with formatted output
       const formValues = this.form.value;
