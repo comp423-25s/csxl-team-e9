@@ -1,22 +1,53 @@
+.preferences-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
 .preferences-content {
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-  
-  .preferences-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+}
 
-    mat-card-title{
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-  }
+.form-section {
+  margin-bottom: 2rem;
+}
 
-  #preferences-button {
-    margin-left: auto;
-    margin-right: 16px;
-    margin-top: 10px;
-  }
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+mat-slider {
+  width: 100%;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+mat-card-subtitle {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}

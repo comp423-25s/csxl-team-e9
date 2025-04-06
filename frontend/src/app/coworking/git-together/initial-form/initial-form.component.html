@@ -7,38 +7,63 @@
     <mat-card-content>
       <div class="form-section">
         <mat-card-subtitle>How close to deadlines do you usually work?</mat-card-subtitle>
-        <p>In advance → Last Minute</p>
-        <mat-slider min="1" max="5" step="1" tickInterval="1" formControlName="deadlineProximity"></mat-slider>
+        <div class="slider-labels">
+          <span>In advance</span>
+          <span>Last Minute</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete formControlName="deadlineProximity">
+          <input matSliderThumb>
+        </mat-slider>
       </div>
 
       <div class="form-section">
         <mat-card-subtitle>How do you prefer to divide work in a group project?</mat-card-subtitle>
-        <p>Independent → Collaborative</p>
-        <mat-slider min="1" max="5" step="1" tickInterval="1" formControlName="workStyle"></mat-slider>
+        <div class="slider-labels">
+          <span>Independent</span>
+          <span>Collaborative</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete formControlName="workStyle">
+          <input matSliderThumb>
+        </mat-slider>
       </div>
 
       <div class="form-section">
         <mat-card-subtitle>How comfortable are you with taking a leadership role?</mat-card-subtitle>
-        <p>Not comfortable → Very comfortable</p>
-        <mat-slider min="1" max="5" step="1" tickInterval="1" formControlName="leadershipComfort"></mat-slider>
+        <div class="slider-labels">
+          <span>Not comfortable</span>
+          <span>Very comfortable</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete formControlName="leadershipComfort">
+          <input matSliderThumb>
+        </mat-slider>
       </div>
 
       <div class="form-section">
         <mat-card-subtitle>How frequently do you like to meet with your group?</mat-card-subtitle>
-        <p>Only when necessary → Daily check-ins</p>
-        <mat-slider min="1" max="5" step="1" tickInterval="1" formControlName="meetingFrequency"></mat-slider>
+        <div class="slider-labels">
+          <span>Only when necessary</span>
+          <span>Daily check-ins</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete formControlName="meetingFrequency">
+          <input matSliderThumb>
+        </mat-slider>
       </div>
 
       <div class="form-section">
         <mat-card-subtitle>How do you approach conflicts in a group?</mat-card-subtitle>
-        <p>Avoid conflict → Directly address issues</p>
-        <mat-slider min="1" max="5" step="1" tickInterval="1" formControlName="conflictResolution"></mat-slider>
+        <div class="slider-labels">
+          <span>Avoid conflict</span>
+          <span>Directly address issues</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete formControlName="conflictResolution">
+          <input matSliderThumb>
+        </mat-slider>
       </div>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-stroked-button color="warn" (click)="navigateToGitTogether()">Back</button>
-      <button mat-stroked-button type="submit" color="primary" (click)="navigateToSubmitted()">Submit</button>
+      <button mat-stroked-button color="warn" type="button" (click)="navigateToGitTogether()">Back</button>
+      <button mat-stroked-button type="submit" color="primary">Submit</button>
     </mat-card-actions>
   </form>
 </mat-card>

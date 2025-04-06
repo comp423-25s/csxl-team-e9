@@ -1,23 +1,51 @@
+.git-together-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
 .preferences-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 16px;
-    margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preferences-text {
+  text-align: center;
+  
+  mat-card-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #3f51b5;
   }
   
-  .preferences-text {
-    display: flex;
+  p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 0;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.action-button {
+  min-width: 200px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .action-buttons {
     flex-direction: column;
-    justify-content: center;
-    margin-left: 16px;
-  
-    p {
-      margin-bottom: 0px;
-    }
+    align-items: center;
   }
   
-  #preferences-button {
-    margin-left: auto;
-    margin-right: 16px;
+  .action-button {
+    width: 100%;
   }
+}

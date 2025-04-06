@@ -1,24 +1,37 @@
-<mat-pane>
-    <div class="preferences-content">
-      <div class="preferences-text">
-        <mat-card-title>Looking to find a partner?</mat-card-title>
-        <p>Start by telling us about yourself!</p>
-      </div>
+<mat-card class="git-together-card">
+  <div class="preferences-content">
+    <div class="preferences-text">
+      <mat-card-title>Looking to find a partner?</mat-card-title>
+      <p>Start by telling us about yourself!</p>
+    </div>
+    <div class="action-buttons">
       <button
-      id="preferences-button"
-      mat-stroked-button
-      type="submit"
-      (click)="navigateToCoworking()"
-      color="secondary">
-      Back
-    </button>
-      <button
-        id="preferences-button"
         mat-stroked-button
-        type="submit"
+        color="primary"
         (click)="navigateToPreferences()"
-        color="primary">
-        Go
+        class="action-button">
+        Initial Preferences
+      </button>
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="navigateToSpecificForm()"
+        class="action-button">
+        Specific Requirements
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="navigateToViewMatches()"
+        class="action-button">
+        View Matches
+      </button>
+      <button
+        mat-stroked-button
+        (click)="navigateToCoworking()"
+        class="action-button">
+        Back to Coworking
       </button>
     </div>
-  </mat-pane>
+  </div>
+</mat-card>

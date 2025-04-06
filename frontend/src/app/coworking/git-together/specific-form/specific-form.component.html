@@ -1,60 +1,82 @@
-<!-- src/app/coworking/git-together/specific-form/specific-form.component.html -->
 <div class="specific-form-container">
-    <h2>Specific Partner Requirements</h2>
-    <p>Tell us exactly what you're looking for in a project partner</p>
-  
-    <form [formGroup]="specificForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Collaboration Type</mat-label>
-        <mat-select formControlName="collaborationType" required>
-          <mat-option value="class">Class Project</mat-option>
-          <mat-option value="hackathon">Hackathon</mat-option>
-          <mat-option value="personal">Personal Project</mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Class/Project Name</mat-label>
-        <input matInput formControlName="className" required>
-        <mat-hint>e.g. COMP110, HackNC, My Startup</mat-hint>
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Specific Requirements</mat-label>
-        <textarea matInput formControlName="specificRequirements" required rows="5"></textarea>
-        <mat-hint>Be specific about what you're looking for in a partner (minimum 20 characters)</mat-hint>
-        <mat-error *ngIf="specificForm.get('specificRequirements')?.hasError('minlength')">
-          Please provide more details (at least 20 characters)
-        </mat-error>
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Preferred Communication</mat-label>
-        <mat-select formControlName="preferredCommunication" required>
-          <mat-option value="slack">Slack</mat-option>
-          <mat-option value="discord">Discord</mat-option>
-          <mat-option value="email">Email</mat-option>
-          <mat-option value="in-person">In Person</mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Time Commitment</mat-label>
-        <mat-select formControlName="timeCommitment" required>
-          <mat-option value="light">Light (1-5 hrs/week)</mat-option>
-          <mat-option value="moderate">Moderate (5-10 hrs/week)</mat-option>
-          <mat-option value="heavy">Heavy (10+ hrs/week)</mat-option>
-        </mat-select>
-      </mat-form-field>
-  
+  <h2>GitTogether Partner Matching Form</h2>
+  <p>This is where the magic happens! The more details you provide, the better we can match you with the perfect project partner.</p>
+
+  <form [formGroup]="specificForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Project Type</mat-label>
+      <mat-select formControlName="collaborationType" required>
+        <mat-option *ngFor="let class of availableClasses" [value]="class.code">
+          {{class.name}} ({{class.code}})
+        </mat-option>
+        <mat-option value="hackathon">Hackathon</mat-option>
+        <mat-option value="personal">Personal Project</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Project Name</mat-label>
+      <input matInput formControlName="className" required>
+      <mat-hint>e.g. COMP110 Final Project, HackNC 2024, My Startup App</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width partner-preferences">
+      <mat-label>Partner Preferences & Project Details</mat-label>
+      <textarea matInput formControlName="specificRequirements" required rows="12"></textarea>
+      <mat-hint>
+        This is the most important part for matching! Be specific about:
+        - Your project goals and stage
+        - Skills you're looking for in a partner
+        - Your personal interests related to the project
+        - Any specific requirements (languages, frameworks, etc.)
+        - Your working style preferences
+        (minimum 50 characters)
+      </mat-hint>
+      <mat-error *ngIf="specificForm.get('specificRequirements')?.hasError('minlength')">
+        Please provide more details to help us make better matches (at least 50 characters)
+      </mat-error>
+    </mat-form-field>
+
+    <div class="spacing"></div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mailto:mat-label>Time Commitment</mat-label>
+      <mat-select formControlName="timeCommitment" required>
+        <mat-option value="light">Light (1-5 hrs/week) - Mostly weekends or evenings</mat-option>
+        <mat-option value="moderate">Moderate (5-10 hrs/week) - Regular weekly schedule</mat-option>
+        <mat-option value="heavy">Heavy (10+ hrs/week) - Intensive project focus</mat-option>
+        <mat-option value="flexible">Flexible - Depends on project needs</mat-option>
+      </mat-select>
+      <mat-hint>Be realistic about how much time you can dedicate to this collaboration</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Contact Information</mat-label>
+      <input matInput formControlName="contactInfo" required placeholder="Email or Phone Number">
+      <mat-hint>How your potential partner should contact you (e.g. unc.edu email address or 555-123-4567)</mat-hint>
+      <mat-error *ngIf="specificForm.get('contactInfo')?.hasError('pattern')">
+        Please enter a valid email or phone number
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button 
+        mat-stroked-button 
+        type="button" 
+        color="warn" 
+        (click)="navigateToGitTogether()"
+        class="back-button">
+        Back to Home
+      </button>
       <button 
         mat-raised-button 
         color="primary" 
         type="submit" 
         [disabled]="specificForm.invalid || isLoading"
-      >
-        <span *ngIf="!isLoading">Submit Requirements</span>
+        class="submit-button">
+        <span *ngIf="!isLoading">Find My Perfect Partner</span>
         <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
       </button>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>
