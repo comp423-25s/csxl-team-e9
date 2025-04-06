@@ -22,7 +22,7 @@ export class GitTogetherPageComponent implements OnInit {
   ngOnInit() {}
 
   navigateToPreferences() {
-    this.router.navigate(['/coworking/initial-form']);
+    this.router.navigate(['/coworking/initialForm']);
   }
 
   navigateToSpecificForm() {

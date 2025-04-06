@@ -28,16 +28,16 @@ export class InitialFormComponent {
   constructor(
     private fb: FormBuilder,
     private ifservice: IFService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
-      one: [3, Validators.required],
-      two: [3, Validators.required],
-      three: [3, Validators.required],
-      four: [3, Validators.required],
-      five: [3, Validators.required]
+      one: [1, Validators.required],
+      two: [1, Validators.required],
+      three: [1, Validators.required],
+      four: [1, Validators.required],
+      five: [1, Validators.required]
     });
 
     const data = this.route.snapshot.data as {
@@ -51,6 +51,7 @@ export class InitialFormComponent {
   }
 
   onSubmit() {
+    console.log(this.form.value);
     this.ifservice.generate_answers(
       this.form.value.one,
       this.form.value.two,
@@ -64,11 +65,11 @@ export class InitialFormComponent {
       const formValues = this.form.value;
       const logMessage = `
         Initial Preferences Submitted:
-        - Deadline Proximity: ${formValues.deadlineProximity}/5
-        - Work Style: ${formValues.workStyle}/5
-        - Leadership Comfort: ${formValues.leadershipComfort}/5
-        - Meeting Frequency: ${formValues.meetingFrequency}/5
-        - Conflict Resolution: ${formValues.conflictResolution}/5
+        - Deadline Proximity: ${formValues.one}/5
+        - Work Style: ${formValues.two}/5
+        - Leadership Comfort: ${formValues.three}/5
+        - Meeting Frequency: ${formValues.four}/5
+        - Conflict Resolution: ${formValues.five}/5
       `;
 
       console.log('Form values:', formValues);
