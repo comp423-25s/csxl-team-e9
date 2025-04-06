@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-git-together-page',
   templateUrl: './git-together-page.component.html',
-  styleUrl: './git-together-page.component.css'
+  styleUrls: ['./git-together-page.component.css']
 })
 export class GitTogetherPageComponent implements OnInit {
   public static Route = {
@@ -21,11 +21,19 @@ export class GitTogetherPageComponent implements OnInit {
 
   ngOnInit() {}
 
-  navigateToGitTogether() {
-    this.router.navigateByUrl('/coworking/git-together');
+  navigateToPreferences() {
+    this.router.navigate(['/coworking/initial-form']);
   }
 
-  navigateToPreferences() {
-    this.router.navigateByUrl('/coworking/initialForm');
+  navigateToSpecificForm() {
+    this.router.navigate(['/coworking/specificForm']);
+  }
+
+  navigateToViewMatches() {
+    this.router.navigate(['/coworking/gittogether/matches']);
+  }
+
+  navigateToCoworking() {
+    this.router.navigate(['/coworking']);
   }
 }
