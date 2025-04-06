@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class GitTogetherMatchesComponent {
   public static Route = {
-    path: 'git-together/matches', // Or just 'matches' if you want a shorter URL
+    path: 'git-together/matches',
     title: 'GitTogether Matches',
     component: GitTogetherMatchesComponent
   };
