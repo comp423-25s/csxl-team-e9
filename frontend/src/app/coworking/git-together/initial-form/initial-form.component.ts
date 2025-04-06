@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IFService } from './initial-form.service';
+import { Profile, ProfileService } from 'src/app/profile/profile.service';
+import { profileResolver } from 'src/app/profile/profile.resolver';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-initial-form',
@@ -10,24 +14,34 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class InitialFormComponent {
   form: FormGroup;
+  profile: Profile;
   public static Route = {
     path: 'initialForm',
     title: 'Git Together',
-    component: InitialFormComponent
+    component: InitialFormComponent,
+    resolve: {
+      profile: profileResolver
+    }
   };
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private ifservice: IFService
   ) {
     this.form = this.fb.group({
-      deadlineProximity: [3, Validators.required],
-      workStyle: [3, Validators.required],
-      leadershipComfort: [3, Validators.required],
-      meetingFrequency: [3, Validators.required],
-      conflictResolution: [3, Validators.required]
+      one: [1, Validators.required],
+      two: [1, Validators.required],
+      three: [1, Validators.required],
+      four: [1, Validators.required],
+      five: [1, Validators.required]
     });
+    const data = this.route.snapshot.data as {
+      profile: Profile;
+    };
+    this.profile = data.profile;
   }
 
   navigateToGitTogether() {
@@ -40,16 +54,21 @@ export class InitialFormComponent {
       const formValues = this.form.value;
       const logMessage = `
         Initial Preferences Submitted:
-        - Deadline Proximity: ${formValues.deadlineProximity}/5
-        - Work Style: ${formValues.workStyle}/5
-        - Leadership Comfort: ${formValues.leadershipComfort}/5
-        - Meeting Frequency: ${formValues.meetingFrequency}/5
-        - Conflict Resolution: ${formValues.conflictResolution}/5
+        - Deadline Proximity: ${formValues.one}/5
+        - Work Style: ${formValues.two}/5
+        - Leadership Comfort: ${formValues.three}/5
+        - Meeting Frequency: ${formValues.four}/5
+        - Conflict Resolution: ${formValues.five}/5
       `;
-
-      console.log('Form values:', formValues);
       console.log(logMessage);
-
+      this.ifservice.generate_answers(
+        formValues.one,
+        formValues.two,
+        formValues.three,
+        formValues.four,
+        formValues.five,
+        this.profile.pid
+      );
       // Show success message
       this.snackBar.open('Preferences saved successfully!', 'Close', {
         duration: 3000,
