@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { SFService } from './specific-form.service';
+import { Profile, ProfileService } from 'src/app/profile/profile.service';
+import { profileResolver } from 'src/app/profile/profile.resolver';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-specific-form',
@@ -12,11 +16,15 @@ export class SpecificFormComponent {
   public static Route = {
     path: 'specificForm',
     title: 'GitTogether Partner Matching',
-    component: SpecificFormComponent
+    component: SpecificFormComponent,
+    resolve: {
+      profile: profileResolver
+    }
   };
 
   specificForm: FormGroup;
   isLoading = false;
+  profile: Profile;
 
   availableClasses = [
     { code: 'COMP50', name: 'First-Year Seminar: Everyday Computing' },
@@ -94,7 +102,9 @@ export class SpecificFormComponent {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private sfservice: SFService
   ) {
     this.specificForm = this.fb.group({
       collaborationType: ['', Validators.required],
@@ -114,6 +124,10 @@ export class SpecificFormComponent {
       ],
       timeCommitment: ['', Validators.required]
     });
+    const data = this.route.snapshot.data as {
+      profile: Profile;
+    };
+    this.profile = data.profile;
   }
 
   navigateToGitTogether() {
@@ -136,6 +150,15 @@ export class SpecificFormComponent {
 
       console.log('Specific Form values:', formValues);
       console.log(logMessage);
+      if (this.profile.first_name !== null) {
+        this.sfservice.generate_response(
+          formValues.specificRequirements,
+          this.profile.pid,
+          formValues.contactInfo,
+          formValues.collaborationType,
+          this.profile.first_name
+        );
+      }
 
       setTimeout(() => {
         this.isLoading = false;
