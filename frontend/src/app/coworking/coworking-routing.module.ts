@@ -7,6 +7,7 @@ import { ConfirmReservationComponent } from './room-reservation/confirm-reservat
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
+import { GitTogetherMatchesComponent } from './git-together/matches/matches.component'; // Add this import
 
 const routes: Routes = [
   CoworkingPageComponent.Route,
@@ -16,6 +17,7 @@ const routes: Routes = [
   GitTogetherPageComponent.Route,
   InitialFormComponent.Route,
   SpecificFormComponent.Route,
+  GitTogetherMatchesComponent.Route, // Add this route
   {
     path: 'ambassador',
     title: 'Ambassador',

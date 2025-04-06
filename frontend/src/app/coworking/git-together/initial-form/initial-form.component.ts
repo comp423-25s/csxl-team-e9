@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class InitialFormComponent {
   form: FormGroup;
   public static Route = {
-    path: 'initial-form',
+    path: 'initialForm',
     title: 'Git Together',
     component: InitialFormComponent
   };

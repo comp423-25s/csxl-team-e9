@@ -1,0 +1,107 @@
+/* src/app/coworking/git-together/matches/matches.component.css */
+.matches-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .header h2 {
+    color: #3f51b5;
+    margin-bottom: 0.5rem;
+  }
+  
+  .matches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .match-card {
+    border-left: 4px solid #3f51b5;
+    transition: transform 0.2s;
+  }
+  
+  .match-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .match-avatar {
+    background-color: #e3f2fd;
+    color: #3f51b5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .compatibility-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .compatibility-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .label {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .value {
+    color: #666;
+    font-size: 0.8rem;
+  }
+  
+  .no-matches {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+  }
+  
+  .no-matches mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: #9e9e9e;
+  }
+  
+  /* Add to your global styles or component styles */
+  .mat-progress-bar {
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  /* Add these styles to your existing CSS */
+.header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #3f51b5;
+}
+
+.header h2 {
+  color: #3f51b5;
+  margin-bottom: 0.5rem;
+  padding: 0 2rem; /* Add padding to account for the back button */
+}

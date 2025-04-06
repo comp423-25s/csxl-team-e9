@@ -5,31 +5,35 @@
       <p>Start by telling us about yourself!</p>
     </div>
     <div class="action-buttons">
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="navigateToPreferences()"
-        class="action-button">
-        Initial Preferences
+      <button 
+      mat-raised-button 
+      class="action-button primary-button" 
+      (click)="navigateToPreferences()">
+      <mat-icon>tune</mat-icon>
+      Set Preferences
       </button>
-      <button
-        mat-stroked-button
-        color="accent"
-        (click)="navigateToSpecificForm()"
-        class="action-button">
-        Specific Requirements
+      
+      <button 
+        mat-raised-button 
+        class="action-button secondary-button" 
+        (click)="navigateToSpecificForm()">
+        <mat-icon>person_search</mat-icon>
+        Specific Teammate Search
       </button>
-      <button
-        mat-stroked-button
-        color="warn"
-        (click)="navigateToViewMatches()"
-        class="action-button">
+      
+      <button 
+        mat-raised-button 
+        class="action-button tertiary-button" 
+        (click)="navigateToViewMatches()">
+        <mat-icon>people</mat-icon>
         View Matches
       </button>
-      <button
-        mat-stroked-button
-        (click)="navigateToCoworking()"
-        class="action-button">
+      
+      <button 
+        mat-raised-button 
+        class="action-button surface-button" 
+        (click)="navigateToCoworking()">
+        <mat-icon class="on-surface-variant-icon">arrow_back</mat-icon>
         Back to Coworking
       </button>
     </div>

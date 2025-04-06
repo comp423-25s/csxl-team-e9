@@ -30,7 +30,7 @@ export class GitTogetherPageComponent implements OnInit {
   }
 
   navigateToViewMatches() {
-    this.router.navigate(['/coworking/gittogether/matches']);
+    this.router.navigate(['/coworking/git-together/matches']);
   }
 
   navigateToCoworking() {

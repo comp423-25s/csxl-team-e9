@@ -1,0 +1,60 @@
+<!-- src/app/coworking/git-together/matches/matches.component.html -->
+<mat-card class="matches-container">
+  <div class="header">
+    <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>Your GitTogether Matches</h2>
+    <p>Here are your best matches based on your preferences and requirements.</p>
+  </div>
+  
+    <div *ngIf="matches.length > 0; else noMatches" class="matches-list">
+      <mat-card *ngFor="let match of matches" class="match-card">
+        <mat-card-header>
+          <div mat-card-avatar class="match-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <mat-card-title>{{match.name}}</mat-card-title>
+          <mat-card-subtitle>Match Score: {{match.score}}%</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="compatibility-details">
+            <div class="compatibility-item" *ngFor="let item of compatibilityItems(match.compatibility)">
+              <span class="label">{{item.label}}:</span>
+              <span class="value">{{item.value}}/5</span>
+              <mat-progress-bar 
+                mode="determinate" 
+                [value]="item.value * 20"
+                [color]="getProgressColor(item.value)">
+              </mat-progress-bar>
+            </div>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button 
+            mat-stroked-button 
+            color="primary"
+            (click)="contactMatch(match.contact)">
+            <mat-icon>email</mat-icon>
+            Contact ({{match.contact}})
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  
+    <ng-template #noMatches>
+      <div class="no-matches">
+        <mat-icon>search_off</mat-icon>
+        <h3>No matches found yet</h3>
+        <p>Try adjusting your preferences or check back later.</p>
+        <button 
+          mat-stroked-button 
+          color="primary"
+          (click)="navigateToGitTogether()">
+          Back to GitTogether
+        </button>
+      </div>
+    </ng-template>
+  </mat-card>
