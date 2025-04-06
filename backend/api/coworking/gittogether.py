@@ -25,10 +25,30 @@ def initial_form(formResponses: InitialForm, service: GitTogetherServiceDI):
 
 
 @api.post("/specific", tags=["Coworking"])
-def class_specific_form(formResponse: FormResponse):
-    print("hello World")
+def class_specific_form(formResponse: FormResponse, service: GitTogetherServiceDI):
+    return service.class_specific_form(formResponse=formResponse)
 
 
 @api.get("/matches", tags=["Coworking"])
-def get_matches(match: Match):
-    print("hello World")
+def get_matches(clas: str, pid: int, service: GitTogetherServiceDI):
+    return service.get_matches(clas=clas, pid=pid)
+
+
+@api.get("/initialanswers", tags=["Coworking"])
+def get_answers(service: GitTogetherServiceDI):
+    return service.get_initial_form_answers()
+
+
+@api.get("/specificanswers", tags=["Coworking"])
+def get_answers(service: GitTogetherServiceDI):
+    return service.get_specific_form_answers()
+
+
+@api.delete("/dIA", tags=["Coworking"])
+def get_answers(service: GitTogetherServiceDI):
+    service.clearIA()
+
+
+@api.delete("/dSA", tags=["Coworking"])
+def get_answers(service: GitTogetherServiceDI):
+    service.clearSA()

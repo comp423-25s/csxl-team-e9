@@ -22,6 +22,10 @@ class InitialFormAnswer(BaseModel):
 
 class FormResponse(BaseModel):
     value: str
+    pid: int
+    contact_info: str
+    clas: str
+    first_name: str
 
 
 class Match(BaseModel):
