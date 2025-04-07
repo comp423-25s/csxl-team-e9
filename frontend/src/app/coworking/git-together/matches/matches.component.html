@@ -13,60 +13,61 @@
     }
   </div>
 
-  <div *ngIf="matches.length > 0; else noMatches" class="matches-list"> 
-    @for (match of matches; track match){
-    <mat-card class="match-card">
-      <mat-card-header>
-        <div mat-card-avatar class="match-avatar">
-          <mat-icon>person</mat-icon>
-        </div>
-        <mat-card-title>{{match.name}}</mat-card-title>
-        <mat-card-subtitle>
-          <span class="match-score">Match Score: {{match.score}}%</span>
-          <span class="course-chip">{{selectedCourse}}</span>
-        </mat-card-subtitle>
-      </mat-card-header>
-      
-      <mat-card-content>
-        @if (match.bio){
-        <div class="match-bio" >
-          <mat-icon class="bio-icon">info</mat-icon>
-          <p>{{match.bio}}</p>
-        </div>
-      }
-        
-        <h3 class="compatibility-title">Compatibility Breakdown</h3>
-        <div class="compatibility-details">
-          <div class="compatibility-item" *ngFor="let item of compatibilityItems(match.compatibility)">
-            <div class="compatibility-header">
-              <span class="label">{{item.label}}</span>
-              <span class="value">{{item.value}}/5</span>
-            </div>
-            <mat-progress-bar 
-              mode="determinate" 
-              [value]="item.value * 20"
-              [color]="getProgressColor(item.value)">
-            </mat-progress-bar>
+  @if (matches.length > 0) {
+    <div class="matches-list"> 
+      @for (match of matches; track match){
+      <mat-card class="match-card">
+        <mat-card-header>
+          <div mat-card-avatar class="match-avatar">
+            <mat-icon>person</mat-icon>
           </div>
-        </div>
-      </mat-card-content>
-      
-      <mat-card-actions>
-        <button 
-          mat-raised-button 
-          color="primary"
-          (click)="contactMatch(match.contact)"
-          class="contact-button">
-          <mat-icon>email</mat-icon>
-          Contact {{match.name.split(' ')[0]}}
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  }
-  </div>
-
-  
-  <ng-template #noMatches>
+          <mat-card-title>{{match.name}}</mat-card-title>
+          <mat-card-subtitle>
+            <span class="match-score">Match Score: {{match.score}}%</span>
+            <span class="course-chip">{{selectedCourse}}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          @if (match.bio){
+          <div class="match-bio" >
+            <mat-icon class="bio-icon">info</mat-icon>
+            <p>{{match.bio}}</p>
+          </div>
+        }
+          
+          <h3 class="compatibility-title">Compatibility Breakdown</h3>
+          <div class="compatibility-details">
+            @for (item of compatibilityItems(match.compatibility); track item) {
+              <div class="compatibility-item">
+                <div class="compatibility-header">
+                  <span class="label">{{item.label}}</span>
+                  <span class="value">{{item.value}}/5</span>
+                </div>
+                <mat-progress-bar 
+                  mode="determinate" 
+                  [value]="item.value * 20"
+                  [color]="getProgressColor(item.value)">
+                </mat-progress-bar>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button 
+            mat-raised-button 
+            color="primary"
+            (click)="contactMatch(match.contact)"
+            class="contact-button">
+            <mat-icon>email</mat-icon>
+            Contact {{match.name.split(' ')[0]}}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+    </div>
+  } @else {
     <div class="no-matches">
       <mat-icon class="no-matches-icon">search_off</mat-icon>
       <h3>No matches found yet</h3>
@@ -80,7 +81,7 @@
         Back to Courses
       </button>
     </div>
-  </ng-template>
+  }
 } @else {
   <button mat-icon-button class="back-button" (click)="navigateToCourseSelection()">
     <mat-icon>arrow_back</mat-icon>
