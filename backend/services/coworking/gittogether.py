@@ -35,9 +35,11 @@ class GitTogetherService:
         return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
     def get_matches(self, clas: str, pid: int):
-        ans = classSpecficFormAnswers[str(pid) + clas]
-        if not ans:
-            return None
+        ans = "hello"
+        if str(pid) + clas in classSpecficFormAnswers:
+            ans = classSpecficFormAnswers[str(pid) + clas]
+        else:
+            return ans
         for k in classSpecficFormAnswers:
             if (
                 classSpecficFormAnswers[k].clas == clas
@@ -49,7 +51,7 @@ class GitTogetherService:
                     name=classSpecficFormAnswers[k].first_name,
                     contactInformation=classSpecficFormAnswers[k].contact_info,
                 )
-        return None
+        return "hello"
 
     def get_initial_form_answers(self):
         return initialFormAnswers

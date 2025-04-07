@@ -58,7 +58,6 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
     CoworkingDropInCard,
     CoworkingReservationCard,
     ConfirmReservationComponent,
-    NewReservationPageComponent,
     DateSelector,
     OperatingHoursDialog,
     ReservationFactsWidget,
@@ -66,25 +65,18 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
     InitialFormComponent,
     PrefFormSubmittedComponent,
     SpecificFormComponent,
-    InitialFormComponent,
     GitTogetherMatchesComponent,
     CourseSelectionComponent
   ],
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDividerModule,
     MatIconModule,
     CoworkingRoutingModule,
-    MatCardModule,
     MatDividerModule,
     MatListModule,
     MatExpansionModule,
     MatButtonModule,
     MatTableModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatAutocompleteModule,
     MatCardModule,
     AsyncPipe,
@@ -99,12 +91,10 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
     ReactiveFormsModule,
     MatSliderModule,
     FormsModule,
-    ReactiveFormsModule,
     MatSelectModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatProgressBarModule,
+    MatProgressBarModule
     MatChipsModule
   ]
 })

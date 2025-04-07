@@ -52,6 +52,13 @@
           <mat-icon>email</mat-icon>
           Contact {{match.name.split(' ')[0]}}
         </button>
+         <button 
+            mat-stroked-button 
+            color="primary"
+            (click)="getMatches()">
+            <mat-icon>email</mat-icon>
+            Yes
+          </button>
       </mat-card-actions>
     </mat-card>
   </div>

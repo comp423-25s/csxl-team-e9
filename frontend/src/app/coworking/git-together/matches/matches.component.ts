@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Profile, ProfileService } from 'src/app/profile/profile.service';
+import { profileResolver } from 'src/app/profile/profile.resolver';
+import { ActivatedRoute } from '@angular/router';
+import { MatchesService } from './matches-service';
 
 @Component({
   selector: 'app-matches',
@@ -8,10 +12,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./matches.component.css']
 })
 export class GitTogetherMatchesComponent {
+  profile: Profile;
+  course: String;
   public static Route = {
     path: 'git-together/matches/:course',
     title: 'GitTogether Matches',
-    component: GitTogetherMatchesComponent
+    component: GitTogetherMatchesComponent,
+    resolve: {
+      profile: profileResolver
+    }
   };
 
   // Course-specific example matches
@@ -40,6 +49,14 @@ export class GitTogetherMatchesComponent {
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
+    private matchService: MatchesService,
+    private route: ActivatedRoute
+  ) {
+    const data = this.route.snapshot.data as {
+      profile: Profile;
+    };
+    this.profile = data.profile;
+    this.course = '';
     private route: ActivatedRoute
   ) {
     this.route.params.subscribe((params) => {
@@ -97,5 +114,14 @@ export class GitTogetherMatchesComponent {
     if (value >= 4) return 'primary';
     if (value >= 3) return 'accent';
     return 'warn';
+  }
+
+  async getMatches() {
+    const data = await this.matchService.get_matches(
+      'COMP423',
+      this.profile.pid
+    );
+    console.log(data.name);
+    console.log(data.contactInformation);
   }
 }
