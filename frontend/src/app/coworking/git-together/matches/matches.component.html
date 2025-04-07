@@ -12,7 +12,7 @@
     <p  class="subtitle">Here are your best matches based on your preferences and requirements.</p>
     }
   </div>
-  
+  @if (matches.length>0){
   <div *ngIf="matches.length > 0; else noMatches" class="matches-list">
     @for (match of matches; track match){
     <mat-card class="match-card">
@@ -28,10 +28,12 @@
       </mat-card-header>
       
       <mat-card-content>
-        <div class="match-bio" *ngIf="match.bio">
+        @if (match.bio){
+        <div class="match-bio" >
           <mat-icon class="bio-icon">info</mat-icon>
           <p>{{match.bio}}</p>
         </div>
+      }
         
         <h3 class="compatibility-title">Compatibility Breakdown</h3>
         <div class="compatibility-details">
@@ -62,6 +64,7 @@
     </mat-card>
   }
   </div>
+}
   
   <ng-template #noMatches>
     <div class="no-matches">
