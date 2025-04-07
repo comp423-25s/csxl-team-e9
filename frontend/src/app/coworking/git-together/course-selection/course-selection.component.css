@@ -1,0 +1,33 @@
+/* course-selection.component.css */
+.course-selection-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+  
+  .header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .back-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #3f51b5;
+  }
+  
+  .courses-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .course-card {
+    transition: transform 0.2s;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-2px);
+  }

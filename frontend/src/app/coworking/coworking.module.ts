@@ -23,8 +23,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { OperatingHoursDialog } from './widgets/operating-hours-dialog/operating-hours-dialog.widget';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
 import { SharedModule } from '../shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -33,9 +34,17 @@ import { AmbassadorRoomComponent } from './ambassador-home/ambassador-room/ambas
 import { ReservationFactsWidget } from './widgets/reservation-facts/reservation-facts.widget';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
-
+import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/pref-form-submitted.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
+import { GitTogetherMatchesComponent } from './git-together/matches/matches.component';
+import { CourseSelectionComponent } from './git-together/course-selection/course-selection.component';
 
 @NgModule({
   declarations: [
@@ -49,30 +58,27 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
     CoworkingDropInCard,
     CoworkingReservationCard,
     ConfirmReservationComponent,
-    NewReservationPageComponent,
     DateSelector,
     OperatingHoursDialog,
     ReservationFactsWidget,
-    GitTogetherPageComponent
+    GitTogetherPageComponent,
+    InitialFormComponent,
+    PrefFormSubmittedComponent,
+    SpecificFormComponent,
+    GitTogetherMatchesComponent,
+    CourseSelectionComponent
   ],
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDividerModule,
     MatIconModule,
     CoworkingRoutingModule,
-    MatCardModule,
     MatDividerModule,
     MatListModule,
     MatExpansionModule,
     MatButtonModule,
     MatTableModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatAutocompleteModule,
     MatCardModule,
-    AsyncPipe,
     AsyncPipe,
     SharedModule,
     MatDatepickerModule,
@@ -81,7 +87,15 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
     MatFormFieldModule,
     MatTooltipModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatSliderModule,
+    FormsModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatChipsModule
   ]
 })
 export class CoworkingModule {}

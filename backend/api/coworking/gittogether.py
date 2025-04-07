@@ -1,6 +1,14 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Annotated, TypeAlias
 from backend.services.coworking.gittogether import GitTogetherService
+from backend.models.coworking.gittogether import (
+    FormResponse,
+    InitialForm,
+    Match,
+    InitialFormAnswer,
+    SpecificFormError,
+    InitialFormError,
+)
 
 
 __authors__ = ["Mason"]
@@ -31,7 +39,18 @@ def class_specific_form(formResponse: FormResponse, service: GitTogetherServiceD
 
 @api.get("/matches", tags=["Coworking"])
 def get_matches(clas: str, pid: int, service: GitTogetherServiceDI):
-    return service.get_matches(clas=clas, pid=pid)
+    try:
+        return service.get_matches(clas=clas, pid=pid)
+    except InitialFormError:
+        raise HTTPException(
+            status_code=403,
+            detail="Fill out Initial Form First.",
+        )
+    except SpecificFormError:
+        raise HTTPException(
+            status_code=403,
+            detail="Fill out Specific Form.",
+        )
 
 
 @api.get("/initialanswers", tags=["Coworking"])

@@ -1,34 +1,71 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div>
-      <label>How close to deadlines do you usually work?</label>
-      <p><small>In advance → Last Minute</small></p>
-      <input type="range" min="1" max="5" formControlName="one" />
-    </div>
-  
-    <div>
-      <label>How do you prefer to divide work in a group project?</label>
-      <p><small>Independent → Collaborative</small></p>
-      <input type="range" min="1" max="5" formControlName="two" />
-    </div>
-  
-    <div>
-      <label>How comfortable are you with taking a leadership role?</label>
-      <p><small>Not comfortable → Very comfortable</small></p>
-      <input type="range" min="1" max="5" formControlName="three" />
-    </div>
-  
-    <div>
-      <label>How frequently do you like to meet with your group?</label>
-      <p><small>Only when necessary → Daily check-ins</small></p>
-      <input type="range" min="1" max="5" formControlName="four" />
-    </div>
-  
-    <div>
-      <label>How do you approach conflicts in a group?</label>
-      <p><small>Avoid conflict → Directly address issues</small></p>
-      <input type="range" min="1" max="5" formControlName="five" />
-    </div>
-  
-    <button type="submit">Submit</button>
+
+
+<mat-card class="preferences-card">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="preferences-content">
+    <mat-card-header>
+      <mat-card-title>Preferences Form</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="form-section">
+        <mat-card-subtitle>How close to deadlines do you usually work?</mat-card-subtitle>
+        <div class="slider-labels">
+          <span>In advance</span>
+          <span>Last Minute</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete >
+          <input matSliderThumb formControlName="one">
+        </mat-slider>
+      </div>
+
+      <div class="form-section">
+        <mat-card-subtitle>How do you prefer to divide work in a group project?</mat-card-subtitle>
+        <div class="slider-labels">
+          <span>Independent</span>
+          <span>Collaborative</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete>
+          <input matSliderThumb formControlName="two">
+        </mat-slider>
+      </div>
+
+      <div class="form-section">
+        <mat-card-subtitle>How comfortable are you with taking a leadership role?</mat-card-subtitle>
+        <div class="slider-labels">
+          <span>Not comfortable</span>
+          <span>Very comfortable</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete >
+          <input matSliderThumb formControlName="three">
+        </mat-slider>
+      </div>
+
+      <div class="form-section">
+        <mat-card-subtitle>How frequently do you like to meet with your group?</mat-card-subtitle>
+        <div class="slider-labels">
+          <span>Only when necessary</span>
+          <span>Daily check-ins</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete >
+          <input matSliderThumb formControlName="four">
+        </mat-slider>
+      </div>
+
+      <div class="form-section">
+        <mat-card-subtitle>How do you approach conflicts in a group?</mat-card-subtitle>
+        <div class="slider-labels">
+          <span>Avoid conflict</span>
+          <span>Directly address issues</span>
+        </div>
+        <mat-slider thumbLabel min="1" max="5" step="1" discrete >
+          <input matSliderThumb formControlName="five">
+        </mat-slider>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-stroked-button color="warn" type="button" (click)="navigateToGitTogether()">Back</button>
+      <button mat-stroked-button type="submit" color="primary">Submit</button>
+    </mat-card-actions>
   </form>
-  
+</mat-card>
