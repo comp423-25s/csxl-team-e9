@@ -9,7 +9,8 @@
   </div>
   
   <div *ngIf="matches.length > 0; else noMatches" class="matches-list">
-    <mat-card *ngFor="let match of matches" class="match-card">
+    @for (match of matches; track match){
+    <mat-card class="match-card">
       <mat-card-header>
         <div mat-card-avatar class="match-avatar">
           <mat-icon>person</mat-icon>
@@ -54,6 +55,7 @@
         </button>
       </mat-card-actions>
     </mat-card>
+  }
   </div>
   
   <ng-template #noMatches>

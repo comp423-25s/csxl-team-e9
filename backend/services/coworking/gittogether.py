@@ -37,7 +37,7 @@ class GitTogetherService:
         return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
     def get_matches(self, clas: str, pid: int):
-        if str(pid) not in initialFormAnswers:
+        if pid not in initialFormAnswers:
             raise InitialFormError("Fill out initial form first")
         ans = "no matches"
         if str(pid) + clas in classSpecficFormAnswers:
