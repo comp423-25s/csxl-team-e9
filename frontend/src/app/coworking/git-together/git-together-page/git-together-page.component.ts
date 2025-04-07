@@ -29,8 +29,9 @@ export class GitTogetherPageComponent implements OnInit {
     this.router.navigate(['/coworking/specificForm']);
   }
 
+  // git-together-page.component.ts
   navigateToViewMatches() {
-    this.router.navigate(['/coworking/git-together/matches']);
+    this.router.navigate(['/coworking/git-together/course-selection']);
   }
 
   navigateToCoworking() {

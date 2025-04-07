@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
 import { SharedModule } from '../shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -43,6 +44,7 @@ import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/p
 import { MatSliderModule } from '@angular/material/slider';
 import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 import { GitTogetherMatchesComponent } from './git-together/matches/matches.component';
+import { CourseSelectionComponent } from './git-together/course-selection/course-selection.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,8 @@ import { GitTogetherMatchesComponent } from './git-together/matches/matches.comp
     InitialFormComponent,
     PrefFormSubmittedComponent,
     SpecificFormComponent,
-    GitTogetherMatchesComponent
+    GitTogetherMatchesComponent,
+    CourseSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -92,6 +95,7 @@ import { GitTogetherMatchesComponent } from './git-together/matches/matches.comp
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatProgressBarModule
+    MatChipsModule
   ]
 })
 export class CoworkingModule {}

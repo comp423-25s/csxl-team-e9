@@ -8,6 +8,7 @@ import { GitTogetherPageComponent } from './git-together/git-together-page/git-t
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 import { GitTogetherMatchesComponent } from './git-together/matches/matches.component'; // Add this import
+import { CourseSelectionComponent } from './git-together/course-selection/course-selection.component';
 
 const routes: Routes = [
   CoworkingPageComponent.Route,
@@ -18,6 +19,7 @@ const routes: Routes = [
   InitialFormComponent.Route,
   SpecificFormComponent.Route,
   GitTogetherMatchesComponent.Route, // Add this route
+  CourseSelectionComponent.Route,
   {
     path: 'ambassador',
     title: 'Ambassador',
