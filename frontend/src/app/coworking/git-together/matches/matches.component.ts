@@ -13,6 +13,7 @@ import { MatchesService } from './matches-service';
 })
 export class GitTogetherMatchesComponent {
   profile: Profile;
+  course: String;
   public static Route = {
     path: 'git-together/matches',
     title: 'GitTogether Matches',
@@ -42,13 +43,13 @@ export class GitTogetherMatchesComponent {
     private router: Router,
     private snackBar: MatSnackBar,
     private matchService: MatchesService,
-    private route: ActivatedRoute,
-    private clas: String
+    private route: ActivatedRoute
   ) {
     const data = this.route.snapshot.data as {
       profile: Profile;
     };
     this.profile = data.profile;
+    this.course = '';
   }
 
   navigateToGitTogether() {
@@ -78,5 +79,6 @@ export class GitTogetherMatchesComponent {
 
   getMatches() {
     console.log(this.matchService.get_matches('COMP423', this.profile.pid));
+    console.log(this.course);
   }
 }
