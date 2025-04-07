@@ -77,8 +77,12 @@ export class GitTogetherMatchesComponent {
     return 'warn';
   }
 
-  getMatches() {
-    console.log(this.matchService.get_matches('COMP423', this.profile.pid));
-    console.log(this.course);
+  async getMatches() {
+    const data = await this.matchService.get_matches(
+      'COMP423',
+      this.profile.pid
+    );
+    console.log(data.name);
+    console.log(data.contactInformation);
   }
 }
