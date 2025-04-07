@@ -30,81 +30,6 @@ export class GitTogetherMatchesComponent {
         },
         bio: 'First-year student excited about learning Python and data science basics.'
       }
-    ],
-    COMP210: [
-      {
-        name: 'Sarah Miller',
-        contact: 'smiller@unc.edu',
-        score: 92,
-        compatibility: {
-          deadlineProximity: 5,
-          workStyle: 4,
-          leadershipComfort: 4,
-          meetingFrequency: 5,
-          conflictResolution: 4
-        },
-        bio: 'Looking for a study partner to work through data structures problems together.'
-      }
-    ],
-    COMP283: [
-      {
-        name: 'David Chen',
-        contact: 'dchen@unc.edu',
-        score: 85,
-        compatibility: {
-          deadlineProximity: 3,
-          workStyle: 5,
-          leadershipComfort: 2,
-          meetingFrequency: 3,
-          conflictResolution: 4
-        },
-        bio: 'Math major who enjoys discrete structures and wants to form a study group.'
-      }
-    ],
-    COMP426: [
-      {
-        name: 'Emma Wilson',
-        contact: 'ewilson@unc.edu',
-        score: 95,
-        compatibility: {
-          deadlineProximity: 5,
-          workStyle: 5,
-          leadershipComfort: 5,
-          meetingFrequency: 5,
-          conflictResolution: 5
-        },
-        bio: 'Web development enthusiast looking for a partner for the final project.'
-      }
-    ],
-    COMP550: [
-      {
-        name: 'Michael Brown',
-        contact: 'mbrown@unc.edu',
-        score: 90,
-        compatibility: {
-          deadlineProximity: 4,
-          workStyle: 5,
-          leadershipComfort: 4,
-          meetingFrequency: 4,
-          conflictResolution: 3
-        },
-        bio: 'Wants to work through algorithm problems together and prepare for technical interviews.'
-      }
-    ],
-    COMP562: [
-      {
-        name: 'Jessica Lee',
-        contact: 'jlee@unc.edu',
-        score: 93,
-        compatibility: {
-          deadlineProximity: 4,
-          workStyle: 4,
-          leadershipComfort: 3,
-          meetingFrequency: 5,
-          conflictResolution: 4
-        },
-        bio: 'Interested in forming a study group for machine learning concepts and assignments.'
-      }
     ]
   };
 
@@ -126,12 +51,7 @@ export class GitTogetherMatchesComponent {
   private loadMatchesForCourse(courseCode: string) {
     // Find the course name
     const courseNames: { [key: string]: string } = {
-      COMP110: 'Introduction to Programming and Data Science',
-      COMP210: 'Data Structures and Analysis',
-      COMP283: 'Discrete Structures',
-      COMP426: 'Modern Web Programming',
-      COMP550: 'Algorithms and Analysis',
-      COMP562: 'Introduction to Machine Learning'
+      COMP110: 'Introduction to Programming and Data Science'
     };
 
     this.courseName = courseNames[courseCode] || courseCode;

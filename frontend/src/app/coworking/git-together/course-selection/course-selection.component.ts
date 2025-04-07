@@ -16,13 +16,7 @@ export class CourseSelectionComponent {
   };
 
   availableCourses = [
-    { code: 'COMP110', name: 'Introduction to Programming and Data Science' },
-    { code: 'COMP210', name: 'Data Structures and Analysis' },
-    { code: 'COMP283', name: 'Discrete Structures' },
-    { code: 'COMP301', name: 'Foundations of Programming' },
-    { code: 'COMP426', name: 'Modern Web Programming' },
-    { code: 'COMP550', name: 'Algorithms and Analysis' },
-    { code: 'COMP562', name: 'Introduction to Machine Learning' }
+    { code: 'COMP110', name: 'Introduction to Programming and Data Science' }
   ];
 
   constructor(
