@@ -50,6 +50,7 @@ class GitTogetherService:
                 return Match(
                     name=classSpecficFormAnswers[k].first_name,
                     contactInformation=classSpecficFormAnswers[k].contact_info,
+                    bio=classSpecficFormAnswers[k].value,
                 )
         return "hello"
 

@@ -31,6 +31,8 @@ class FormResponse(BaseModel):
 class Match(BaseModel):
     name: str
     contactInformation: str
+    bio: str
+    # initialAnswers: InitialFormAnswer, coming need to fix this end to end tho
 
 
 class CollaborationsResponse(BaseModel):

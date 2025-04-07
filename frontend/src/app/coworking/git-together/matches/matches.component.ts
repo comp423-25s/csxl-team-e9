@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Profile, ProfileService } from 'src/app/profile/profile.service';
 import { profileResolver } from 'src/app/profile/profile.resolver';
-import { ActivatedRoute } from '@angular/router';
-import { MatchesService } from './matches-service';
+import { MatchesService } from './matches.service';
 
 @Component({
   selector: 'app-matches',
@@ -57,38 +56,21 @@ export class GitTogetherMatchesComponent {
     };
     this.profile = data.profile;
     this.course = '';
-    private route: ActivatedRoute
-  ) {
-    this.route.params.subscribe((params) => {
-      this.selectedCourse = params['course'] || '';
-      this.loadMatchesForCourse(this.selectedCourse);
-    });
+    {
+      this.route.params.subscribe((params) => {
+        this.selectedCourse = params['course'] || '';
+        this.getMatches(this.selectedCourse);
+      });
+    }
   }
 
-  private loadMatchesForCourse(courseCode: string) {
+  loadMatchesForCourse(courseCode: string) {
     // Find the course name
     const courseNames: { [key: string]: string } = {
       COMP110: 'Introduction to Programming and Data Science'
     };
 
     this.courseName = courseNames[courseCode] || courseCode;
-
-    // Load matches for this course or show default if none found
-    this.matches = this.courseMatches[courseCode] || [
-      {
-        name: 'Thomas Sanders',
-        contact: 'TS@unc.edu',
-        score: 92,
-        compatibility: {
-          deadlineProximity: 4,
-          workStyle: 5,
-          leadershipComfort: 3,
-          meetingFrequency: 5,
-          conflictResolution: 4
-        },
-        bio: 'Looking for a study partner in this course.'
-      }
-    ];
   }
 
   navigateToCourseSelection() {
@@ -116,12 +98,30 @@ export class GitTogetherMatchesComponent {
     return 'warn';
   }
 
-  async getMatches() {
+  async getMatches(courseCode: string) {
     const data = await this.matchService.get_matches(
-      'COMP423',
+      courseCode,
       this.profile.pid
     );
-    console.log(data.name);
-    console.log(data.contactInformation);
+    if (data !== 'hello') {
+      this.matches = [
+        {
+          name: data.name,
+          contact: data.contactInformation,
+          score: 92,
+          compatibility: {
+            deadlineProximity: 4,
+            workStyle: 5,
+            leadershipComfort: 3,
+            meetingFrequency: 5,
+            conflictResolution: 4
+          },
+          bio: data.bio
+        }
+      ];
+      console.log(data.name);
+      console.log(data.contactInformation);
+      console.log(data.bio);
+    }
   }
 }

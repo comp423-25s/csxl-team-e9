@@ -94,7 +94,7 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
     MatSelectModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
     MatChipsModule
   ]
 })

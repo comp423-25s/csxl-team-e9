@@ -15,6 +15,7 @@ export class MatchesService {
         params
       })
     );
+    console.log(data);
     return data;
   }
 }
