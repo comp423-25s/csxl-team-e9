@@ -12,8 +12,8 @@
     <p  class="subtitle">Here are your best matches based on your preferences and requirements.</p>
     }
   </div>
-  @if (matches.length>0){
-  <div *ngIf="matches.length > 0; else noMatches" class="matches-list">
+
+  <div *ngIf="matches.length > 0; else noMatches" class="matches-list"> 
     @for (match of matches; track match){
     <mat-card class="match-card">
       <mat-card-header>
@@ -64,7 +64,7 @@
     </mat-card>
   }
   </div>
-}
+
   
   <ng-template #noMatches>
     <div class="no-matches">
