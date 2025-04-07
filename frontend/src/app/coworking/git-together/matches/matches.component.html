@@ -75,6 +75,11 @@
     </div>
   </ng-template>
 } @else {
+  <button mat-icon-button class="back-button" (click)="navigateToCourseSelection()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <br/>
+  <br/>
   @if (iffilled) {
     <p>Please fill out the specific form for {{selectedCourse}}. Then return to this page.</p>
   } @else {
