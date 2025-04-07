@@ -44,6 +44,8 @@ export class GitTogetherMatchesComponent {
   matches: any[] = [];
   selectedCourse: string = '';
   courseName: string = '';
+  iffilled: boolean = true;
+  sffilled: boolean = true;
 
   constructor(
     private router: Router,
@@ -126,6 +128,11 @@ export class GitTogetherMatchesComponent {
       }
     } catch (error: any) {
       console.log(error.error.detail);
+      if (error.error.detail === 'Fill out Initial Form First.') {
+        this.iffilled = false;
+      } else if (error.error.detail === 'Fill out Specific Form.') {
+        this.sffilled = false;
+      }
     }
   }
 }
