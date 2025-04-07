@@ -7,7 +7,6 @@ import { Profile, ProfileService } from 'src/app/profile/profile.service';
 import { profileResolver } from 'src/app/profile/profile.resolver';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
   selector: 'app-initial-form',
   templateUrl: './initial-form.component.html',
@@ -24,8 +23,6 @@ export class InitialFormComponent {
       profile: profileResolver
     }
   };
-  profile: Profile;
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
