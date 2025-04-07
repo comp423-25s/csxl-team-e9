@@ -7,6 +7,7 @@ import { Profile, ProfileService } from 'src/app/profile/profile.service';
 import { profileResolver } from 'src/app/profile/profile.resolver';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'app-initial-form',
   templateUrl: './initial-form.component.html',
@@ -17,12 +18,13 @@ export class InitialFormComponent {
   profile: Profile;
   public static Route = {
     path: 'initialForm',
-    title: 'Git Together',
+    title: 'Initial Form',
     component: InitialFormComponent,
     resolve: {
       profile: profileResolver
     }
   };
+  profile: Profile;
 
   constructor(
     private fb: FormBuilder,
