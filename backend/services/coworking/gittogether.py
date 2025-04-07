@@ -3,6 +3,8 @@ from backend.models.coworking.gittogether import (
     InitialForm,
     Match,
     InitialFormAnswer,
+    SpecificFormError,
+    InitialFormError,
 )
 
 initialFormAnswers = {}
@@ -35,11 +37,13 @@ class GitTogetherService:
         return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
     def get_matches(self, clas: str, pid: int):
-        ans = "hello"
+        if str(pid) not in initialFormAnswers:
+            raise InitialFormError("Fill out initial form first")
+        ans = "no matches"
         if str(pid) + clas in classSpecficFormAnswers:
             ans = classSpecficFormAnswers[str(pid) + clas]
         else:
-            return ans
+            raise SpecificFormError("Fill out class specific form first")
         for k in classSpecficFormAnswers:
             if (
                 classSpecficFormAnswers[k].clas == clas
@@ -52,7 +56,7 @@ class GitTogetherService:
                     contactInformation=classSpecficFormAnswers[k].contact_info,
                     bio=classSpecficFormAnswers[k].value,
                 )
-        return "hello"
+        return "no matches"
 
     def get_initial_form_answers(self):
         return initialFormAnswers

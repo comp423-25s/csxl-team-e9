@@ -99,29 +99,33 @@ export class GitTogetherMatchesComponent {
   }
 
   async getMatches(courseCode: string) {
-    const data = await this.matchService.get_matches(
-      courseCode,
-      this.profile.pid
-    );
-    if (data !== 'hello') {
-      this.matches = [
-        {
-          name: data.name,
-          contact: data.contactInformation,
-          score: 92,
-          compatibility: {
-            deadlineProximity: 4,
-            workStyle: 5,
-            leadershipComfort: 3,
-            meetingFrequency: 5,
-            conflictResolution: 4
-          },
-          bio: data.bio
-        }
-      ];
-      console.log(data.name);
-      console.log(data.contactInformation);
-      console.log(data.bio);
+    try {
+      const data = await this.matchService.get_matches(
+        courseCode,
+        this.profile.pid
+      );
+      if (data !== 'no matches') {
+        this.matches = [
+          {
+            name: data.name,
+            contact: data.contactInformation,
+            score: 92,
+            compatibility: {
+              deadlineProximity: 4,
+              workStyle: 5,
+              leadershipComfort: 3,
+              meetingFrequency: 5,
+              conflictResolution: 4
+            },
+            bio: data.bio
+          }
+        ];
+        console.log(data.name);
+        console.log(data.contactInformation);
+        console.log(data.bio);
+      }
+    } catch (error: any) {
+      console.log(error.error.detail);
     }
   }
 }
