@@ -5,8 +5,12 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>Your GitTogether Matches</h2>
-    <p *ngIf="selectedCourse" class="course-title">Showing matches for <strong>{{courseName}} ({{selectedCourse}})</strong></p>
-    <p *ngIf="!selectedCourse" class="subtitle">Here are your best matches based on your preferences and requirements.</p>
+    @if(selectedCourse){
+    <p  class="course-title">Showing matches for <strong>{{courseName}} ({{selectedCourse}})</strong></p>
+    }
+    @if(!selectedCourse){
+    <p  class="subtitle">Here are your best matches based on your preferences and requirements.</p>
+    }
   </div>
   
   <div *ngIf="matches.length > 0; else noMatches" class="matches-list">
