@@ -1,15 +1,16 @@
 <!-- course-selection.component.html -->
 <mat-card class="course-selection-container">
-    <div class="header">
-      <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <h2>Select Your Course</h2>
-      <p>Choose a course to view your potential matches for that class.</p>
-    </div>
-  
-    <div class="courses-list">
-      <mat-card *ngFor="let course of availableCourses" class="course-card">
+  <div class="header">
+    <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>Select Your Course</h2>
+    <p>Choose a course to view your potential matches for that class.</p>
+  </div>
+
+  <div class="courses-list">
+    @for (course of availableCourses; track course) {
+      <mat-card class="course-card">
         <mat-card-header>
           <mat-card-title>{{course.code}}</mat-card-title>
           <mat-card-subtitle>{{course.name}}</mat-card-subtitle>
@@ -25,5 +26,6 @@
           </button>
         </mat-card-actions>
       </mat-card>
-    </div>
-  </mat-card>
+    }
+  </div>
+</mat-card>

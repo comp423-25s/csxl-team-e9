@@ -61,12 +61,23 @@ class GitTogetherService:
     def get_initial_form_answers(self):
         return initialFormAnswers
 
-
     def get_specific_form_answers(self):
         return classSpecficFormAnswers
 
-    def clearSA(self):
+    def clear_specific_answers(self):
         classSpecficFormAnswers.clear()
 
     def clearIA(self):
         initialFormAnswers.clear()
+
+    def delete_student_specifc_answer(self, pid: int, clas: str):
+        key = str(pid) + clas
+        del classSpecficFormAnswers[key]
+
+    def delete_class_specifc_answer(self, clas: str):
+        deleted = []
+        for k in classSpecficFormAnswers.keys():
+            if clas in k:
+                deleted.append(k)
+        for i in deleted:
+            del classSpecficFormAnswers[i]

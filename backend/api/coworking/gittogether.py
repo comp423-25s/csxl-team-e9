@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from typing import Annotated, TypeAlias
 from backend.services.coworking.gittogether import GitTogetherService
 from backend.models.coworking.gittogether import (
@@ -28,12 +28,54 @@ openapi_tags = {
 
 
 @api.post("/", tags=["Coworking"])
-def initial_form(formResponses: InitialForm, service: GitTogetherServiceDI):
+def initial_form(
+    formResponses: Annotated[
+        InitialForm,
+        Body(
+            example={
+                "one": 1,
+                "two": 2,
+                "three": 3,
+                "four": 4,
+                "five": 5,
+                "pid": 999999999,
+            }
+        ),
+    ],
+    service: GitTogetherServiceDI,
+):
     return service.initial_form(formResponses=formResponses)
 
 
 @api.post("/specific", tags=["Coworking"])
-def class_specific_form(formResponse: FormResponse, service: GitTogetherServiceDI):
+def class_specific_form(
+    formResponse: Annotated[
+        FormResponse,
+        Body(
+            openapi_examples={
+                "Rhonda": {
+                    "value": {
+                        "value": "I would like a partner that enjoys playing sports. I don't plan to spend a ton of time of this project as I am very involved on campus.",
+                        "pid": 999999999,
+                        "contact_info": "3368800548",
+                        "clas": "COMP110",
+                        "first_name": "Rhonda",
+                    }
+                },
+                "Mason": {
+                    "value": {
+                        "value": "I enjoy playing basketball and would like to get the bare minimum done to pass this class.",
+                        "pid": 0,
+                        "contact_info": "3368800548",
+                        "clas": "COMP110",
+                        "first_name": "Mason",
+                    }
+                },
+            }
+        ),
+    ],
+    service: GitTogetherServiceDI,
+):
     return service.class_specific_form(formResponse=formResponse)
 
 
@@ -61,6 +103,16 @@ def get_answers(service: GitTogetherServiceDI):
 @api.get("/specificanswers", tags=["Coworking"])
 def get_answers(service: GitTogetherServiceDI):
     return service.get_specific_form_answers()
+
+
+@api.delete("/del{pid}/{clas}", tags=["Coworking"])
+def delete_specifc_answer(service: GitTogetherServiceDI, pid: str, clas: str):
+    service.delete_student_specifc_answer(pid, clas)
+
+
+@api.delete("/del{clas}", tags=["Coworking"])
+def delete_specifc_class(service: GitTogetherServiceDI, clas: str):
+    service.delete_class_specifc_answer(clas)
 
 
 @api.delete("/dIA", tags=["Coworking"])

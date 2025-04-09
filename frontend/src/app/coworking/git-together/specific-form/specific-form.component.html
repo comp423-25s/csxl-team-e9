@@ -6,9 +6,11 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Project Type</mat-label>
       <mat-select formControlName="collaborationType" required>
-        <mat-option *ngFor="let class of availableClasses" [value]="class.code">
-          {{class.name}} ({{class.code}})
-        </mat-option>
+        @for (class of availableClasses; track class) {
+          <mat-option [value]="class.code">
+            {{class.name}} ({{class.code}})
+          </mat-option>
+        }
         <mat-option value="hackathon">Hackathon</mat-option>
         <mat-option value="personal">Personal Project</mat-option>
       </mat-select>
@@ -32,9 +34,11 @@
         - Your working style preferences
         (minimum 50 characters)
       </mat-hint>
-      <mat-error *ngIf="specificForm.get('specificRequirements')?.hasError('minlength')">
-        Please provide more details to help us make better matches (at least 50 characters)
-      </mat-error>
+      @if (specificForm.get('specificRequirements')?.hasError('minlength')) {
+        <mat-error>
+          Please provide more details to help us make better matches (at least 50 characters)
+        </mat-error>
+      }
     </mat-form-field>
 
     <div class="spacing"></div>
@@ -54,9 +58,11 @@
       <mat-label>Contact Information</mat-label>
       <input matInput formControlName="contactInfo" required placeholder="Email or Phone Number">
       <mat-hint>How your potential partner should contact you (e.g. unc.edu email address or 555-123-4567)</mat-hint>
-      <mat-error *ngIf="specificForm.get('contactInfo')?.hasError('pattern')">
-        Please enter a valid email or phone number
-      </mat-error>
+      @if (specificForm.get('contactInfo')?.hasError('pattern')) {
+        <mat-error>
+          Please enter a valid email or phone number
+        </mat-error>
+      }
     </mat-form-field>
 
     <div class="form-actions">
@@ -74,8 +80,12 @@
         type="submit" 
         [disabled]="specificForm.invalid || isLoading"
         class="submit-button">
-        <span *ngIf="!isLoading">Find My Perfect Partner</span>
-        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+        @if (!isLoading) {
+          <span>Find My Perfect Partner</span>
+        }
+        @if (isLoading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        }
       </button>
     </div>
   </form>
