@@ -38,19 +38,21 @@
           
           <h3 class="compatibility-title">Compatibility Breakdown</h3>
           <div class="compatibility-details">
-            @for (item of compatibilityItems(match.compatibility); track item) {
-              <div class="compatibility-item">
-                <div class="compatibility-header">
-                  <span class="label">{{item.label}}</span>
-                  <span class="value">{{item.value}}/5</span>
+            <ng-container>
+              @for (item of compatibilityItems(match.compatibility); track item.label) {
+                <div class="compatibility-item">
+                  <div class="compatibility-header">
+                    <span class="label">{{ item.label }}</span>
+                    <span class="value">{{ item.value }}/5</span>
+                  </div>
+                  <mat-progress-bar 
+                    mode="determinate" 
+                    [value]="item.value * 20"
+                    [color]="getProgressColor(item.value)">
+                  </mat-progress-bar>
                 </div>
-                <mat-progress-bar 
-                  mode="determinate" 
-                  [value]="item.value * 20"
-                  [color]="getProgressColor(item.value)">
-                </mat-progress-bar>
-              </div>
-            }
+              }
+            </ng-container>
           </div>
         </mat-card-content>
         
