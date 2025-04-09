@@ -105,6 +105,16 @@ def get_answers(service: GitTogetherServiceDI):
     return service.get_specific_form_answers()
 
 
+@api.delete("/del{pid}/{clas}", tags=["Coworking"])
+def delete_specifc_answer(service: GitTogetherServiceDI, pid: str, clas: str):
+    service.delete_student_specifc_answer(pid, clas)
+
+
+@api.delete("/del{clas}", tags=["Coworking"])
+def delete_specifc_class(service: GitTogetherServiceDI, clas: str):
+    service.delete_class_specifc_answer(clas)
+
+
 @api.delete("/dIA", tags=["Coworking"])
 def get_answers(service: GitTogetherServiceDI):
     service.clearIA()
