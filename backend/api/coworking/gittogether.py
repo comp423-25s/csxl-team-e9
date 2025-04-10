@@ -9,6 +9,7 @@ from backend.models.coworking.gittogether import (
     SpecificFormError,
     InitialFormError,
 )
+from backend.services.openai import OpenAIService
 
 
 __authors__ = ["Mason"]
@@ -18,6 +19,8 @@ __license__ = "MIT"
 from ...models.coworking import FormResponse, Match, InitialForm
 
 GitTogetherServiceDI: TypeAlias = Annotated[GitTogetherService, Depends()]
+
+OpenAIServiceDI: TypeAlias = Annotated[OpenAIService, Depends()]
 
 
 api = APIRouter(prefix="/api/coworking/gittogether")
@@ -32,13 +35,27 @@ def initial_form(
     formResponses: Annotated[
         InitialForm,
         Body(
-            example={
-                "one": 1,
-                "two": 2,
-                "three": 3,
-                "four": 4,
-                "five": 5,
-                "pid": 999999999,
+            openapi_examples={
+                "Rhonda": {
+                    "value": {
+                        "one": 1,
+                        "two": 2,
+                        "three": 3,
+                        "four": 4,
+                        "five": 5,
+                        "pid": 999999999,
+                    }
+                },
+                "Mason": {
+                    "value": {
+                        "one": 1,
+                        "two": 2,
+                        "three": 3,
+                        "four": 4,
+                        "five": 5,
+                        "pid": 0,
+                    }
+                },
             }
         ),
     ],
@@ -80,9 +97,11 @@ def class_specific_form(
 
 
 @api.get("/matches", tags=["Coworking"])
-def get_matches(clas: str, pid: int, service: GitTogetherServiceDI):
+def get_matches(
+    clas: str, pid: int, service: GitTogetherServiceDI, openai: OpenAIServiceDI
+):
     try:
-        return service.get_matches(clas=clas, pid=pid)
+        return service.get_matches(clas=clas, pid=pid, openai=openai)
     except InitialFormError:
         raise HTTPException(
             status_code=403,

@@ -32,7 +32,9 @@ class Match(BaseModel):
     name: str
     contactInformation: str
     bio: str
-    # initialAnswers: InitialFormAnswer, coming need to fix this end to end tho
+    compatibility: int
+    reasoning: str
+    initialAnswers: InitialFormAnswer
 
 
 class InitialFormError(Exception):
@@ -41,3 +43,8 @@ class InitialFormError(Exception):
 
 class SpecificFormError(Exception):
     pass
+
+
+class MatchResponse(BaseModel):
+    compatibility: int
+    reasoning: str
