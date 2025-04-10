@@ -1,3 +1,5 @@
+from typing import Annotated, TypeAlias
+from fastapi import Depends
 from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
@@ -5,7 +7,11 @@ from backend.models.coworking.gittogether import (
     InitialFormAnswer,
     SpecificFormError,
     InitialFormError,
+    MatchResponse,
 )
+
+from backend.services.openai import OpenAIService
+
 
 initialFormAnswers = {}
 
@@ -36,26 +42,54 @@ class GitTogetherService:
         classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas] = i
         return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
-    def get_matches(self, clas: str, pid: int):
+    def get_matches(self, clas: str, pid: int, openai: OpenAIService):
         if pid not in initialFormAnswers:
             raise InitialFormError("Fill out initial form first")
         ans = "no matches"
+        system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance."
         if str(pid) + clas in classSpecficFormAnswers:
             ans = classSpecficFormAnswers[str(pid) + clas]
         else:
             raise SpecificFormError("Fill out class specific form first")
+        iA = InitialFormAnswer(one=1, two=1, three=1, four=1, five=1)
+        match = Match(
+            name="",
+            contactInformation="",
+            bio="",
+            compatibility=0,
+            reasoning="",
+            initialAnswers=iA,
+        )
         for k in classSpecficFormAnswers:
+            # need to add check to ensure potential matches have filled out the initial form
+            # potential to call again if want different match?
             if (
                 classSpecficFormAnswers[k].clas == clas
                 and classSpecficFormAnswers[k].pid != pid
             ):
-                # run chatGPT method to see if match is compatible
-                # if so return, else, run it again
-                return Match(
-                    name=classSpecficFormAnswers[k].first_name,
-                    contactInformation=classSpecficFormAnswers[k].contact_info,
-                    bio=classSpecficFormAnswers[k].value,
+                user_prompt = (
+                    "Here are the two answers: "
+                    + classSpecficFormAnswers[str(pid) + clas].value
+                    + " and: "
+                    + classSpecficFormAnswers[k].value
                 )
+                result = openai.prompt(
+                    system_prompt, user_prompt, response_model=MatchResponse
+                )
+
+                if result.compatibility > match.compatibility:
+                    match = Match(
+                        name=classSpecficFormAnswers[k].first_name,
+                        contactInformation=classSpecficFormAnswers[k].contact_info,
+                        bio=classSpecficFormAnswers[k].value,
+                        compatibility=result.compatibility,
+                        reasoning=result.reasoning,
+                        initialAnswers=initialFormAnswers[
+                            classSpecficFormAnswers[k].pid
+                        ],
+                    )
+        if match.bio != "":
+            return match
         return "no matches"
 
     def get_initial_form_answers(self):
