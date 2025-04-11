@@ -6,7 +6,6 @@ from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
     Match,
-    InitialFormAnswer,
     SpecificFormError,
     InitialFormError,
     MatchResponse,
@@ -16,22 +15,9 @@ from backend.services.openai import OpenAIService
 from backend.entities.coworking.initial_form_entity import InitialFormEnity
 
 
-initialFormAnswers = {}
-
-classSpecficFormAnswers = {}
-
-
 class GitTogetherService:
 
     def initial_form(self, formResponses: InitialForm, session: Session):
-        # i = InitialFormAnswer(
-        #     one=formResponses.one,
-        #     two=formResponses.two,
-        #     three=formResponses.three,
-        #     four=formResponses.four,
-        #     five=formResponses.five,
-        # )
-        # initialFormAnswers[formResponses.pid] = i
         entity = InitialFormEnity(
             one=formResponses.one,
             two=formResponses.two,
@@ -42,16 +28,8 @@ class GitTogetherService:
         )
         session.add(entity)
         session.commit()
-        # return initialFormAnswers[formResponses.pid]
 
     def class_specific_form(self, formResponse: FormResponse, session: Session):
-        # i = FormResponse(
-        #     value=formResponse.value,
-        #     pid=formResponse.pid,
-        #     contact_info=formResponse.contact_info,
-        #     clas=formResponse.clas,
-        #     first_name=formResponse.first_name,
-        # )
         entity = SpecificFormEntity(
             value=formResponse.value,
             pid=formResponse.pid,
@@ -61,8 +39,6 @@ class GitTogetherService:
         )
         session.add(entity)
         session.commit()
-        # classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas] = i
-        # return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
     def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
         # checks to see if user requesting partner has filled out initial form
@@ -71,8 +47,6 @@ class GitTogetherService:
 
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance."
         # checks to see if user requesting partner has filled out specific form
-        # if str(pid) + clas not in classSpecficFormAnswers:
-        #     raise SpecificFormError("Fill out class specific form first")
         if (
             session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
             == None
@@ -84,14 +58,9 @@ class GitTogetherService:
         user_answer = (
             session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
         )
-        # for k in classSpecficFormAnswers:
         for r in results:
             if r.pid != pid:
                 user_prompt = (
-                    # "Here are the two answers: "
-                    # + classSpecficFormAnswers[str(pid) + clas].value
-                    # + " and: "
-                    # + classSpecficFormAnswers[k].value
                     "Here are the two answers: "
                     + user_answer.value
                     + " and: "
@@ -103,20 +72,8 @@ class GitTogetherService:
                 )
 
                 if result.compatibility > match.compatibility:
-                    iA = (
-                        session.query(InitialFormEnity)
-                        # .filter_by(pid=classSpecficFormAnswers[k].pid)
-                        .filter_by(pid=r.pid).first()
-                    )
+                    iA = session.query(InitialFormEnity).filter_by(pid=r.pid).first()
                     initialFormAnswers = iA.to_model()
-                    # match = Match(
-                    #     name=classSpecficFormAnswers[k].first_name,
-                    #     contactInformation=classSpecficFormAnswers[k].contact_info,
-                    #     bio=classSpecficFormAnswers[k].value,
-                    #     compatibility=result.compatibility,
-                    #     reasoning=result.reasoning,
-                    #     initialAnswers=initialFormAnswers,
-                    # )
                     match = Match(
                         name=r.first_name,
                         contactInformation=r.contact_information,
@@ -129,26 +86,28 @@ class GitTogetherService:
             return match
         return "no matches"
 
-    def get_initial_form_answers(self):
-        return initialFormAnswers
+    def get_initial_form_answers(self, session: Session):
+        entries = session.query(InitialFormEnity).all()
+        return entries
 
-    def get_specific_form_answers(self):
-        return classSpecficFormAnswers
+    def get_specific_form_answers(self, session: Session):
+        entries = session.query(SpecificFormEntity).all()
+        return entries
 
-    def clear_specific_answers(self):
-        classSpecficFormAnswers.clear()
+    def clear_specific_answers(self, session: Session):
+        session.query(SpecificFormEntity).delete()
+        session.commit()
 
-    def clearIA(self):
-        initialFormAnswers.clear()
+    def clearIA(self, session: Session):
+        session.query(InitialFormEnity).delete()
+        session.commit()
 
-    def delete_student_specifc_answer(self, pid: int, clas: str):
-        key = str(pid) + clas
-        del classSpecficFormAnswers[key]
+    def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
+        entry = session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
+        if entry:
+            session.delete(entry)
+            session.commit()
 
-    def delete_class_specifc_answer(self, clas: str):
-        deleted = []
-        for k in classSpecficFormAnswers.keys():
-            if clas in k:
-                deleted.append(k)
-        for i in deleted:
-            del classSpecficFormAnswers[i]
+    def delete_class_specifc_answer(self, clas: str, session: Session):
+        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
+        session.commit()

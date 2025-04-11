@@ -6,7 +6,6 @@ from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
     Match,
-    InitialFormAnswer,
     SpecificFormError,
     InitialFormError,
 )
@@ -125,30 +124,32 @@ def get_matches(
 
 
 @api.get("/initialanswers", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    return service.get_initial_form_answers()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    return service.get_initial_form_answers(session=session)
 
 
 @api.get("/specificanswers", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    return service.get_specific_form_answers()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    return service.get_specific_form_answers(session=session)
 
 
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
-def delete_specifc_answer(service: GitTogetherServiceDI, pid: str, clas: str):
-    service.delete_student_specifc_answer(pid, clas)
+def delete_specifc_answer(
+    service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI
+):
+    service.delete_student_specifc_answer(pid, clas, session=session)
 
 
 @api.delete("/del{clas}", tags=["Coworking"])
-def delete_specifc_class(service: GitTogetherServiceDI, clas: str):
-    service.delete_class_specifc_answer(clas)
+def delete_specifc_class(service: GitTogetherServiceDI, clas: str, session: SessionDI):
+    service.delete_class_specifc_answer(clas, session=session)
 
 
 @api.delete("/dIA", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    service.clearIA()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    service.clearIA(session=session)
 
 
 @api.delete("/dSA", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    service.clearSA()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    service.clear_specific_answers(session=session)
