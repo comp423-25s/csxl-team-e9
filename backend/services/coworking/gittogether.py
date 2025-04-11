@@ -86,6 +86,17 @@ class GitTogetherService:
             return match
         return "no matches"
 
+    def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
+        entry = session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
+        if entry:
+            session.delete(entry)
+            session.commit()
+
+    def delete_class_specifc_answer(self, clas: str, session: Session):
+        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
+        session.commit()
+
+    # the following aren't really used in the web app, more so just good to have for testing
     def get_initial_form_answers(self, session: Session):
         entries = session.query(InitialFormEnity).all()
         return entries
@@ -100,14 +111,4 @@ class GitTogetherService:
 
     def clearIA(self, session: Session):
         session.query(InitialFormEnity).delete()
-        session.commit()
-
-    def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
-        entry = session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
-        if entry:
-            session.delete(entry)
-            session.commit()
-
-    def delete_class_specifc_answer(self, clas: str, session: Session):
-        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
         session.commit()
