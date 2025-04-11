@@ -6,7 +6,7 @@ from ..entity_base import EntityBase
 from typing import Self
 
 
-class InitialFormEnity(EntityBase):
+class InitialFormEntity(EntityBase):
     __tablename__ = "initialform"
 
     one: Mapped[int] = mapped_column(Integer)
@@ -39,7 +39,6 @@ class InitialFormEnity(EntityBase):
             pid=self.pid,
         )
 
-    @classmethod
     def update(self, model: InitialForm) -> InitialForm:
         self.one = model.one
         self.two = model.two

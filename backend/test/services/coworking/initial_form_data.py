@@ -13,7 +13,7 @@ Three users are setup for testing and development purposes:
 import pytest
 from sqlalchemy.orm import Session
 
-from backend.entities.coworking.initial_form_entity import InitialFormEnity
+from backend.entities.coworking.initial_form_entity import InitialFormEntity
 from backend.models.coworking.gittogether import InitialForm
 
 __authors__ = ["Kris Jordan"]
@@ -32,7 +32,7 @@ def insert_fake_data(session: Session):
     global users
     entities = []
     for user in users:
-        entity = InitialFormEnity.from_model(user)
+        entity = InitialFormEntity.from_model(user)
         session.add(entity)
         entities.append(entity)
     session.commit()  # Commit to ensure User IDs in database

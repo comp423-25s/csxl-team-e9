@@ -12,13 +12,13 @@ from backend.models.coworking.gittogether import (
 )
 
 from backend.services.openai import OpenAIService
-from backend.entities.coworking.initial_form_entity import InitialFormEnity
+from backend.entities.coworking.initial_form_entity import InitialFormEntity
 
 
 class GitTogetherService:
 
     def initial_form(self, formResponses: InitialForm, session: Session):
-        entity = InitialFormEnity(
+        entity = InitialFormEntity(
             one=formResponses.one,
             two=formResponses.two,
             three=formResponses.three,
@@ -26,7 +26,13 @@ class GitTogetherService:
             five=formResponses.five,
             pid=formResponses.pid,
         )
-        session.add(entity)
+        existing = (
+            session.query(InitialFormEntity).filter_by(pid=formResponses.pid).first()
+        )
+        if existing == None:
+            session.add(entity)
+        else:
+            existing.update(formResponses)
         session.commit()
 
     def class_specific_form(self, formResponse: FormResponse, session: Session):
@@ -50,7 +56,7 @@ class GitTogetherService:
 
     def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
         # checks to see if user requesting partner has filled out initial form
-        if session.query(InitialFormEnity).filter_by(pid=pid).first() == None:
+        if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
 
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance."
@@ -80,7 +86,7 @@ class GitTogetherService:
                 )
 
                 if result.compatibility > match.compatibility:
-                    iA = session.query(InitialFormEnity).filter_by(pid=r.pid).first()
+                    iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
                     initialFormAnswers = iA.to_model()
                     match = Match(
                         name=r.first_name,
@@ -106,7 +112,7 @@ class GitTogetherService:
 
     # the following aren't really used in the web app, more so just good to have for testing
     def get_initial_form_answers(self, session: Session):
-        entries = session.query(InitialFormEnity).all()
+        entries = session.query(InitialFormEntity).all()
         return entries
 
     def get_specific_form_answers(self, session: Session):
@@ -118,5 +124,5 @@ class GitTogetherService:
         session.commit()
 
     def clearIA(self, session: Session):
-        session.query(InitialFormEnity).delete()
+        session.query(InitialFormEntity).delete()
         session.commit()
