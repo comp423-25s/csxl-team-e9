@@ -6,7 +6,7 @@ from ..entity_base import EntityBase
 from typing import Self
 
 
-class SpecificFormEnity(EntityBase):
+class SpecificFormEntity(EntityBase):
     __tablename__ = "specificform"
 
     value: Mapped[String] = mapped_column(String(1000))

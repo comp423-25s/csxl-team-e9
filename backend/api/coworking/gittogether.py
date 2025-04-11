@@ -97,8 +97,9 @@ def class_specific_form(
         ),
     ],
     service: GitTogetherServiceDI,
+    session: SessionDI,
 ):
-    return service.class_specific_form(formResponse=formResponse)
+    return service.class_specific_form(formResponse=formResponse, session=session)
 
 
 @api.get("/matches", tags=["Coworking"])

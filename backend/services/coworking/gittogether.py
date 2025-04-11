@@ -1,6 +1,7 @@
 from typing import Annotated, TypeAlias
 from fastapi import Depends
 from pytest import Session
+from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
@@ -23,14 +24,14 @@ classSpecficFormAnswers = {}
 class GitTogetherService:
 
     def initial_form(self, formResponses: InitialForm, session: Session):
-        i = InitialFormAnswer(
-            one=formResponses.one,
-            two=formResponses.two,
-            three=formResponses.three,
-            four=formResponses.four,
-            five=formResponses.five,
-        )
-        initialFormAnswers[formResponses.pid] = i
+        # i = InitialFormAnswer(
+        #     one=formResponses.one,
+        #     two=formResponses.two,
+        #     three=formResponses.three,
+        #     four=formResponses.four,
+        #     five=formResponses.five,
+        # )
+        # initialFormAnswers[formResponses.pid] = i
         entity = InitialFormEnity(
             one=formResponses.one,
             two=formResponses.two,
@@ -41,18 +42,27 @@ class GitTogetherService:
         )
         session.add(entity)
         session.commit()
-        return initialFormAnswers[formResponses.pid]
+        # return initialFormAnswers[formResponses.pid]
 
-    def class_specific_form(self, formResponse: FormResponse):
-        i = FormResponse(
+    def class_specific_form(self, formResponse: FormResponse, session: Session):
+        # i = FormResponse(
+        #     value=formResponse.value,
+        #     pid=formResponse.pid,
+        #     contact_info=formResponse.contact_info,
+        #     clas=formResponse.clas,
+        #     first_name=formResponse.first_name,
+        # )
+        entity = SpecificFormEntity(
             value=formResponse.value,
             pid=formResponse.pid,
-            contact_info=formResponse.contact_info,
+            contact_information=formResponse.contact_info,
             clas=formResponse.clas,
             first_name=formResponse.first_name,
         )
-        classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas] = i
-        return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
+        session.add(entity)
+        session.commit()
+        # classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas] = i
+        # return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
     def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
         # checks to see if user requesting partner has filled out initial form

@@ -3,4 +3,4 @@ from .reservation_entity import ReservationEntity
 from .reservation_seat_table import reservation_seat_table
 from .seat_entity import SeatEntity
 from .initial_form_entity import InitialFormEnity
-from .specific_form_entity import SpecificFormEnity
+from .specific_form_entity import SpecificFormEntity

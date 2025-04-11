@@ -1,6 +1,6 @@
 from pytest import Session
 import pytest
-from backend.entities.coworking.specific_form_entity import SpecificFormEnity
+from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import FormResponse
 
 __authors__ = ["Kris Jordan"]
@@ -30,7 +30,7 @@ def insert_fake_data(session: Session):
     global users
     entities = []
     for user in users:
-        entity = SpecificFormEnity.from_model(user)
+        entity = SpecificFormEntity.from_model(user)
         session.add(entity)
         entities.append(entity)
     session.commit()  # Commit to ensure User IDs in database
