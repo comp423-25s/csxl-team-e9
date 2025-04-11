@@ -1,5 +1,6 @@
 from typing import Annotated, TypeAlias
 from fastapi import Depends
+from pytest import Session
 from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
@@ -11,6 +12,7 @@ from backend.models.coworking.gittogether import (
 )
 
 from backend.services.openai import OpenAIService
+from backend.entities.coworking.initial_form_entity import InitialFormEnity
 
 
 initialFormAnswers = {}
@@ -20,7 +22,7 @@ classSpecficFormAnswers = {}
 
 class GitTogetherService:
 
-    def initial_form(self, formResponses: InitialForm):
+    def initial_form(self, formResponses: InitialForm, session: Session):
         i = InitialFormAnswer(
             one=formResponses.one,
             two=formResponses.two,
@@ -29,6 +31,16 @@ class GitTogetherService:
             five=formResponses.five,
         )
         initialFormAnswers[formResponses.pid] = i
+        entity = InitialFormEnity(
+            one=formResponses.one,
+            two=formResponses.two,
+            three=formResponses.three,
+            four=formResponses.four,
+            five=formResponses.five,
+            pid=formResponses.pid,
+        )
+        session.add(entity)
+        session.commit()
         return initialFormAnswers[formResponses.pid]
 
     def class_specific_form(self, formResponse: FormResponse):
@@ -42,27 +54,17 @@ class GitTogetherService:
         classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas] = i
         return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
 
-    def get_matches(self, clas: str, pid: int, openai: OpenAIService):
-        if pid not in initialFormAnswers:
+    def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
+        # checks to see if user requesting partner has filled out initial form
+        if session.query(InitialFormEnity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
-        ans = "no matches"
+
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance."
-        if str(pid) + clas in classSpecficFormAnswers:
-            ans = classSpecficFormAnswers[str(pid) + clas]
-        else:
+        # checks to see if user requesting partner has filled out specific form
+        if str(pid) + clas not in classSpecficFormAnswers:
             raise SpecificFormError("Fill out class specific form first")
-        iA = InitialFormAnswer(one=1, two=1, three=1, four=1, five=1)
-        match = Match(
-            name="",
-            contactInformation="",
-            bio="",
-            compatibility=0,
-            reasoning="",
-            initialAnswers=iA,
-        )
+        match = Match()
         for k in classSpecficFormAnswers:
-            # need to add check to ensure potential matches have filled out the initial form
-            # potential to call again if want different match?
             if (
                 classSpecficFormAnswers[k].clas == clas
                 and classSpecficFormAnswers[k].pid != pid
@@ -73,20 +75,25 @@ class GitTogetherService:
                     + " and: "
                     + classSpecficFormAnswers[k].value
                 )
+                # ChatGPT call
                 result = openai.prompt(
                     system_prompt, user_prompt, response_model=MatchResponse
                 )
 
                 if result.compatibility > match.compatibility:
+                    iA = (
+                        session.query(InitialFormEnity)
+                        .filter_by(pid=classSpecficFormAnswers[k].pid)
+                        .first()
+                    )
+                    initialFormAnswers = iA.to_model()
                     match = Match(
                         name=classSpecficFormAnswers[k].first_name,
                         contactInformation=classSpecficFormAnswers[k].contact_info,
                         bio=classSpecficFormAnswers[k].value,
                         compatibility=result.compatibility,
                         reasoning=result.reasoning,
-                        initialAnswers=initialFormAnswers[
-                            classSpecficFormAnswers[k].pid
-                        ],
+                        initialAnswers=initialFormAnswers,
                     )
         if match.bio != "":
             return match

@@ -29,12 +29,12 @@ class FormResponse(BaseModel):
 
 
 class Match(BaseModel):
-    name: str
-    contactInformation: str
-    bio: str
-    compatibility: int
-    reasoning: str
-    initialAnswers: InitialFormAnswer
+    name: str = ""
+    contactInformation: str = ""
+    bio: str = ""
+    compatibility: int = 0
+    reasoning: str = ""
+    initialAnswers: InitialForm = InitialForm()
 
 
 class InitialFormError(Exception):

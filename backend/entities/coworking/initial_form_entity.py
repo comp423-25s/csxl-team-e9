@@ -29,9 +29,22 @@ class InitialFormEnity(EntityBase):
             pid=model.pid,
         )
 
-    @classmethod
     def to_model(self) -> InitialForm:
 
         return InitialForm(
-            one=self.one, two=self.two, three=self.three, four=self.four, five=self.five
+            one=self.one,
+            two=self.two,
+            three=self.three,
+            four=self.four,
+            five=self.five,
+            pid=self.pid,
         )
+
+    @classmethod
+    def update(self, model: InitialForm) -> InitialForm:
+        self.one = model.one
+        self.two = model.two
+        self.three = model.three
+        self.four = model.four
+        self.five = model.five
+        self.pid = model.pid

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from typing import Annotated, TypeAlias
+from backend.database import db_session
 from backend.services.coworking.gittogether import GitTogetherService
 from backend.models.coworking.gittogether import (
     FormResponse,
@@ -10,6 +11,7 @@ from backend.models.coworking.gittogether import (
     InitialFormError,
 )
 from backend.services.openai import OpenAIService
+from sqlalchemy.orm import Session
 
 
 __authors__ = ["Mason"]
@@ -21,6 +23,8 @@ from ...models.coworking import FormResponse, Match, InitialForm
 GitTogetherServiceDI: TypeAlias = Annotated[GitTogetherService, Depends()]
 
 OpenAIServiceDI: TypeAlias = Annotated[OpenAIService, Depends()]
+
+SessionDI: TypeAlias = Annotated[Session, Depends(db_session)]
 
 
 api = APIRouter(prefix="/api/coworking/gittogether")
@@ -60,8 +64,9 @@ def initial_form(
         ),
     ],
     service: GitTogetherServiceDI,
+    session: SessionDI,
 ):
-    return service.initial_form(formResponses=formResponses)
+    return service.initial_form(formResponses=formResponses, session=session)
 
 
 @api.post("/specific", tags=["Coworking"])
@@ -98,10 +103,14 @@ def class_specific_form(
 
 @api.get("/matches", tags=["Coworking"])
 def get_matches(
-    clas: str, pid: int, service: GitTogetherServiceDI, openai: OpenAIServiceDI
+    clas: str,
+    pid: int,
+    service: GitTogetherServiceDI,
+    openai: OpenAIServiceDI,
+    session: SessionDI,
 ):
     try:
-        return service.get_matches(clas=clas, pid=pid, openai=openai)
+        return service.get_matches(clas=clas, pid=pid, openai=openai, session=session)
     except InitialFormError:
         raise HTTPException(
             status_code=403,
