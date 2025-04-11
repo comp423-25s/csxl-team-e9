@@ -1,6 +1,5 @@
-from datetime import datetime
-from sqlalchemy import Integer, String, Boolean, ForeignKey, DateTime, Index
-from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
+from sqlalchemy import Integer
+from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.models.coworking.gittogether import InitialForm
 from ..entity_base import EntityBase
