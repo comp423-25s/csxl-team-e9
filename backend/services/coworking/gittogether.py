@@ -71,19 +71,31 @@ class GitTogetherService:
 
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance."
         # checks to see if user requesting partner has filled out specific form
-        if str(pid) + clas not in classSpecficFormAnswers:
-            raise SpecificFormError("Fill out class specific form first")
+        # if str(pid) + clas not in classSpecficFormAnswers:
+        #     raise SpecificFormError("Fill out class specific form first")
+        if (
+            session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
+            == None
+        ):
+            raise SpecificFormError("Fill out class specifc form first")
+
         match = Match()
-        for k in classSpecficFormAnswers:
-            if (
-                classSpecficFormAnswers[k].clas == clas
-                and classSpecficFormAnswers[k].pid != pid
-            ):
+        results = session.query(SpecificFormEntity).filter_by(clas=clas).all()
+        user_answer = (
+            session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
+        )
+        # for k in classSpecficFormAnswers:
+        for r in results:
+            if r.pid != pid:
                 user_prompt = (
+                    # "Here are the two answers: "
+                    # + classSpecficFormAnswers[str(pid) + clas].value
+                    # + " and: "
+                    # + classSpecficFormAnswers[k].value
                     "Here are the two answers: "
-                    + classSpecficFormAnswers[str(pid) + clas].value
+                    + user_answer.value
                     + " and: "
-                    + classSpecficFormAnswers[k].value
+                    + r.value
                 )
                 # ChatGPT call
                 result = openai.prompt(
@@ -93,14 +105,22 @@ class GitTogetherService:
                 if result.compatibility > match.compatibility:
                     iA = (
                         session.query(InitialFormEnity)
-                        .filter_by(pid=classSpecficFormAnswers[k].pid)
-                        .first()
+                        # .filter_by(pid=classSpecficFormAnswers[k].pid)
+                        .filter_by(pid=r.pid).first()
                     )
                     initialFormAnswers = iA.to_model()
+                    # match = Match(
+                    #     name=classSpecficFormAnswers[k].first_name,
+                    #     contactInformation=classSpecficFormAnswers[k].contact_info,
+                    #     bio=classSpecficFormAnswers[k].value,
+                    #     compatibility=result.compatibility,
+                    #     reasoning=result.reasoning,
+                    #     initialAnswers=initialFormAnswers,
+                    # )
                     match = Match(
-                        name=classSpecficFormAnswers[k].first_name,
-                        contactInformation=classSpecficFormAnswers[k].contact_info,
-                        bio=classSpecficFormAnswers[k].value,
+                        name=r.first_name,
+                        contactInformation=r.contact_information,
+                        bio=r.value,
                         compatibility=result.compatibility,
                         reasoning=result.reasoning,
                         initialAnswers=initialFormAnswers,
