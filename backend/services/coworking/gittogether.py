@@ -37,7 +37,15 @@ class GitTogetherService:
             clas=formResponse.clas,
             first_name=formResponse.first_name,
         )
-        session.add(entity)
+        existing = (
+            session.query(SpecificFormEntity)
+            .filter_by(pid=formResponse.pid, clas=formResponse.clas)
+            .first()
+        )
+        if existing == None:
+            session.add(entity)
+        else:
+            existing.update(formResponse)
         session.commit()
 
     def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):

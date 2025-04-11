@@ -38,7 +38,6 @@ class SpecificFormEntity(EntityBase):
             first_name=self.first_name,
         )
 
-    @classmethod
     def update(self, model: FormResponse) -> FormResponse:
         self.value = model.value
         self.pid = model.pid
