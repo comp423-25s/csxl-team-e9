@@ -46,6 +46,7 @@ export class GitTogetherMatchesComponent {
   courseName: string = '';
   iffilled: boolean = true;
   sffilled: boolean = true;
+  isloading: boolean = true;
 
   constructor(
     private router: Router,
@@ -124,7 +125,7 @@ export class GitTogetherMatchesComponent {
           }
         ];
       }
-      console.log(data.initialAnswers);
+      this.isloading = false;
     } catch (error: any) {
       console.log(error.error.detail);
       if (error.error.detail === 'Fill out Initial Form First.') {

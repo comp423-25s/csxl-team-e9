@@ -1,4 +1,5 @@
 <mat-card class="matches-container">
+  @if(!isloading){
   @if(iffilled && sffilled){
   <div class="header">
     <button mat-icon-button class="back-button" (click)="navigateToCourseSelection()">
@@ -103,4 +104,7 @@
     <p>Please fill out the initial form.</p>
   }
 }
+  } @else {
+    <p>Fetching your best match!</p>
+  }
 </mat-card>
