@@ -59,7 +59,7 @@ class GitTogetherService:
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
 
-        system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance."
+        system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
         # checks to see if user requesting partner has filled out specific form
         if (
             session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
