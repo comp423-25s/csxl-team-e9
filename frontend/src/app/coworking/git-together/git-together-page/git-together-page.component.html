@@ -1,9 +1,13 @@
 <mat-card class="git-together-card">
-  <div class="preferences-content">
-    <div class="preferences-text">
+  <div class="header">
+    <button mat-icon-button class="back-button" (click)="navigateToCoworking()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
       <mat-card-title>Looking to find a partner?</mat-card-title>
-      <p>Start by telling us about yourself!</p>
-    </div>
+      <mat-card-subtitle>Start by telling us about yourself!</mat-card-subtitle>
+  </div>
+
+    <div class="preferences-content">
     <div class="action-buttons">
       <button 
       mat-raised-button 
@@ -29,13 +33,6 @@
         View Matches
       </button>
       
-      <button 
-        mat-raised-button 
-        class="action-button surface-button" 
-        (click)="navigateToCoworking()">
-        <mat-icon class="on-surface-variant-icon">arrow_back</mat-icon>
-        Back to Coworking
-      </button>
     </div>
   </div>
 </mat-card>

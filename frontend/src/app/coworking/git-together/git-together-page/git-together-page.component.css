@@ -2,29 +2,12 @@
   max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: var(--md-sys-color-surface-container);
 }
 
 .preferences-content {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-}
-
-.preferences-text {
-  text-align: center;
-}
-
-.preferences-text .mat-mdc-card-title {
-  font: var(--md-sys-typescale-title-large);
-  margin-bottom: 0.5rem;
-  color: var(--md-sys-color-primary);
-}
-  
-.preferences-text p {
-  font: var(--md-sys-typescale-body-medium);
-  color: var(--md-sys-color-on-surface-variant);
-  margin-bottom: 0;
 }
 
 .action-buttons {
@@ -38,15 +21,14 @@
   min-width: 200px;
   padding: 0.5rem 1rem;
   font: var(--md-sys-typescale-label-large);
-  color: var(--md-sys-color-on-surface); /* Consistent text color for all buttons */
+  color: var(--md-sys-color-on-surface);
 }
 
 .action-button .mat-icon {
-  color: inherit; /* Icons inherit text color */
+  color: inherit;
   margin-right: 8px;
 }
 
-/* Specific button styles - only background changes */
 .primary-button {
   background-color: var(--md-sys-color-primary-container);
 }
@@ -72,4 +54,17 @@
   .action-button {
     width: 100%;
   }
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #3f51b5;
+}
+
+.header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
 }

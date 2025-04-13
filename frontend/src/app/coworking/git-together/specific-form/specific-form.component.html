@@ -1,38 +1,31 @@
-<div class="specific-form-container">
-  <h2>GitTogether Partner Matching Form</h2>
-  <p>This is where the magic happens! The more details you provide, the better we can match you with the perfect project partner.</p>
+<mat-card class="preferences-card">
+  <mat-card-header>
+  <mat-card-title>Partner Matching Form</mat-card-title>
+  <mat-card-subtitle>This is where the magic happens! The more details you provide, the better we can match you with the perfect project partner.</mat-card-subtitle>
+  </mat-card-header>
+  <form [formGroup]="specificForm" (ngSubmit)="onSubmit()" class="preferences-content">
+    <mat-card-content>
 
-  <form [formGroup]="specificForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Project Type</mat-label>
       <mat-select formControlName="collaborationType" required>
+        <mat-option value="hackathon">Hackathon</mat-option>
+        <mat-option value="personal">Personal Project</mat-option>
         @for (class of availableClasses; track class) {
           <mat-option [value]="class.code">
             {{class.name}} ({{class.code}})
           </mat-option>
         }
-        <mat-option value="hackathon">Hackathon</mat-option>
-        <mat-option value="personal">Personal Project</mat-option>
       </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Project Name</mat-label>
-      <input matInput formControlName="className" required>
-      <mat-hint>e.g. COMP110 Final Project, HackNC 2024, My Startup App</mat-hint>
+      <mat-hint class="hint-spacing">
+      Select from the list of courses or choose "Hackathon" or "Personal Project"
+      </mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width partner-preferences">
       <mat-label>Partner Preferences & Project Details</mat-label>
       <textarea matInput formControlName="specificRequirements" required rows="12"></textarea>
-      <mat-hint>
-        This is the most important part for matching! Be specific about:
-        - Your project goals and stage
-        - Skills you're looking for in a partner
-        - Your personal interests related to the project
-        - Any specific requirements (languages, frameworks, etc.)
-        - Your working style preferences
-        (minimum 50 characters)
+      <mat-hint class="hint-spacing">Be specific about your project goals and stage, skills you're looking for in a partner, and any specific requirements (languages, frameworks, etc.)<br>(Minimum 50 Characters)
       </mat-hint>
       @if (specificForm.get('specificRequirements')?.hasError('minlength')) {
         <mat-error>
@@ -40,46 +33,35 @@
         </mat-error>
       }
     </mat-form-field>
-
     <div class="spacing"></div>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mailto:mat-label>Time Commitment</mat-label>
-      <mat-select formControlName="timeCommitment" required>
-        <mat-option value="light">Light (1-5 hrs/week) - Mostly weekends or evenings</mat-option>
-        <mat-option value="moderate">Moderate (5-10 hrs/week) - Regular weekly schedule</mat-option>
-        <mat-option value="heavy">Heavy (10+ hrs/week) - Intensive project focus</mat-option>
-        <mat-option value="flexible">Flexible - Depends on project needs</mat-option>
-      </mat-select>
-      <mat-hint>Be realistic about how much time you can dedicate to this collaboration</mat-hint>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Contact Information</mat-label>
-      <input matInput formControlName="contactInfo" required placeholder="Email or Phone Number">
-      <mat-hint>How your potential partner should contact you (e.g. unc.edu email address or 555-123-4567)</mat-hint>
+      <input matInput formControlName="contactInfo" required placeholder="Email" type="email">
+      <mat-hint class="hint-spacing">Enter an email where your partner should contact you (e.g. unc.edu email address)</mat-hint>
       @if (specificForm.get('contactInfo')?.hasError('pattern')) {
         <mat-error>
-          Please enter a valid email or phone number
+          Please enter a valid email
         </mat-error>
       }
     </mat-form-field>
+    <div class="spacing"></div>
+  </mat-card-content>
 
-    <div class="form-actions">
+  <mat-card-actions>
       <button 
         mat-stroked-button 
         type="button" 
         color="warn" 
         (click)="navigateToGitTogether()"
         class="back-button">
-        Back to Home
+        Back
       </button>
       <button 
-        mat-raised-button 
+        mat-stroked-button 
         color="primary" 
         type="submit" 
-        [disabled]="specificForm.invalid || isLoading"
-        class="submit-button">
+        [disabled]="specificForm.invalid || isLoading">
         @if (!isLoading) {
           <span>Find My Perfect Partner</span>
         }
@@ -87,6 +69,6 @@
           <mat-spinner diameter="20"></mat-spinner>
         }
       </button>
-    </div>
+    </mat-card-actions>
   </form>
-</div>
+</mat-card> 
