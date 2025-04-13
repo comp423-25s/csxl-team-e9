@@ -117,9 +117,7 @@ export class SpecificFormComponent {
         '',
         [
           Validators.required,
-          Validators.pattern(
-            /^(\+?\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}|[\w.-]+@[\w.-]+\.[\w]{2,})$/
-          )
+          Validators.email
         ]
       ],
       timeCommitment: ['', Validators.required]
@@ -171,7 +169,7 @@ export class SpecificFormComponent {
           }
         );
         this.specificForm.reset();
-        this.router.navigate(['/coworking/git-together']); // Added navigation here
+        this.router.navigate(['/coworking/git-together']);
       }, 1500);
     } else {
       this.snackBar.open(
