@@ -108,19 +108,11 @@ export class SpecificFormComponent {
   ) {
     this.specificForm = this.fb.group({
       collaborationType: ['', Validators.required],
-      className: ['', Validators.required],
       specificRequirements: [
         '',
         [Validators.required, Validators.minLength(50)]
       ],
-      contactInfo: [
-        '',
-        [
-          Validators.required,
-          Validators.email
-        ]
-      ],
-      timeCommitment: ['', Validators.required]
+      contactInfo: ['', [Validators.required, Validators.email]]
     });
     const data = this.route.snapshot.data as {
       profile: Profile;
