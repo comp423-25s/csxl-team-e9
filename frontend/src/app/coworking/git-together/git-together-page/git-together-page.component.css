@@ -31,14 +31,17 @@
 
 .primary-button {
   background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-primary-container);
 }
 
 .secondary-button {
   background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 .tertiary-button {
   background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
 }
 
 .surface-button {

@@ -20,26 +20,26 @@
       </mat-select>
     </mat-form-field>
 
-
+   
     <div class="action-buttons">
       <button 
-        mat-raised-button 
+      mat-stroked-button 
+      color="warn"
+      [disabled]="!selectedCourse"
+      (click)="deleteCoursePreferences()"
+      class="delete-button">
+      <mat-icon>delete</mat-icon>
+      Delete Entry
+    </button>
+  
+      <button 
+        mat-stroked-button 
         color="primary"
         [disabled]="!selectedCourse"
         (click)="viewMatches()"
         class="view-matches-button">
         <mat-icon>people</mat-icon>
         View Matches
-      </button>
-
-      <button 
-        mat-stroked-button 
-        color="warn"
-        [disabled]="!selectedCourse"
-        (click)="deleteCoursePreferences()"
-        class="delete-button">
-        <mat-icon>delete</mat-icon>
-        Delete Preferences
       </button>
     </div>
 

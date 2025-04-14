@@ -152,7 +152,6 @@
   border-radius: 4px;
 }
 
-/* Add to your existing CSS */
 .course-chip {
   display: inline-block;
   background-color: #3f51b5;
@@ -164,9 +163,6 @@
   vertical-align: middle;
 }
 
-/* Keep all your existing CSS styles */
-
-/* Responsive adjustments */
 @media (max-width: 600px) {
   .matches-container {
     padding: 1rem;

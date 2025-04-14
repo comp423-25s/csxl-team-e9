@@ -27,13 +27,9 @@ mat-form-field {
 
 .action-buttons {
   display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1rem;
-}
-
-.view-matches-button {
-  margin-left: auto;
+  width: 100%;
 }
 
 .delete-button {
