@@ -23,7 +23,6 @@ export class InitialFormComponent {
       profile: profileResolver
     }
   };
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
