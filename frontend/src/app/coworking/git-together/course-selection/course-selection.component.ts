@@ -1,17 +1,11 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Profile } from 'src/app/models.module';
 import { profileResolver } from 'src/app/profile/profile.resolver';
 import { CourseSelectionService } from './course-selection.service';
-import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Profile, ProfileService } from 'src/app/profile/profile.service';
-import { profileResolver } from 'src/app/profile/profile.resolver';
+import { ProfileService } from 'src/app/profile/profile.service';
 import { MatchesService } from '../matches/matches.service'; // Assuming you have this service
-
 
 @Component({
   selector: 'app-course-selection',
@@ -23,15 +17,11 @@ export class CourseSelectionComponent implements OnInit {
     path: 'git-together/course-selection',
     title: 'Select Course',
     component: CourseSelectionComponent,
-
     resolve: { profile: profileResolver }
-
   };
   profile: Profile;
   selectedCourse: string = '';
   loading: boolean = true;
-
-
   async ngOnInit() {
     await this.getCourses();
     this.loading = false;
@@ -42,12 +32,7 @@ export class CourseSelectionComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private courseService: CourseSelectionService
-  ) {
-    const data = this.route.snapshot.data as {
-      profile: Profile;
-    };
-
+    private courseService: CourseSelectionService,
     private matchesService: MatchesService
   ) {
     const data = this.route.snapshot.data as { profile: Profile };
@@ -65,14 +50,13 @@ export class CourseSelectionComponent implements OnInit {
     ]);
   }
 
-
   async getCourses() {
     const results =
       (await this.courseService.get_courses(this.profile.pid)) ?? [];
     this.courses = results;
   }
+
   async deleteCoursePreferences() {
-    // Make this async since we're using promises
     if (!this.selectedCourse) {
       this.snackBar.open('Please select a course first', 'Close', {
         duration: 3000
@@ -85,12 +69,12 @@ export class CourseSelectionComponent implements OnInit {
         this.profile.pid,
         this.selectedCourse
       );
+      await this.getCourses();
       this.snackBar.open('Course preferences deleted successfully', 'Close', {
         duration: 3000,
         panelClass: ['success-snackbar']
       });
     } catch (err: unknown) {
-      // Properly type the error
       console.error('Error deleting course preferences:', err);
       this.snackBar.open('Failed to delete course preferences', 'Close', {
         duration: 3000,

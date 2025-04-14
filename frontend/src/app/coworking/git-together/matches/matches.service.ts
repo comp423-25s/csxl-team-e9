@@ -7,6 +7,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 })
 export class MatchesService {
   private apiUrl = 'http://localhost:1560/api/coworking/gittogether/matches';
+  private deleteURL = 'http://localhost:1560/api/coworking/gittogether';
   constructor(private http: HttpClient) {}
   async get_matches(clas: string, pid: number): Promise<any> {
     const params = new HttpParams().set('clas', clas).set('pid', pid);
@@ -18,9 +19,10 @@ export class MatchesService {
     console.log(data);
     return data;
   }
-  deleteSpecificAnswer(pid: number, clas: string): Promise<any> {
+
+  async deleteSpecificAnswer(pid: number, clas: string): Promise<any> {
     return firstValueFrom(
-      this.http.delete(`${this.apiUrl}/del/${pid}/${clas}`)
+      this.http.delete(`${this.deleteURL}/del${pid}/${clas}`)
     );
   }
 }
