@@ -14,6 +14,7 @@ import sys
 import subprocess
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+
 from ..database import engine
 from ..env import getenv
 from .. import entities
@@ -27,6 +28,7 @@ from ..test.services.academics import course_data, term_data, section_data
 from ..test.services.office_hours import office_hours_data
 from ..test.services.academics.hiring import hiring_data
 from ..test.services.articles import article_data
+from backend.test.services.coworking import initial_form_data, specific_form_data
 
 __authors__ = ["Kris Jordan", "Ajay Gandecha"]
 __copyright__ = "Copyright 2023"
@@ -65,6 +67,8 @@ with Session(engine) as session:
     office_hours_data.insert_fake_data(session)
     hiring_data.insert_fake_data(session)
     article_data.insert_fake_data(session)
+    initial_form_data.insert_fake_data(session)
+    specific_form_data.insert_fake_data(session)
 
     # Commit changes to the database
     session.commit()

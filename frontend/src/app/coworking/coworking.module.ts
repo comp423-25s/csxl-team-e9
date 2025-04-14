@@ -40,7 +40,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InitialFormComponent } from './git-together/initial-form/initial-form.component';
 import { GitTogetherPageComponent } from './git-together/git-together-page/git-together-page.component';
-import { PrefFormSubmittedComponent } from './git-together/pref-form-submitted/pref-form-submitted.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 import { GitTogetherMatchesComponent } from './git-together/matches/matches.component';
@@ -63,7 +62,6 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
     ReservationFactsWidget,
     GitTogetherPageComponent,
     InitialFormComponent,
-    PrefFormSubmittedComponent,
     SpecificFormComponent,
     GitTogetherMatchesComponent,
     CourseSelectionComponent

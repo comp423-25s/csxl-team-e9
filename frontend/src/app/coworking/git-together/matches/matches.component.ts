@@ -44,6 +44,9 @@ export class GitTogetherMatchesComponent {
   matches: any[] = [];
   selectedCourse: string = '';
   courseName: string = '';
+  iffilled: boolean = true;
+  sffilled: boolean = true;
+  isloading: boolean = true;
 
   constructor(
     private router: Router,
@@ -109,23 +112,27 @@ export class GitTogetherMatchesComponent {
           {
             name: data.name,
             contact: data.contactInformation,
-            score: 92,
+            score: data.compatibility,
             compatibility: {
-              deadlineProximity: 4,
-              workStyle: 5,
-              leadershipComfort: 3,
-              meetingFrequency: 5,
-              conflictResolution: 4
+              deadlineProximity: data.initialAnswers.one,
+              workStyle: data.initialAnswers.two,
+              leadershipComfort: data.initialAnswers.three,
+              meetingFrequency: data.initialAnswers.four,
+              conflictResolution: data.initialAnswers.five
             },
-            bio: data.bio
+            bio: data.bio,
+            reasoning: data.reasoning
           }
         ];
-        console.log(data.name);
-        console.log(data.contactInformation);
-        console.log(data.bio);
       }
+      this.isloading = false;
     } catch (error: any) {
       console.log(error.error.detail);
+      if (error.error.detail === 'Fill out Initial Form First.') {
+        this.iffilled = false;
+      } else if (error.error.detail === 'Fill out Specific Form.') {
+        this.sffilled = false;
+      }
     }
   }
 }

@@ -50,107 +50,123 @@
   height: 1.5rem;
 }
 
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
-  gap: 1rem;
-}
-
-.back-button {
-  padding: 0.75rem 2rem;
-}
-
-.submit-button {
-  padding: 0.75rem 2rem;
-  flex-grow: 1;
-  margin-left: 1rem;
-}
-
 .mat-form-field {
   width: 100%;
 }
 
-  .mat-form-field-appearance-outline .mat-form-field-outline {
-    color: rgba(0, 0, 0, 0.1);
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgba(0, 0, 0, 0.1);
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0.5em 0;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.75em 0;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-label {
+  transform: translateY(-1.1em) scale(0.75);
+  color: #666;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #3f51b5;
+  box-shadow: 0 2px 5px rgba(63, 81, 181, 0.1);
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #3f51b5;
+}
+
+.mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: #f44336;
+}
+
+.mat-button:disabled {
+  background-color: rgba(63, 81, 181, 0.5);
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.mat-spinner {
+  margin: 0 auto;
+}
+
+.mat-spinner circle {
+  stroke: white;
+}
+
+.mat-error {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .specific-form-container {
+    padding: 1.5rem;
+    margin: 1rem auto;
   }
 
-  .mat-form-field-appearance-outline .mat-form-field-wrapper {
-    margin: 0.5em 0;
+  .partner-preferences textarea {
+    min-height: 150px;
   }
 
-  .mat-form-field-appearance-outline .mat-form-field-infix {
-    padding: 0.75em 0;
+  .form-actions {
+    flex-direction: column;
   }
 
-  .mat-form-field-appearance-outline .mat-form-field-label {
-    transform: translateY(-1.1em) scale(0.75);
-    color: #666;
+  .submit-button {
+    margin-left: 0;
+    margin-top: 0.5rem;
   }
+}
 
-  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-    color: #3f51b5;
-    box-shadow: 0 2px 5px rgba(63, 81, 181, 0.1);
-  }
+.preferences-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
 
-  .mat-form-field.mat-focused .mat-form-field-label {
-    color: #3f51b5;
-  }
+.preferences-content {
+  display: flex;
+  flex-direction: column;
+}
 
-  .mat-form-field.mat-form-field-invalid .mat-form-field-label {
-    color: #f44336;
-  }
+.form-section {
+  margin-bottom: 2rem;
+}
 
-  .mat-button {
-    background-color: #3f51b5;
-    color: white;
-  }
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+}
 
-  .mat-button:disabled {
-    background-color: rgba(63, 81, 181, 0.5);
-    transform: none !important;
-    box-shadow: none !important;
-  }
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
 
-  .mat-spinner {
-    margin: 0 auto;
-  }
+mat-card-subtitle {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #666;
+}
 
-  .mat-spinner circle {
-    stroke: white;
-  }
-
-  .mat-error {
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-  }
-
-  .success-snackbar {
-    background-color: #4caf50;
-    color: white;
-  }
-
-  .error-snackbar {
-    background-color: #f44336;
-    color: white;
-  }
-
-  @media (max-width: 768px) {
-    .specific-form-container {
-      padding: 1.5rem;
-      margin: 1rem auto;
-    }
-    
-    .partner-preferences textarea {
-      min-height: 150px;
-    }
-
-    .form-actions {
-      flex-direction: column;
-    }
-    
-    .submit-button {
-      margin-left: 0;
-      margin-top: 0.5rem;
-    }
-  }
+.hint-spacing {
+  margin-top: 8px;
+  display: block;
+}

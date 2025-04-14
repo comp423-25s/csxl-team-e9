@@ -1,14 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from typing import Annotated, TypeAlias
+from backend.database import db_session
 from backend.services.coworking.gittogether import GitTogetherService
 from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
     Match,
-    InitialFormAnswer,
     SpecificFormError,
     InitialFormError,
 )
+from backend.services.openai import OpenAIService
+from sqlalchemy.orm import Session
 
 
 __authors__ = ["Mason"]
@@ -19,6 +21,10 @@ from ...models.coworking import FormResponse, Match, InitialForm
 
 GitTogetherServiceDI: TypeAlias = Annotated[GitTogetherService, Depends()]
 
+OpenAIServiceDI: TypeAlias = Annotated[OpenAIService, Depends()]
+
+SessionDI: TypeAlias = Annotated[Session, Depends(db_session)]
+
 
 api = APIRouter(prefix="/api/coworking/gittogether")
 openapi_tags = {
@@ -28,19 +34,83 @@ openapi_tags = {
 
 
 @api.post("/", tags=["Coworking"])
-def initial_form(formResponses: InitialForm, service: GitTogetherServiceDI):
-    return service.initial_form(formResponses=formResponses)
+def initial_form(
+    formResponses: Annotated[
+        InitialForm,
+        Body(
+            openapi_examples={
+                "Rhonda": {
+                    "value": {
+                        "one": 1,
+                        "two": 2,
+                        "three": 3,
+                        "four": 4,
+                        "five": 5,
+                        "pid": 999999999,
+                    }
+                },
+                "Mason": {
+                    "value": {
+                        "one": 1,
+                        "two": 2,
+                        "three": 3,
+                        "four": 4,
+                        "five": 5,
+                        "pid": 0,
+                    }
+                },
+            }
+        ),
+    ],
+    service: GitTogetherServiceDI,
+    session: SessionDI,
+):
+    return service.initial_form(formResponses=formResponses, session=session)
 
 
 @api.post("/specific", tags=["Coworking"])
-def class_specific_form(formResponse: FormResponse, service: GitTogetherServiceDI):
-    return service.class_specific_form(formResponse=formResponse)
+def class_specific_form(
+    formResponse: Annotated[
+        FormResponse,
+        Body(
+            openapi_examples={
+                "Rhonda": {
+                    "value": {
+                        "value": "I would like a partner that enjoys playing sports. I don't plan to spend a ton of time of this project as I am very involved on campus.",
+                        "pid": 999999999,
+                        "contact_info": "3368800548",
+                        "clas": "COMP110",
+                        "first_name": "Rhonda",
+                    }
+                },
+                "Mason": {
+                    "value": {
+                        "value": "I enjoy playing basketball and would like to get the bare minimum done to pass this class.",
+                        "pid": 0,
+                        "contact_info": "3368800548",
+                        "clas": "COMP110",
+                        "first_name": "Mason",
+                    }
+                },
+            }
+        ),
+    ],
+    service: GitTogetherServiceDI,
+    session: SessionDI,
+):
+    return service.class_specific_form(formResponse=formResponse, session=session)
 
 
 @api.get("/matches", tags=["Coworking"])
-def get_matches(clas: str, pid: int, service: GitTogetherServiceDI):
+def get_matches(
+    clas: str,
+    pid: int,
+    service: GitTogetherServiceDI,
+    openai: OpenAIServiceDI,
+    session: SessionDI,
+):
     try:
-        return service.get_matches(clas=clas, pid=pid)
+        return service.get_matches(clas=clas, pid=pid, openai=openai, session=session)
     except InitialFormError:
         raise HTTPException(
             status_code=403,
@@ -54,20 +124,39 @@ def get_matches(clas: str, pid: int, service: GitTogetherServiceDI):
 
 
 @api.get("/initialanswers", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    return service.get_initial_form_answers()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    return service.get_initial_form_answers(session=session)
 
 
 @api.get("/specificanswers", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    return service.get_specific_form_answers()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    return service.get_specific_form_answers(session=session)
+
+
+@api.get("/student/courses", tags=["Coworking"])
+def get_student_course_answer(
+    service: GitTogetherServiceDI, pid: int, session: SessionDI
+):
+    return service.get_student_course_list(pid, session=session)
+
+
+@api.delete("/del{pid}/{clas}", tags=["Coworking"])
+def delete_specifc_answer(
+    service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI
+):
+    service.delete_student_specifc_answer(pid, clas, session=session)
+
+
+@api.delete("/del{clas}", tags=["Coworking"])
+def delete_specifc_class(service: GitTogetherServiceDI, clas: str, session: SessionDI):
+    service.delete_class_specifc_answer(clas, session=session)
 
 
 @api.delete("/dIA", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    service.clearIA()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    service.clearIA(session=session)
 
 
 @api.delete("/dSA", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI):
-    service.clearSA()
+def get_answers(service: GitTogetherServiceDI, session: SessionDI):
+    service.clear_specific_answers(session=session)

@@ -1,72 +1,135 @@
+from typing import Annotated, TypeAlias
+from fastapi import Depends
+from pytest import Session
+from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
     Match,
-    InitialFormAnswer,
     SpecificFormError,
     InitialFormError,
+    MatchResponse,
 )
 
-initialFormAnswers = {}
-
-classSpecficFormAnswers = {}
+from backend.services.openai import OpenAIService
+from backend.entities.coworking.initial_form_entity import InitialFormEntity
 
 
 class GitTogetherService:
 
-    def initial_form(self, formResponses: InitialForm):
-        i = InitialFormAnswer(
+    def initial_form(self, formResponses: InitialForm, session: Session):
+        entity = InitialFormEntity(
             one=formResponses.one,
             two=formResponses.two,
             three=formResponses.three,
             four=formResponses.four,
             five=formResponses.five,
+            pid=formResponses.pid,
         )
-        initialFormAnswers[formResponses.pid] = i
-        return initialFormAnswers[formResponses.pid]
+        existing = (
+            session.query(InitialFormEntity).filter_by(pid=formResponses.pid).first()
+        )
+        if existing == None:
+            session.add(entity)
+        else:
+            existing.update(formResponses)
+        session.commit()
 
-    def class_specific_form(self, formResponse: FormResponse):
-        i = FormResponse(
+    def class_specific_form(self, formResponse: FormResponse, session: Session):
+        entity = SpecificFormEntity(
             value=formResponse.value,
             pid=formResponse.pid,
-            contact_info=formResponse.contact_info,
+            contact_information=formResponse.contact_info,
             clas=formResponse.clas,
             first_name=formResponse.first_name,
         )
-        classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas] = i
-        return classSpecficFormAnswers[str(formResponse.pid) + formResponse.clas]
-
-    def get_matches(self, clas: str, pid: int):
-        if pid not in initialFormAnswers:
-            raise InitialFormError("Fill out initial form first")
-        ans = "no matches"
-        if str(pid) + clas in classSpecficFormAnswers:
-            ans = classSpecficFormAnswers[str(pid) + clas]
+        existing = (
+            session.query(SpecificFormEntity)
+            .filter_by(pid=formResponse.pid, clas=formResponse.clas)
+            .first()
+        )
+        if existing == None:
+            session.add(entity)
         else:
-            raise SpecificFormError("Fill out class specific form first")
-        for k in classSpecficFormAnswers:
-            if (
-                classSpecficFormAnswers[k].clas == clas
-                and classSpecficFormAnswers[k].pid != pid
-            ):
-                # run chatGPT method to see if match is compatible
-                # if so return, else, run it again
-                return Match(
-                    name=classSpecficFormAnswers[k].first_name,
-                    contactInformation=classSpecficFormAnswers[k].contact_info,
-                    bio=classSpecficFormAnswers[k].value,
+            existing.update(formResponse)
+        session.commit()
+
+    def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
+        # checks to see if user requesting partner has filled out initial form
+        if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
+            raise InitialFormError("Fill out initial form first")
+
+        system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
+        # checks to see if user requesting partner has filled out specific form
+        if (
+            session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
+            == None
+        ):
+            raise SpecificFormError("Fill out class specifc form first")
+
+        match = Match()
+        results = session.query(SpecificFormEntity).filter_by(clas=clas).all()
+        user_answer = (
+            session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
+        )
+        for r in results:
+            if r.pid != pid:
+                user_prompt = (
+                    "Here are the two answers: "
+                    + user_answer.value
+                    + " and: "
+                    + r.value
                 )
+                # ChatGPT call
+                result = openai.prompt(
+                    system_prompt, user_prompt, response_model=MatchResponse
+                )
+
+                if result.compatibility > match.compatibility:
+                    iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
+                    initialFormAnswers = iA.to_model()
+                    match = Match(
+                        name=r.first_name,
+                        contactInformation=r.contact_information,
+                        bio=r.value,
+                        compatibility=result.compatibility,
+                        reasoning=result.reasoning,
+                        initialAnswers=initialFormAnswers,
+                    )
+        if match.bio != "":
+            return match
         return "no matches"
 
-    def get_initial_form_answers(self):
-        return initialFormAnswers
+    def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
+        entry = session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
+        if entry:
+            session.delete(entry)
+            session.commit()
 
+    def delete_class_specifc_answer(self, clas: str, session: Session):
+        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
+        session.commit()
 
-    def get_specific_form_answers(self):
-        return classSpecficFormAnswers
+    def get_student_course_list(self, pid: int, session: Session):
+        entries = session.query(SpecificFormEntity).filter_by(pid=pid)
+        results = []
+        for r in entries:
+            results.append(r.clas)
+        return results
 
-    def clearSA(self):
-        classSpecficFormAnswers.clear()
+    # the following aren't really used in the web app, more so just good to have for testing
+    def get_initial_form_answers(self, session: Session):
+        entries = session.query(InitialFormEntity).all()
+        return entries
 
-    def clearIA(self):
-        initialFormAnswers.clear()
+    def get_specific_form_answers(self, session: Session):
+        entries = session.query(SpecificFormEntity).all()
+        return entries
+
+    def clear_specific_answers(self, session: Session):
+        session.query(SpecificFormEntity).delete()
+        session.commit()
+
+    def clearIA(self, session: Session):
+        session.query(InitialFormEntity).delete()
+        session.commit()

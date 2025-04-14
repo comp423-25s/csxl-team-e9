@@ -1,29 +1,50 @@
-<!-- course-selection.component.html -->
-<mat-card class="course-selection-container">
-    <div class="header">
-      <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
-        <mat-icon>arrow_back</mat-icon>
+<mat-card class="course-selection-card">
+  @if(!loading){
+  <div class="header">
+    <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-card-title>Select Your Course</mat-card-title>
+    <mat-card-subtitle>Choose a course to view your potential matches for that class.</mat-card-subtitle>
+  </div>
+
+  <div class="course-selector">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a course</mat-label>
+      <mat-select [(value)]="selectedCourse">
+        @for (course of courses; track course) {
+          <mat-option [value]="course">
+           {{course}}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+
+    <div class="action-buttons">
+      <button 
+        mat-raised-button 
+        color="primary"
+        [disabled]="!selectedCourse"
+        (click)="viewMatches()"
+        class="view-matches-button">
+        <mat-icon>people</mat-icon>
+        View Matches
       </button>
-      <h2>Select Your Course</h2>
-      <p>Choose a course to view your potential matches for that class.</p>
+
+      <button 
+        mat-stroked-button 
+        color="warn"
+        [disabled]="!selectedCourse"
+        (click)="deleteCoursePreferences()"
+        class="delete-button">
+        <mat-icon>delete</mat-icon>
+        Delete Preferences
+      </button>
     </div>
-  
-    <div class="courses-list">
-      <mat-card *ngFor="let course of availableCourses" class="course-card">
-        <mat-card-header>
-          <mat-card-title>{{course.code}}</mat-card-title>
-          <mat-card-subtitle>{{course.name}}</mat-card-subtitle>
-        </mat-card-header>
-        
-        <mat-card-actions>
-          <button 
-            mat-stroked-button 
-            color="primary"
-            (click)="viewMatches(course.code)">
-            <mat-icon>people</mat-icon>
-            View Matches
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </mat-card>
+
+  </div>
+} @else{
+  <p>Loading</p>
+}
+</mat-card>

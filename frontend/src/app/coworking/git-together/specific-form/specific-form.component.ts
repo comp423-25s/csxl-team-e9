@@ -108,21 +108,11 @@ export class SpecificFormComponent {
   ) {
     this.specificForm = this.fb.group({
       collaborationType: ['', Validators.required],
-      className: ['', Validators.required],
       specificRequirements: [
         '',
         [Validators.required, Validators.minLength(50)]
       ],
-      contactInfo: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(\+?\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}|[\w.-]+@[\w.-]+\.[\w]{2,})$/
-          )
-        ]
-      ],
-      timeCommitment: ['', Validators.required]
+      contactInfo: ['', [Validators.required, Validators.email]]
     });
     const data = this.route.snapshot.data as {
       profile: Profile;
@@ -171,7 +161,7 @@ export class SpecificFormComponent {
           }
         );
         this.specificForm.reset();
-        this.router.navigate(['/coworking/git-together']); // Added navigation here
+        this.router.navigate(['/coworking/git-together']);
       }, 1500);
     } else {
       this.snackBar.open(

@@ -1,76 +1,103 @@
 <mat-card class="matches-container">
+  @if(!isloading){
+  @if(iffilled && sffilled){
   <div class="header">
     <button mat-icon-button class="back-button" (click)="navigateToCourseSelection()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>Your GitTogether Matches</h2>
-    <p *ngIf="selectedCourse" class="course-title">Showing matches for <strong>{{courseName}} ({{selectedCourse}})</strong></p>
-    <p *ngIf="!selectedCourse" class="subtitle">Here are your best matches based on your preferences and requirements.</p>
+    @if(selectedCourse){
+    <p  class="course-title">Showing matches for <strong>{{courseName}} ({{selectedCourse}})</strong></p>
+    }
+    @if(!selectedCourse){
+    <p  class="subtitle">Here are your best matches based on your preferences and requirements.</p>
+    }
   </div>
-  
-  <div *ngIf="matches.length > 0; else noMatches" class="matches-list">
-    @for (match of matches; track match){
-    <mat-card class="match-card">
-      <mat-card-header>
-        <div mat-card-avatar class="match-avatar">
-          <mat-icon>person</mat-icon>
-        </div>
-        <mat-card-title>{{match.name}}</mat-card-title>
-        <mat-card-subtitle>
-          <span class="match-score">Match Score: {{match.score}}%</span>
-          <span class="course-chip">{{selectedCourse}}</span>
-        </mat-card-subtitle>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <div class="match-bio" *ngIf="match.bio">
-          <mat-icon class="bio-icon">info</mat-icon>
-          <p>{{match.bio}}</p>
-        </div>
-        
-        <h3 class="compatibility-title">Compatibility Breakdown</h3>
-        <div class="compatibility-details">
-          <div class="compatibility-item" *ngFor="let item of compatibilityItems(match.compatibility)">
-            <div class="compatibility-header">
-              <span class="label">{{item.label}}</span>
-              <span class="value">{{item.value}}/5</span>
-            </div>
-            <mat-progress-bar 
-              mode="determinate" 
-              [value]="item.value * 20"
-              [color]="getProgressColor(item.value)">
-            </mat-progress-bar>
+
+  @if (matches.length > 0) {
+    <div class="matches-list"> 
+      @for (match of matches; track match){
+      <mat-card class="match-card">
+        <mat-card-header>
+          <div mat-card-avatar class="match-avatar">
+            <mat-icon>person</mat-icon>
           </div>
-        </div>
-      </mat-card-content>
-      
-      <mat-card-actions>
-        <button 
-          mat-raised-button 
-          color="primary"
-          (click)="contactMatch(match.contact)"
-          class="contact-button">
-          <mat-icon>email</mat-icon>
-          Contact {{match.name.split(' ')[0]}}
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  }
-  </div>
-  
-  <ng-template #noMatches>
+          <mat-card-title>{{match.name}}</mat-card-title>
+          <mat-card-subtitle>
+            <span class="match-score">Match Score: {{match.score}}%</span>
+            <span class="course-chip">{{selectedCourse}}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          @if (match.bio){
+          <div class="match-bio" >
+            <mat-icon class="bio-icon">info</mat-icon>
+            <p>{{match.bio}}</p>
+          </div>
+        }
+          
+          <h3 class="compatibility-title">Compatibility Breakdown</h3>
+          <div class="compatibility-details">
+            <ng-container>
+              @for (item of compatibilityItems(match.compatibility); track item.label) {
+                <div class="compatibility-item">
+                  <div class="compatibility-header">
+                    <span class="label">{{ item.label }}</span>
+                    <span class="value">{{ item.value }}/5</span>
+                  </div>
+                  <mat-progress-bar 
+                    mode="determinate" 
+                    [value]="item.value * 20"
+                    [color]="getProgressColor(item.value)">
+                  </mat-progress-bar>
+                </div>
+              }
+            </ng-container>
+          </div>
+          <br/>
+          <br/>
+          @if (match.reasoning){
+            <div class="match-bio" >
+              <p>Our reasoning: {{match.reasoning}}</p>
+            </div>
+          }
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button 
+            mat-raised-button 
+            color="primary"
+            (click)="contactMatch(match.contact)"
+            class="contact-button">
+            <mat-icon>email</mat-icon>
+            Contact {{match.name.split(' ')[0]}}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+    </div>
+  } @else {
+
     <div class="no-matches">
       <mat-icon class="no-matches-icon">search_off</mat-icon>
       <h3>No matches found yet</h3>
       <p>Try adjusting your preferences or check back later.</p>
-      <button 
-        mat-raised-button 
-        color="primary"
-        (click)="navigateToCourseSelection()"
-        class="back-button">
-        <mat-icon>arrow_back</mat-icon>
-        Back to Courses
-      </button>
     </div>
-  </ng-template>
+  }
+} @else {
+  <button mat-icon-button class="back-button" (click)="navigateToCourseSelection()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <br/>
+  <br/>
+  @if (iffilled) {
+    <p>Please fill out the specific form for {{selectedCourse}}. Then return to this page.</p>
+  } @else {
+    <p>Please fill out the initial form.</p>
+  }
+}
+  } @else {
+    <p>Fetching your best match!</p>
+  }
 </mat-card>

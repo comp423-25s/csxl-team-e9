@@ -4,35 +4,37 @@ from backend.models.user import User
 
 
 class InitialForm(BaseModel):
-    one: int
-    two: int
-    three: int
-    four: int
-    five: int
-    pid: int
+    one: int = 1
+    two: int = 1
+    three: int = 1
+    four: int = 1
+    five: int = 1
+    pid: int = 1
 
 
 class InitialFormAnswer(BaseModel):
-    one: int
-    two: int
-    three: int
-    four: int
-    five: int
+    one: int = 1
+    two: int = 1
+    three: int = 1
+    four: int = 1
+    five: int = 1
 
 
 class FormResponse(BaseModel):
-    value: str
-    pid: int
-    contact_info: str
-    clas: str
-    first_name: str
+    value: str = ""
+    pid: int = 0
+    contact_info: str = ""
+    clas: str = ""
+    first_name: str = ""
 
 
 class Match(BaseModel):
-    name: str
-    contactInformation: str
-    bio: str
-    # initialAnswers: InitialFormAnswer, coming need to fix this end to end tho
+    name: str = ""
+    contactInformation: str = ""
+    bio: str = ""
+    compatibility: int = 0
+    reasoning: str = ""
+    initialAnswers: InitialForm = InitialForm()
 
 
 class InitialFormError(Exception):
@@ -41,3 +43,8 @@ class InitialFormError(Exception):
 
 class SpecificFormError(Exception):
     pass
+
+
+class MatchResponse(BaseModel):
+    compatibility: int
+    reasoning: str
