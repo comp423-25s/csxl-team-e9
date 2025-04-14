@@ -151,6 +151,10 @@ class GitTogetherService:
         # for pair in raw_pairs:
         #     for k, v in pair.items():
         #         pairings.append(Pairing(pid1=int(k), pid2=int(v)))
+
+        # Either one of these loops work, one creates a pairing object with pid1 and pid2 as the pairing. The other is a dictionary
+        # with pid1:pid2 whichever one is easier just use that.
+
         pairings = {}
         for pair in raw_pairs:
             for k, v in pair.items():
