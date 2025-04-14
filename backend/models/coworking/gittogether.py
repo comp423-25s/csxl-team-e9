@@ -44,7 +44,3 @@ class InitialFormError(Exception):
 class SpecificFormError(Exception):
     pass
 
-
-class MatchResponse(BaseModel):
-    compatibility: int
-    reasoning: str

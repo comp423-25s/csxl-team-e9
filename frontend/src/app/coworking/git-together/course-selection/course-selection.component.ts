@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,6 +13,7 @@ import { MatchesService } from '../matches/matches.service'; // Assuming you hav
   templateUrl: './course-selection.component.html',
   styleUrls: ['./course-selection.component.css']
 })
+
 export class CourseSelectionComponent implements OnInit {
   public static Route = {
     path: 'git-together/course-selection',
@@ -42,6 +44,7 @@ export class CourseSelectionComponent implements OnInit {
   navigateToGitTogether() {
     this.router.navigate(['/coworking/git-together']);
   }
+
 
   viewMatches() {
     this.router.navigate([
@@ -82,4 +85,5 @@ export class CourseSelectionComponent implements OnInit {
       });
     }
   }
+
 }

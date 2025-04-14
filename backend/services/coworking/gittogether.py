@@ -9,6 +9,9 @@ from backend.models.coworking.gittogether import (
     SpecificFormError,
     InitialFormError,
     MatchResponse,
+    InitialFormAnswer,
+    SpecificFormError,
+    InitialFormError,
 )
 
 from backend.services.openai import OpenAIService
@@ -125,6 +128,7 @@ class GitTogetherService:
     def get_specific_form_answers(self, session: Session):
         entries = session.query(SpecificFormEntity).all()
         return entries
+
 
     def clear_specific_answers(self, session: Session):
         session.query(SpecificFormEntity).delete()

@@ -83,7 +83,6 @@
   .mat-form-field.mat-form-field-invalid .mat-form-field-label {
     color: #f44336;
   }
-
   .mat-button:disabled {
     background-color: rgba(63, 81, 181, 0.5);
     transform: none !important;

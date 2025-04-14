@@ -162,6 +162,7 @@ export class SpecificFormComponent {
         );
         this.specificForm.reset();
         this.router.navigate(['/coworking/git-together']);
+
       }, 1500);
     } else {
       this.snackBar.open(
