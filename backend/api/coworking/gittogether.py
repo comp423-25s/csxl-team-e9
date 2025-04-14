@@ -140,6 +140,16 @@ def get_student_course_answer(
     return service.get_student_course_list(pid, session=session)
 
 
+@api.get("/teacher/coursepairings", tags=["Coworking"])
+def get_teacher_course_pairings(
+    service: GitTogetherServiceDI,
+    clas: str,
+    openai: OpenAIServiceDI,
+    session: SessionDI,
+):
+    return service.get_teacher_pairings_list(clas=clas, openai=openai, session=session)
+
+
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
 def delete_specifc_answer(
     service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI
