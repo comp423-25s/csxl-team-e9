@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Profile, ProfileService } from 'src/app/profile/profile.service';
+import { profileResolver } from 'src/app/profile/profile.resolver';
+import { MatchesService } from '../matches/matches.service'; // Assuming you have this service
 
 @Component({
   selector: 'app-course-selection',
@@ -11,10 +14,12 @@ export class CourseSelectionComponent {
   public static Route = {
     path: 'git-together/course-selection',
     title: 'Select Course',
-    component: CourseSelectionComponent
+    component: CourseSelectionComponent,
+    resolve: { profile: profileResolver }
   };
 
   selectedCourse: string = '';
+  profile: Profile;
 
   availableCourses = [
     { code: 'COMP50', name: 'First-Year Seminar: Everyday Computing' },
@@ -91,8 +96,13 @@ export class CourseSelectionComponent {
 
   constructor(
     private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private matchesService: MatchesService
+  ) {
+    const data = this.route.snapshot.data as { profile: Profile };
+    this.profile = data.profile;
+  }
 
   navigateToGitTogether() {
     this.router.navigate(['/coworking/git-together']);
@@ -103,5 +113,33 @@ export class CourseSelectionComponent {
       '/coworking/git-together/matches/:course',
       { course: this.selectedCourse }
     ]);
+  }
+
+  async deleteCoursePreferences() {
+    // Make this async since we're using promises
+    if (!this.selectedCourse) {
+      this.snackBar.open('Please select a course first', 'Close', {
+        duration: 3000
+      });
+      return;
+    }
+
+    try {
+      await this.matchesService.deleteSpecificAnswer(
+        this.profile.pid,
+        this.selectedCourse
+      );
+      this.snackBar.open('Course preferences deleted successfully', 'Close', {
+        duration: 3000,
+        panelClass: ['success-snackbar']
+      });
+    } catch (err: unknown) {
+      // Properly type the error
+      console.error('Error deleting course preferences:', err);
+      this.snackBar.open('Failed to delete course preferences', 'Close', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+    }
   }
 }

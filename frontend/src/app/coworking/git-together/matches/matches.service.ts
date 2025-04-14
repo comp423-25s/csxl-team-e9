@@ -18,4 +18,9 @@ export class MatchesService {
     console.log(data);
     return data;
   }
+  deleteSpecificAnswer(pid: number, clas: string): Promise<any> {
+    return firstValueFrom(
+      this.http.delete(`${this.apiUrl}/del/${pid}/${clas}`)
+    );
+  }
 }
