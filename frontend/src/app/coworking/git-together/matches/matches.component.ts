@@ -84,6 +84,10 @@ export class GitTogetherMatchesComponent {
     this.snackBar.open(`Contacting ${contactInfo}...`, 'Close', {
       duration: 2000
     });
+    window.open(
+      `mailto:${contactInfo}?subject=GitTogether Partner&body=Hey, want to work together for ${this.selectedCourse}`,
+      '_blank'
+    );
   }
 
   compatibilityItems(compatibility: any) {
