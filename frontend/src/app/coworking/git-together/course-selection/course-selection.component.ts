@@ -99,11 +99,9 @@ export class CourseSelectionComponent {
   }
 
   viewMatches() {
-    if (this.selectedCourse) {
-      this.router.navigate([
-        '/coworking/git-together/matches',
-        { course: this.selectedCourse }
-      ]);
-    }
+    this.router.navigate([
+      '/coworking/git-together/matches/:course',
+      { course: this.selectedCourse }
+    ]);
   }
 }
