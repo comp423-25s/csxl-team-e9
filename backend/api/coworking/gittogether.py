@@ -123,11 +123,6 @@ def get_matches(
         )
 
 
-@api.get("/initialanswers", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI, session: SessionDI):
-    return service.get_initial_form_answers(session=session)
-
-
 @api.get("/specificanswers", tags=["Coworking"])
 def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     return service.get_specific_form_answers(session=session)

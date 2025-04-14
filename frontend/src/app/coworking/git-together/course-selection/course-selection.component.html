@@ -23,6 +23,13 @@
             <mat-icon>people</mat-icon>
             View Matches
           </button>
+          <button 
+          mat-stroked-button 
+          color="warn"
+          (click)="deleteCourse(course.code)">
+          <mat-icon>Delete</mat-icon>
+          Delete
+        </button>
         </mat-card-actions>
       </mat-card>
     }
