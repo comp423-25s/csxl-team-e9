@@ -133,6 +133,13 @@ def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     return service.get_specific_form_answers(session=session)
 
 
+@api.get("/student/courses}", tags=["Coworking"])
+def get_student_course_answer(
+    service: GitTogetherServiceDI, pid: int, session: SessionDI
+):
+    return service.get_student_course_list(pid, session=session)
+
+
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
 def delete_specifc_answer(
     service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI

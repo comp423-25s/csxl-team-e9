@@ -110,6 +110,13 @@ class GitTogetherService:
         session.query(SpecificFormEntity).filter_by(clas=clas).delete()
         session.commit()
 
+    def get_student_course_list(self, pid: int, session: Session):
+        entries = session.query(SpecificFormEntity).filter_by(pid=pid)
+        results = []
+        for r in entries:
+            results.append(r.clas)
+        return results
+
     # the following aren't really used in the web app, more so just good to have for testing
     def get_initial_form_answers(self, session: Session):
         entries = session.query(InitialFormEntity).all()
