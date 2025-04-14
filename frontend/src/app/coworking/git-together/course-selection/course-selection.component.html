@@ -1,4 +1,5 @@
 <mat-card class="course-selection-card">
+  @if(!loading){
   <div class="header">
     <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
       <mat-icon>arrow_back</mat-icon>
@@ -11,13 +12,14 @@
     <mat-form-field appearance="fill">
       <mat-label>Select a course</mat-label>
       <mat-select [(value)]="selectedCourse">
-        @for (course of availableCourses; track course.code) {
-          <mat-option [value]="course.code">
-            {{course.code}} - {{course.name}}
+        @for (course of courses; track course) {
+          <mat-option [value]="course">
+           {{course}}
           </mat-option>
         }
       </mat-select>
     </mat-form-field>
+
 
     <div class="action-buttons">
       <button 
@@ -40,5 +42,9 @@
         Delete Preferences
       </button>
     </div>
+
   </div>
+} @else{
+  <p>Loading</p>
+}
 </mat-card>
