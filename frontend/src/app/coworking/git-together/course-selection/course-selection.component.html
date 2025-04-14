@@ -7,24 +7,26 @@
     <mat-card-subtitle>Choose a course to view your potential matches for that class.</mat-card-subtitle>
   </div>
 
-  <div class="courses-list">
-    @for (course of availableCourses; track course) {
-      <mat-card class="course-card">
-        <mat-card-header>
-          <mat-card-title>{{course.code}}</mat-card-title>
-          <mat-card-subtitle>{{course.name}}</mat-card-subtitle>
-        </mat-card-header>
-        
-        <mat-card-actions>
-          <button 
-            mat-stroked-button 
-            color="primary"
-            (click)="viewMatches(course.code)">
-            <mat-icon>people</mat-icon>
-            View Matches
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    }
+  <div class="course-selector">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a course</mat-label>
+      <mat-select [(value)]="selectedCourse">
+        @for (course of availableCourses; track course.code) {
+          <mat-option [value]="course.code">
+            {{course.code}} - {{course.name}}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button 
+      mat-raised-button 
+      color="primary"
+      [disabled]="!selectedCourse"
+      (click)="viewMatches()"
+      class="view-matches-button">
+      <mat-icon>people</mat-icon>
+      View Matches
+    </button>
   </div>
 </mat-card>
