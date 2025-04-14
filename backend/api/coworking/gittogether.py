@@ -133,7 +133,7 @@ def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     return service.get_specific_form_answers(session=session)
 
 
-@api.get("/student/courses}", tags=["Coworking"])
+@api.get("/student/courses", tags=["Coworking"])
 def get_student_course_answer(
     service: GitTogetherServiceDI, pid: int, session: SessionDI
 ):
