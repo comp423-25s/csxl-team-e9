@@ -55,12 +55,10 @@ class GitTogetherService:
         session.commit()
 
     def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
-        # checks to see if user requesting partner has filled out initial form
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
 
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
-        # checks to see if user requesting partner has filled out specific form
         if (
             session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
             == None
@@ -80,7 +78,6 @@ class GitTogetherService:
                     + " and: "
                     + r.value
                 )
-                # ChatGPT call
                 result = openai.prompt(
                     system_prompt, user_prompt, response_model=MatchResponse
                 )
@@ -100,29 +97,14 @@ class GitTogetherService:
             return match
         return "no matches"
 
-    def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
-        entry = session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
+    def get_course_answers(self, session: Session):
+        results = session.query(SpecificFormEntity).all()
+        if results == None:
+            raise SpecificFormError("Fill out class specifc form first")
+        return results
+
+    def delete_course_answer(self, clas: str, session: Session):
+        entry = session.query(SpecificFormEntity).filter_by(clas=clas).first()
         if entry:
             session.delete(entry)
             session.commit()
-
-    def delete_class_specifc_answer(self, clas: str, session: Session):
-        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
-        session.commit()
-
-    # the following aren't really used in the web app, more so just good to have for testing
-    def get_initial_form_answers(self, session: Session):
-        entries = session.query(InitialFormEntity).all()
-        return entries
-
-    def get_specific_form_answers(self, session: Session):
-        entries = session.query(SpecificFormEntity).all()
-        return entries
-
-    def clear_specific_answers(self, session: Session):
-        session.query(SpecificFormEntity).delete()
-        session.commit()
-
-    def clearIA(self, session: Session):
-        session.query(InitialFormEntity).delete()
-        session.commit()

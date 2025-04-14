@@ -18,9 +18,8 @@ export class CourseSelectionComponent {
 
   availableCourses = [
     { code: 'COMP110', name: 'Introduction to Programming and Data Science' },
-    { code: 'COMP426', name: 'Introduction to Programming and Data Science' },
-    { code: 'COMP590', name: 'Introduction to Programming and Data Science' },
-    { code: 'COMP590', name: 'Introduction to Programming and Data Science' }
+    { code: 'COMP426', name: 'Modern Web Development' },
+    { code: 'COMP590', name: 'Topics in Computer Science' }
   ];
 
   constructor(
