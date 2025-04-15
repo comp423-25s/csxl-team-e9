@@ -45,6 +45,7 @@ import { SpecificFormComponent } from './git-together/specific-form/specific-for
 import { GitTogetherMatchesComponent } from './git-together/matches/matches.component';
 import { CourseSelectionComponent } from './git-together/course-selection/course-selection.component';
 import { TeacherPairingsComponent } from './git-together/teacher-pairings/teacher-pairings.component';
+import { TeacherPairingsMatchesComponent } from './git-together/teacher-pairings-matches/teacher-pairings-matches.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { TeacherPairingsComponent } from './git-together/teacher-pairings/teache
     SpecificFormComponent,
     GitTogetherMatchesComponent,
     CourseSelectionComponent,
-    TeacherPairingsComponent
+    TeacherPairingsComponent,
+    TeacherPairingsMatchesComponent
   ],
   imports: [
     CommonModule,

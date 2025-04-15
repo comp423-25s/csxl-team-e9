@@ -12,7 +12,7 @@ from backend.models.coworking.gittogether import (
 from backend.services.openai import OpenAIService
 from sqlalchemy.orm import Session
 from backend.services.role import RoleService
-from backend.models.user import User, UserIdentity
+from backend.models.user import User
 from backend.services.user import UserService
 
 __authors__ = ["Mason"]
@@ -26,6 +26,10 @@ GitTogetherServiceDI: TypeAlias = Annotated[GitTogetherService, Depends()]
 OpenAIServiceDI: TypeAlias = Annotated[OpenAIService, Depends()]
 
 SessionDI: TypeAlias = Annotated[Session, Depends(db_session)]
+
+RoleSvc: TypeAlias = Annotated[RoleService, Depends(RoleService)]
+
+UserSvc: TypeAlias = Annotated[UserService, Depends(UserService)]
 
 
 api = APIRouter(prefix="/api/coworking/gittogether")
@@ -175,6 +179,10 @@ def get_answers(service: GitTogetherServiceDI, session: SessionDI):
 
 
 @api.get("/is-ambassador", tags=["Coworking"], response_model=bool)
-def check_if_ambassador(roleService: RoleService, userService: UserService, id: str):
+def check_if_ambassador(
+    id: str,
+    roleService: RoleSvc,
+    userService: UserSvc,
+):
     user: User = userService.get_by_id(id)
     return roleService.is_member(subject=user, id=2, userId=id)

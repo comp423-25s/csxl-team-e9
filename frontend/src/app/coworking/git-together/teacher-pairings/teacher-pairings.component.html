@@ -1,11 +1,13 @@
 <mat-card class="teacher-pairings-card">
     @if(!loading){
     <div class="header">
-      <button mat-icon-button class="back-button" (click)="navigateToGitTogether()">
+      <button mat-icon-button class="back-button" (click)="navigateToCoworking()">
         <mat-icon>arrow_back</mat-icon>
       </button>
+      <div class="header-text">
       <mat-card-title>Instructor View</mat-card-title>
       <mat-card-subtitle>It appears you are an instructor! You may not find partners, but you may view matches for any course!</mat-card-subtitle>
+      </div>
     </div>
   
     <div class="course-selector">
@@ -13,8 +15,8 @@
         <mat-label>Select a course</mat-label>
         <mat-select [(value)]="selectedCourse">
           @for (course of coursesToSelect; track course) {
-            <mat-option [value]="course">
-             {{course}}
+            <mat-option [value]="course.code">
+              {{course.name}} ({{course.code}})
             </mat-option>
           }
         </mat-select>
