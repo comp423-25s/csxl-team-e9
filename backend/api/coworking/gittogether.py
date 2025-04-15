@@ -11,7 +11,9 @@ from backend.models.coworking.gittogether import (
 )
 from backend.services.openai import OpenAIService
 from sqlalchemy.orm import Session
-
+from backend.services.role import RoleService
+from backend.models.user import User, UserIdentity
+from backend.services.user import UserService
 
 __authors__ = ["Mason"]
 __copyright__ = "Copyright 2023"
@@ -170,3 +172,9 @@ def get_answers(service: GitTogetherServiceDI, session: SessionDI):
 @api.delete("/dSA", tags=["Coworking"])
 def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     service.clear_specific_answers(session=session)
+
+
+@api.get("/is-ambassador", tags=["Coworking"], response_model=bool)
+def check_if_ambassador(roleService: RoleService, userService: UserService, id: str):
+    user: User = userService.get_by_id(id)
+    return roleService.is_member(subject=user, id=2, userId=id)
