@@ -26,6 +26,15 @@
       <div class="action-buttons">
         <button 
           mat-stroked-button 
+          color="warn"
+          [disabled]="!selectedCourse"
+          (click)="warnDeletePairings()"
+          class="view-matches-button">
+          <mat-icon>delete</mat-icon>
+          Delete All Matches/Submissions
+        </button>
+        <button 
+          mat-stroked-button 
           color="primary"
           [disabled]="!selectedCourse"
           (click)="viewCoursePairings()"

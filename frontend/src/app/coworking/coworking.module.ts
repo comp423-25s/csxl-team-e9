@@ -46,6 +46,7 @@ import { GitTogetherMatchesComponent } from './git-together/matches/matches.comp
 import { CourseSelectionComponent } from './git-together/course-selection/course-selection.component';
 import { TeacherPairingsComponent } from './git-together/teacher-pairings/teacher-pairings.component';
 import { TeacherPairingsMatchesComponent } from './git-together/teacher-pairings-matches/teacher-pairings-matches.component';
+import { ConfirmDeleteDialog } from './git-together/teacher-pairings/confirm-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { TeacherPairingsMatchesComponent } from './git-together/teacher-pairings
     GitTogetherMatchesComponent,
     CourseSelectionComponent,
     TeacherPairingsComponent,
-    TeacherPairingsMatchesComponent
+    TeacherPairingsMatchesComponent,
+    ConfirmDeleteDialog
   ],
   imports: [
     CommonModule,
