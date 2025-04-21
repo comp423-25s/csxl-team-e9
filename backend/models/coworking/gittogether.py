@@ -56,8 +56,9 @@ class StudentAnswer(BaseModel):
 
 
 class Pairing(BaseModel):
-    pid1: int
-    pid2: int
+    pidOne: int
+    pidTwo: int
+    clas: str
 
 
 class GPTResponse(BaseModel):

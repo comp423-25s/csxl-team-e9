@@ -28,7 +28,11 @@ from ..test.services.academics import course_data, term_data, section_data
 from ..test.services.office_hours import office_hours_data
 from ..test.services.academics.hiring import hiring_data
 from ..test.services.articles import article_data
-from backend.test.services.coworking import initial_form_data, specific_form_data
+from backend.test.services.coworking import (
+    initial_form_data,
+    matches_data,
+    specific_form_data,
+)
 
 __authors__ = ["Kris Jordan", "Ajay Gandecha"]
 __copyright__ = "Copyright 2023"
@@ -69,6 +73,7 @@ with Session(engine) as session:
     article_data.insert_fake_data(session)
     initial_form_data.insert_fake_data(session)
     specific_form_data.insert_fake_data(session)
+    matches_data.insert_fake_data(session)
 
     # Commit changes to the database
     session.commit()
