@@ -59,6 +59,8 @@ class Pairing(BaseModel):
     pidOne: int
     pidTwo: int
     clas: str
+    compatibility: int = 0
+    reasoning: str = ""
 
 
 class GPTResponse(BaseModel):

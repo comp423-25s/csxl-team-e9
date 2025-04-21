@@ -8,7 +8,13 @@ __authors__ = ["Kris Jordan"]
 __copyright__ = "Copyright 2023"
 __license__ = "MIT"
 
-pairing = Pairing(pidOne=0, pidTwo=999999999, clas="COMP110")
+pairing = Pairing(
+    pidOne=0,
+    pidTwo=999999999,
+    clas="COMP110",
+    compatibility=40,
+    reasoning="They cool together",
+)
 
 
 pairs = [pairing]

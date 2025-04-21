@@ -12,6 +12,8 @@ class MatchEntity(EntityBase):
     pid_one: Mapped[int] = mapped_column(Integer)
     pid_two: Mapped[int] = mapped_column(Integer)
     course: Mapped[String] = mapped_column(String(16))
+    compatibility: Mapped[int] = mapped_column(Integer)
+    reasoning: Mapped[String] = mapped_column(String(128))
     __table_args__ = (
         PrimaryKeyConstraint(
             "pid_one",
@@ -27,6 +29,8 @@ class MatchEntity(EntityBase):
             pid_one=model.pidOne,
             pid_two=model.pidTwo,
             course=model.clas,
+            compatibility=model.compatibility,
+            reasoning=model.reasoning,
         )
 
     def to_model(self) -> Pairing:
@@ -35,9 +39,13 @@ class MatchEntity(EntityBase):
             pidOne=self.pid_one,
             pidTwo=self.pid_two,
             clas=self.course,
+            compatibility=self.compatibility,
+            reasoning=self.reasoning,
         )
 
     def update(self, model: Pairing):
         self.pid_one = model.pidOne
         self.pid_two = model.pidTwo
         self.course = model.clas
+        self.compatibility = (model.compatibility,)
+        self.reasoning = model.reasoning

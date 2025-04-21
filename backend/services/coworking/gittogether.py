@@ -1,6 +1,7 @@
 from typing import Annotated, TypeAlias, List
 from fastapi import Depends
 from pytest import Session
+from backend.entities.coworking.matches_entity import MatchEntity
 from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
@@ -11,7 +12,6 @@ from backend.models.coworking.gittogether import (
     SpecificFormError,
     InitialFormError,
     MatchResponse,
-    StudentAnswer,
 )
 import json
 import re
@@ -178,3 +178,40 @@ class GitTogetherService:
     def clearIA(self, session: Session):
         session.query(InitialFormEntity).delete()
         session.commit()
+
+    # helper functions to get stored matches
+    def get_stored_matches(self, pid: int, clas: str, session: Session):
+        data = session.query(MatchEntity).filter_by(pid_one=pid, course=clas)
+        values = []
+        for d in data:
+            values.append(
+                Pairing(
+                    pidOne=d.pid_one,
+                    pidTwo=d.pid_two,
+                    clas=d.course,
+                    compatibility=d.compatibility,
+                    reasoning=d.reasoning,
+                )
+            )
+        return values
+
+    def get_list_of_matches(self, data: list[Pairing], session: Session):
+        values = []
+        for d in data:
+            s = (
+                session.query(SpecificFormEntity)
+                .filter_by(clas=d.clas, pid=d.pidTwo)
+                .first()
+            )
+            iA = session.query(InitialFormEntity).filter_by(pid=d.pidTwo).first()
+            initialFormAnswers = iA.to_model()
+            match = Match(
+                name=s.first_name,
+                contactInformation=s.contact_information,
+                bio=s.value,
+                compatibility=d.compatibility,
+                reasoning=d.reasoning,
+                initialAnswers=initialFormAnswers,
+            )
+            values.append(match)
+        return values
