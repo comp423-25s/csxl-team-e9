@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TeacherPairingsService {
-  private apiUrl = '/teacher/coursepairings';
+  private apiUrl = '/api/coworking/gittogether/teacher/coursepairings';
   constructor(private http: HttpClient) {}
 
   async getTeacherCoursePairingsAsync(clas: string): Promise<any> {
