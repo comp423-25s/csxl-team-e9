@@ -1,3 +1,4 @@
+from operator import or_
 from typing import Annotated, TypeAlias, List
 from fastapi import Depends
 from pytest import Session
@@ -73,14 +74,7 @@ class GitTogetherService:
         matches = self.get_stored_matches(pid, clas, session)
         values = self.get_list_of_matches(matches, session)
         if values:
-            # should return a list of matches, once frontend is ready
-            return values[0]
-        user_answer = (
-            session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
-        )
-        match = self.get_chatGPT_response(user_answer, clas, pid, openai, session)
-        if match.bio != "":
-            return match
+            return values
         return "no matches"
 
     def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
@@ -88,9 +82,15 @@ class GitTogetherService:
         if entry:
             session.delete(entry)
             session.commit()
+        session.query(MatchEntity).filter(
+            or_(MatchEntity.pid_one == pid, MatchEntity.pid_two == pid),
+            MatchEntity.course == clas,
+        ).delete(synchronize_session=False)
+        session.commit()
 
     def delete_class_specifc_answer(self, clas: str, session: Session):
         session.query(SpecificFormEntity).filter_by(clas=clas).delete()
+        session.query(MatchEntity).filter_by(clas=clas).delete()
         session.commit()
 
     def get_student_course_list(self, pid: int, session: Session):
@@ -199,12 +199,14 @@ class GitTogetherService:
     # gets best possible match and then adds to matches entity
     def get_chatGPT_response(
         self,
-        userAnswer: SpecificFormEntity,
         clas: str,
         pid: int,
         openai: OpenAIService,
         session: Session,
     ):
+        userAnswer = (
+            session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
+        )
         match = Match()
         match_pid = -1
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance and less then 128 characters. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
@@ -259,4 +261,6 @@ class GitTogetherService:
 
             session.add(entity)
             session.commit()
-        return match
+        if match.bio != "":
+            return match
+        return "no matches around"
