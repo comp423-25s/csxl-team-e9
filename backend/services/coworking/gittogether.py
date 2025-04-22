@@ -70,6 +70,10 @@ class GitTogetherService:
             raise SpecificFormError("Fill out class specifc form first")
         # call get stored matches first
 
+        matches = self.get_stored_matches(pid, clas, session)
+        values = self.get_list_of_matches(matches, session)
+        if values:
+            return values[0]
         user_answer = (
             session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
         )
