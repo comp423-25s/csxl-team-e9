@@ -62,44 +62,17 @@ class GitTogetherService:
         # checks to see if user requesting partner has filled out initial form
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
-
-        system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
         # checks to see if user requesting partner has filled out specific form
         if (
             session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
             == None
         ):
             raise SpecificFormError("Fill out class specifc form first")
-
-        match = Match()
-        results = session.query(SpecificFormEntity).filter_by(clas=clas).all()
+        # call get stored matches first
         user_answer = (
             session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
         )
-        for r in results:
-            if r.pid != pid:
-                user_prompt = (
-                    "Here are the two answers: "
-                    + user_answer.value
-                    + " and: "
-                    + r.value
-                )
-                # ChatGPT call
-                result = openai.prompt(
-                    system_prompt, user_prompt, response_model=MatchResponse
-                )
-
-                if result.compatibility > match.compatibility:
-                    iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
-                    initialFormAnswers = iA.to_model()
-                    match = Match(
-                        name=r.first_name,
-                        contactInformation=r.contact_information,
-                        bio=r.value,
-                        compatibility=result.compatibility,
-                        reasoning=result.reasoning,
-                        initialAnswers=initialFormAnswers,
-                    )
+        match = self.get_chatGPT_response(user_answer, clas, pid, openai, session)
         if match.bio != "":
             return match
         return "no matches"
@@ -215,3 +188,53 @@ class GitTogetherService:
             )
             values.append(match)
         return values
+
+    def get_chatGPT_response(
+        self,
+        userAnswer: SpecificFormEntity,
+        clas: str,
+        pid: int,
+        openai: OpenAIService,
+        session: Session,
+    ):
+        match = Match()
+        match_pid = -1
+        system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance and less then 128 characters. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
+        results = (
+            session.query(SpecificFormEntity)
+            .filter(SpecificFormEntity.clas == clas, SpecificFormEntity.pid != pid)
+            .all()
+        )
+        for r in results:
+            user_prompt = (
+                "Here are the two answers: " + userAnswer.value + " and: " + r.value
+            )
+            # ChatGPT call
+            result = openai.prompt(
+                system_prompt, user_prompt, response_model=MatchResponse
+            )
+
+            if result.compatibility > match.compatibility:
+                iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
+                initialFormAnswers = iA.to_model()
+                match = Match(
+                    name=r.first_name,
+                    contactInformation=r.contact_information,
+                    bio=r.value,
+                    compatibility=result.compatibility,
+                    reasoning=result.reasoning,
+                    initialAnswers=initialFormAnswers,
+                )
+                match_pid = r.pid
+        # add match to saved matches
+        entity = MatchEntity(
+            pid_one=pid,
+            pid_two=match_pid,
+            course=clas,
+            compatibility=match.compatibility,
+            reasoning=match.reasoning,
+        )
+
+        session.add(entity)
+        session.commit()
+        return match
