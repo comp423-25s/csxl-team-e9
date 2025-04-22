@@ -69,6 +69,7 @@ class GitTogetherService:
         ):
             raise SpecificFormError("Fill out class specifc form first")
         # call get stored matches first
+
         user_answer = (
             session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
         )
@@ -189,6 +190,7 @@ class GitTogetherService:
             values.append(match)
         return values
 
+    # gets best possible match and then adds to matches entity
     def get_chatGPT_response(
         self,
         userAnswer: SpecificFormEntity,
@@ -200,41 +202,55 @@ class GitTogetherService:
         match = Match()
         match_pid = -1
         system_prompt = "You are trying to form the best partners for a group programming project. Based on these two answers on a scale of 0-100 how good of partners would they be and why in one sentance and less then 128 characters. When giving feedback about the first answer give the feedback as if you are directly talking to the person. Use words like you instead of the first person. "
+
+        temp_previous_matches = session.query(MatchEntity).filter(
+            MatchEntity.pid_one == pid
+        )
+        previous_matches = []
+        for t in temp_previous_matches:
+            previous_matches.append(t.pid_two)
+        print(previous_matches)
+
         results = (
             session.query(SpecificFormEntity)
-            .filter(SpecificFormEntity.clas == clas, SpecificFormEntity.pid != pid)
+            .filter(
+                SpecificFormEntity.clas == clas,
+                SpecificFormEntity.pid != pid,
+                ~SpecificFormEntity.pid.in_(previous_matches),
+            )
             .all()
         )
-        for r in results:
-            user_prompt = (
-                "Here are the two answers: " + userAnswer.value + " and: " + r.value
-            )
-            # ChatGPT call
-            result = openai.prompt(
-                system_prompt, user_prompt, response_model=MatchResponse
-            )
-
-            if result.compatibility > match.compatibility:
-                iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
-                initialFormAnswers = iA.to_model()
-                match = Match(
-                    name=r.first_name,
-                    contactInformation=r.contact_information,
-                    bio=r.value,
-                    compatibility=result.compatibility,
-                    reasoning=result.reasoning,
-                    initialAnswers=initialFormAnswers,
+        if results:
+            for r in results:
+                user_prompt = (
+                    "Here are the two answers: " + userAnswer.value + " and: " + r.value
                 )
-                match_pid = r.pid
-        # add match to saved matches
-        entity = MatchEntity(
-            pid_one=pid,
-            pid_two=match_pid,
-            course=clas,
-            compatibility=match.compatibility,
-            reasoning=match.reasoning,
-        )
+                # ChatGPT call
+                result = openai.prompt(
+                    system_prompt, user_prompt, response_model=MatchResponse
+                )
 
-        session.add(entity)
-        session.commit()
+                if result.compatibility > match.compatibility:
+                    iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
+                    initialFormAnswers = iA.to_model()
+                    match = Match(
+                        name=r.first_name,
+                        contactInformation=r.contact_information,
+                        bio=r.value,
+                        compatibility=result.compatibility,
+                        reasoning=result.reasoning,
+                        initialAnswers=initialFormAnswers,
+                    )
+                    match_pid = r.pid
+            # add match to saved matches
+            entity = MatchEntity(
+                pid_one=pid,
+                pid_two=match_pid,
+                course=clas,
+                compatibility=match.compatibility,
+                reasoning=match.reasoning,
+            )
+
+            session.add(entity)
+            session.commit()
         return match
