@@ -73,6 +73,7 @@ class GitTogetherService:
         matches = self.get_stored_matches(pid, clas, session)
         values = self.get_list_of_matches(matches, session)
         if values:
+            # should return a list of matches, once frontend is ready
             return values[0]
         user_answer = (
             session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
@@ -173,6 +174,7 @@ class GitTogetherService:
             )
         return values
 
+    # gets all specific answers for stored pairings
     def get_list_of_matches(self, data: list[Pairing], session: Session):
         values = []
         for d in data:

@@ -156,6 +156,7 @@ def get_teacher_course_pairings(
     return service.get_teacher_pairings_list(clas=clas, openai=openai, session=session)
 
 
+# delete from matches
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
 def delete_specifc_answer(
     service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI
