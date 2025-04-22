@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class IFService {
-  private apiUrl = 'http://localhost:1560/api/coworking/gittogether/';
+  private apiUrl = '/api/coworking/gittogether/';
   constructor(private http: HttpClient) {}
   generate_answers(
     one: number,

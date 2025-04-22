@@ -48,3 +48,17 @@ class SpecificFormError(Exception):
 class MatchResponse(BaseModel):
     compatibility: int
     reasoning: str
+
+
+class StudentAnswer(BaseModel):
+    pid: int
+    value: str
+
+
+class Pairing(BaseModel):
+    pid1: int
+    pid2: int
+
+
+class GPTResponse(BaseModel):
+    answer: str

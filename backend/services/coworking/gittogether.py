@@ -1,16 +1,20 @@
-from typing import Annotated, TypeAlias
+from typing import Annotated, TypeAlias, List
 from fastapi import Depends
 from pytest import Session
 from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
+    GPTResponse,
     InitialForm,
     Match,
+    Pairing,
     SpecificFormError,
     InitialFormError,
     MatchResponse,
+    StudentAnswer,
 )
-
+import json
+import re
 from backend.services.openai import OpenAIService
 from backend.entities.coworking.initial_form_entity import InitialFormEntity
 
@@ -118,6 +122,47 @@ class GitTogetherService:
         for r in entries:
             results.append(r.clas)
         return results
+
+    def get_teacher_pairings_list(
+        self, clas: str, openai: OpenAIService, session: Session
+    ):
+        entries = session.query(SpecificFormEntity).filter_by(clas=clas)
+
+        results = ""
+        for r in entries:
+            results += f"{r.pid}: {r.value}; "
+
+        system_prompt = (
+            "You are trying to form the best partners for a group programming project. Based on this group of answers, "
+            "please pair everyone as best you can, ensuring there is a 1-to-1 unique pairing. Each id is followed by their answer, "
+            "separated by a semicolon. "
+            'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}]'
+        )
+
+        user_prompt = "Here are the answers: " + results
+
+        result = openai.prompt(system_prompt, user_prompt, response_model=GPTResponse)
+
+        match = re.search(r"\[.*\]", result.answer, re.DOTALL)
+        if not match:
+            raise ValueError("No JSON array found in OpenAI response.")
+
+        raw_pairs = json.loads(match.group(0))
+
+        # pairings = []
+        # for pair in raw_pairs:
+        #     for k, v in pair.items():
+        #         pairings.append(Pairing(pid1=int(k), pid2=int(v)))
+
+        # Either one of these loops work, one creates a pairing object with pid1 and pid2 as the pairing. The other is a dictionary
+        # with pid1:pid2 whichever one is easier just use that.
+
+        pairings = {}
+        for pair in raw_pairs:
+            for k, v in pair.items():
+                pairings[int(k)] = int(v)
+
+        return pairings
 
     # the following aren't really used in the web app, more so just good to have for testing
     def get_initial_form_answers(self, session: Session):

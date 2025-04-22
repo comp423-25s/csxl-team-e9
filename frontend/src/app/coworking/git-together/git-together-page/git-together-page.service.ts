@@ -5,13 +5,13 @@ import { Observable, firstValueFrom } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CourseSelectionService {
-  private apiUrl = '/api/coworking/gittogether/student/courses';
+export class PageService {
+  private apiUrl = '/api/coworking/gittogether/is-ambassador';
   constructor(private http: HttpClient) {}
-  async get_courses(pid: number): Promise<any> {
-    const params = new HttpParams().set('pid', pid);
+  async is_ambassador(id: number): Promise<Boolean> {
+    const params = new HttpParams().set('id', id);
     const data = await firstValueFrom(
-      this.http.get<CourseSelectionService>(this.apiUrl, {
+      this.http.get<Promise<Boolean>>(this.apiUrl, {
         params
       })
     );

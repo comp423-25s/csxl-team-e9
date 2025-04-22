@@ -6,8 +6,8 @@ import { Observable, firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class MatchesService {
-  private apiUrl = 'http://localhost:1560/api/coworking/gittogether/matches';
-  private deleteURL = 'http://localhost:1560/api/coworking/gittogether';
+  private apiUrl = '/api/coworking/gittogether/matches';
+  private deleteURL = '/api/coworking/gittogether';
   constructor(private http: HttpClient) {}
   async get_matches(clas: string, pid: number): Promise<any> {
     const params = new HttpParams().set('clas', clas).set('pid', pid);

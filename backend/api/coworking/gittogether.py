@@ -11,7 +11,9 @@ from backend.models.coworking.gittogether import (
 )
 from backend.services.openai import OpenAIService
 from sqlalchemy.orm import Session
-
+from backend.services.role import RoleService
+from backend.models.user import User
+from backend.services.user import UserService
 
 __authors__ = ["Mason"]
 __copyright__ = "Copyright 2023"
@@ -24,6 +26,10 @@ GitTogetherServiceDI: TypeAlias = Annotated[GitTogetherService, Depends()]
 OpenAIServiceDI: TypeAlias = Annotated[OpenAIService, Depends()]
 
 SessionDI: TypeAlias = Annotated[Session, Depends(db_session)]
+
+RoleSvc: TypeAlias = Annotated[RoleService, Depends(RoleService)]
+
+UserSvc: TypeAlias = Annotated[UserService, Depends(UserService)]
 
 
 api = APIRouter(prefix="/api/coworking/gittogether")
@@ -140,6 +146,16 @@ def get_student_course_answer(
     return service.get_student_course_list(pid, session=session)
 
 
+@api.get("/teacher/coursepairings", tags=["Coworking"])
+def get_teacher_course_pairings(
+    service: GitTogetherServiceDI,
+    clas: str,
+    openai: OpenAIServiceDI,
+    session: SessionDI,
+):
+    return service.get_teacher_pairings_list(clas=clas, openai=openai, session=session)
+
+
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
 def delete_specifc_answer(
     service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI
@@ -147,7 +163,7 @@ def delete_specifc_answer(
     service.delete_student_specifc_answer(pid, clas, session=session)
 
 
-@api.delete("/del{clas}", tags=["Coworking"])
+@api.delete("/teacher/coursepairings", tags=["Coworking"])
 def delete_specifc_class(service: GitTogetherServiceDI, clas: str, session: SessionDI):
     service.delete_class_specifc_answer(clas, session=session)
 
@@ -160,3 +176,13 @@ def get_answers(service: GitTogetherServiceDI, session: SessionDI):
 @api.delete("/dSA", tags=["Coworking"])
 def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     service.clear_specific_answers(session=session)
+
+
+@api.get("/is-ambassador", tags=["Coworking"], response_model=bool)
+def check_if_ambassador(
+    id: str,
+    roleService: RoleSvc,
+    userService: UserSvc,
+):
+    user: User = userService.get_by_id(id)
+    return roleService.is_member(subject=user, id=2, userId=id)

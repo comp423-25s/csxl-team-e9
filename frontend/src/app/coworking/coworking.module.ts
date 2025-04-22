@@ -44,6 +44,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SpecificFormComponent } from './git-together/specific-form/specific-form.component';
 import { GitTogetherMatchesComponent } from './git-together/matches/matches.component';
 import { CourseSelectionComponent } from './git-together/course-selection/course-selection.component';
+import { TeacherPairingsComponent } from './git-together/teacher-pairings/teacher-pairings.component';
+import { TeacherPairingsMatchesComponent } from './git-together/teacher-pairings-matches/teacher-pairings-matches.component';
+import { ConfirmDeleteDialog } from './git-together/teacher-pairings/confirm-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,10 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
     InitialFormComponent,
     SpecificFormComponent,
     GitTogetherMatchesComponent,
-    CourseSelectionComponent
+    CourseSelectionComponent,
+    TeacherPairingsComponent,
+    TeacherPairingsMatchesComponent,
+    ConfirmDeleteDialog
   ],
   imports: [
     CommonModule,
