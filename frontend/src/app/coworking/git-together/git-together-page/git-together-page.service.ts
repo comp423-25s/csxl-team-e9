@@ -6,8 +6,7 @@ import { Observable, firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class PageService {
-  private apiUrl =
-    'http://localhost:1560/api/coworking/gittogether/is-ambassador';
+  private apiUrl = '/api/coworking/gittogether/is-ambassador';
   constructor(private http: HttpClient) {}
   async is_ambassador(id: number): Promise<Boolean> {
     const params = new HttpParams().set('id', id);

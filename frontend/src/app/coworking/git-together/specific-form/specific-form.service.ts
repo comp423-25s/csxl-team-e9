@@ -6,7 +6,7 @@ import { first, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class SFService {
-  private apiUrl = 'http://localhost:1560/api/coworking/gittogether/specific';
+  private apiUrl = '/api/coworking/gittogether/specific';
   constructor(private http: HttpClient) {}
   generate_response(
     value: String,

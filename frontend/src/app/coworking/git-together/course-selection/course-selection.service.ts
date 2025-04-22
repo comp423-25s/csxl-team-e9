@@ -6,8 +6,7 @@ import { Observable, firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class CourseSelectionService {
-  private apiUrl =
-    'http://localhost:1560/api/coworking/gittogether/student/courses';
+  private apiUrl = '/api/coworking/gittogether/student/courses';
   constructor(private http: HttpClient) {}
   async get_courses(pid: number): Promise<any> {
     const params = new HttpParams().set('pid', pid);
