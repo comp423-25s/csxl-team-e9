@@ -136,7 +136,7 @@ class GitTogetherService:
             "You are trying to form the best partners for a group programming project. Based on this group of answers, "
             "please pair everyone as best you can, ensuring there is a 1-to-1 unique pairing. Each id is followed by their answer, "
             "separated by a semicolon. "
-            'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}]'
+            'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}], if there is an odd number of answers make the other pair pid -1.'
         )
 
         user_prompt = "Here are the answers: " + results
