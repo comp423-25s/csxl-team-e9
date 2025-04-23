@@ -62,7 +62,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class TeacherPairingsService {
-  private baseUrl = 'http://localhost:1560/api/coworking/gittogether';
+  private baseUrl = '/api/coworking/gittogether';
   private pairingsUrl = `${this.baseUrl}/teacher/coursepairings`;
 
   constructor(private http: HttpClient) {}
