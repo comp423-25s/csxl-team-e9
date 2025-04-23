@@ -4,15 +4,18 @@ Authors: Mason Drabik, Riley Warmuth, Wyatt Smith
 
 ## Backend
 
-The backend of Git together features a bunch of new API routes.
+The backend of Git together features several new API routes. (prefix: /api/coworking/gittogether)
 
-- /gittogether/ : brings the user to the initial form for baseline answers
-- /gittogether/specific :brings the user to the class specific form where they input specific answers for what they want to accomplish and some of their hobbies etc.
-
-- /gittogether/matches : this route gets the users matches for a specific class
-- /gittogether/del{pid}/{clas} : this route deletes a specifc answer based on class and user pid
-- /gittogether/teacher/coursepairings : this route gets an entire class pairings for a teacher based on a class
-- /gittogether/teacher/del/coursepairings: this route deletes all specifc entries for a given class
+- / : POST - Allows students to send their answers to the initial form
+- /specific : POST - Allows students to send their answers to the specific form
+- /matches : GET - Allows students to get their matches for a given class
+- /initialanswers : GET - Allows students to view their initial answers
+- /specificanswers : GET - Allows students to view thier inital answers
+- /student/courses : GET - Allows a student to view a list of entered courses
+- /teacher/coursepairings: GET - Allows instructors to view pairings for a given class
+- /del{pid}/{clas} : DELETE - Allows students to delete a specific form submission
+- /teacher/del/coursepairings : DELETE - Allows instructors to delete pairings for a class
+- /is-ambassador : GET - Allows authentication into instructor/ambassador view
 
 The Backend also relies on new models including InitialFormAnswer, SpecifcFormAnswer, Match, and Pairing. InitialFormAnswer and SpecificFormAnswer store information for the different forms that are filled out. Match stores information about a students match for a given class, and Pairing contains the two pids of a given pairing for a class.
 
@@ -32,6 +35,19 @@ Our GitTogether Home Page authenticates the user and shows them their correspond
 
 The page for the student allows them to view their matches and submit an initial and specific form. The student is only allowed to view their matches if they have submitted the latter forms. The initial form has the student fill out a series of slider responses based on how they like to work, whether they prefer working closer to deadlines or further in advance, etc. The specific form is for a student’s specific interests, as well as the course they are doing a project for, which the ChatGPT api uses in the backend to pair them with their ideal match. The user fills in their contact info, which will be shown in the matches page for other students to view if they match with them. The matches page shows the user’s initial and specific form responses, displays their name, and logo. Students are able to delete their forms, as well as their matches. In the future, when a user deletes a match, they will be given a new match.
 
+Related Routes:
+
+- /git-together : Home page for the feature where users may select to complete a form or view matches
+- /initialForm : Form for users to specify their basic partner preferences
+- /specificForm : Form for users to specify which course they would like to find a partner and specific preferences.
+- /git-together/course-selection : Allows users to select a course to find their matches
+- /git-together/matches/:course;course=XXX : Allows users to view their matches
+
 ## Ambassador
 
 The ambassador's home page allows the ambassador to view all matches for a specific course. The ChatGPT api automatically generates all matches in the backend. The matches page for the ambassador lists the number of students who have filled out the forms, the pairs for the students, and their corresponding PIDs for those pairs. The page also allows ambassadors to delete singular matches, as well as the entire list of matches for a course. There is a confirmation button for the deletion to verify that the delete button was not accidentally pressed. The professor can reload the matches page if they are unhappy with the responses.
+
+Related Routes:
+
+- /git-together/teacher-pairings : Allows instructors to select a course to view matches
+- /git-together/teacher-pairings/:course;course=XXX : Allows instructors to view matches for the selected course
