@@ -5,14 +5,15 @@
 }
 
 .header {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  text-align: center;
   margin-bottom: 2rem;
 }
 
 .back-button {
-  align-self: flex-start;
-  margin-bottom: 1rem;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .course-selector {
@@ -28,7 +29,6 @@ mat-form-field {
 .action-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
   width: 100%;
 }
 

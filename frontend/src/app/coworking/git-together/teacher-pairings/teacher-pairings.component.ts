@@ -53,9 +53,9 @@ export class TeacherPairingsComponent {
       width: '300px',
       data: {
         message:
-          'Are you sure you want to delete all matches/submissions for ' +
+          'Are you sure you want to delete ALL pairings/submissions for ' +
           this.selectedCourse +
-          '? This cannot be undone!'
+          '? This action cannot be undone.'
       }
     });
 
