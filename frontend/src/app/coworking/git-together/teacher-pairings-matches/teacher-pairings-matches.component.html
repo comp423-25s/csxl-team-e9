@@ -1,1 +1,53 @@
-<p>MATCHES component {{selectedCourse}}</p>
+
+<!-- teacher-pairings-matches.component.html -->
+<mat-card class="matches-container">
+  @if(!isLoading) {
+    <div class="header">
+      <button mat-icon-button (click)="navigateToTeacherPairings()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2>GitTogether Pairings for {{courseName}} ({{selectedCourse}})</h2>
+      <p>Total pairs: {{matches.length}}</p>
+      <button mat-raised-button color="warn" (click)="deleteAllMatches()">Delete All Pairings</button>
+    </div>
+
+    <div class="table-container">
+      <table mat-table [dataSource]="matches" class="mat-elevation-z8">
+        <!-- Pair Number Column -->
+        <ng-container matColumnDef="pairNumber">
+          <th mat-header-cell *matHeaderCellDef>Pair #</th>
+          <td mat-cell *matCellDef="let element">{{element.pairNumber}}</td>
+        </ng-container>
+
+        <!-- Student 1 Column -->
+        <ng-container matColumnDef="student1">
+          <th mat-header-cell *matHeaderCellDef>Student 1</th>
+          <td mat-cell *matCellDef="let element">{{element.student1}}</td>
+        </ng-container>
+
+        <!-- Student 2 Column -->
+        <ng-container matColumnDef="student2">
+          <th mat-header-cell *matHeaderCellDef>Student 2</th>
+          <td mat-cell *matCellDef="let element">{{element.student2}}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="deleteSingleMatch(element.pid1, element.pid2)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  } @else {
+    <mat-spinner></mat-spinner>
+    <p>Loading pairings...</p>
+  }
+</mat-card>
+
