@@ -91,7 +91,9 @@ class GitTogetherService:
 
                 if result.compatibility > match.compatibility:
                     iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
-                    initialFormAnswers = iA.to_model()
+                    initialFormAnswers = InitialForm()
+                    if iA is not None:
+                        initialFormAnswers = iA.to_model()
                     match = Match(
                         name=r.first_name,
                         contactInformation=r.contact_information,
