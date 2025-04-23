@@ -136,7 +136,7 @@ class GitTogetherService:
             "You are trying to form the best partners for a group programming project. Based on this group of answers, "
             "please pair everyone as best you can, ensuring there is a 1-to-1 unique pairing. Each id is followed by their answer, "
             "separated by a semicolon. "
-            'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}]'
+            'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}], if there is an odd number of answers make the other pair pid -1.'
         )
 
         user_prompt = "Here are the answers: " + results
@@ -148,14 +148,6 @@ class GitTogetherService:
             raise ValueError("No JSON array found in OpenAI response.")
 
         raw_pairs = json.loads(match.group(0))
-
-        # pairings = []
-        # for pair in raw_pairs:
-        #     for k, v in pair.items():
-        #         pairings.append(Pairing(pid1=int(k), pid2=int(v)))
-
-        # Either one of these loops work, one creates a pairing object with pid1 and pid2 as the pairing. The other is a dictionary
-        # with pid1:pid2 whichever one is easier just use that.
 
         pairings = {}
         for pair in raw_pairs:

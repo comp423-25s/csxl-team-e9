@@ -1,4 +1,3 @@
-
 <!-- teacher-pairings-matches.component.html -->
 <mat-card class="matches-container">
   @if(!isLoading) {
@@ -8,11 +7,13 @@
       </button>
       <h2>GitTogether Pairings for {{courseName}} ({{selectedCourse}})</h2>
       <p>Total pairs: {{matches.length}}</p>
-      <button mat-raised-button color="warn" (click)="deleteAllMatches()">Delete All Pairings</button>
+      <button mat-raised-button color="warn" (click)="deleteAllMatches()">
+        Delete All Pairings
+      </button>
     </div>
 
     <div class="table-container">
-      <table mat-table [dataSource]="matches" class="mat-elevation-z8">
+      <table mat-table [dataSource]="matches" class="mat-elevation-z1">
         <!-- Pair Number Column -->
         <ng-container matColumnDef="pairNumber">
           <th mat-header-cell *matHeaderCellDef>Pair #</th>
@@ -35,7 +36,9 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="warn" (click)="deleteSingleMatch(element.pid1, element.pid2)">
+            <button mat-icon-button color="warn" 
+                    (click)="deleteSingleMatch(element.pid1, element.pid2)"
+                    aria-label="Delete pair">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -46,8 +49,9 @@
       </table>
     </div>
   } @else {
-    <mat-spinner></mat-spinner>
-    <p>Loading pairings...</p>
+    <div class="loading-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p class="loading-text">Loading pairings...</p>
+    </div>
   }
 </mat-card>
-

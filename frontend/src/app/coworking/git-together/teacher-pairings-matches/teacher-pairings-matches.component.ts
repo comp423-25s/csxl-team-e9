@@ -192,11 +192,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDeleteDialogComponent } from './confirm-delete-dialog.component';
 
-
 @Component({
   selector: 'app-teacher-pairings-matches',
   templateUrl: './teacher-pairings-matches.component.html',
-  styleUrls: ['./teacher-pairings-matches.component.css']
+  styleUrls: ['./teacher-pairings-matches.component.scss']
 })
 export class TeacherPairingsMatchesComponent {
   selectedCourse: string = '';
