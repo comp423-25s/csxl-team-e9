@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-confirm-delete-dialog',
   template: `
-    <div class="dialog-container">
+    <div class="dialog-container mat-elevation-z4">
       <div mat-dialog-title class="dialog-title">
         <mat-icon class="warning-icon" color="warn">warning</mat-icon>
         <span>{{ data.title || 'Confirm Deletion' }}</span>
@@ -36,6 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
         padding: 0;
         border-radius: 12px;
         min-width: 350px;
+        background: var(--mdc-dialog-container-color);
       }
 
       .dialog-title {
@@ -44,7 +45,7 @@ import { MatButtonModule } from '@angular/material/button';
         gap: 12px;
         padding: 20px 24px 16px;
         font: var(--mat-headline-small-font);
-        color: var(--mdc-theme-on-surface);
+        color: var(--mdc-dialog-supporting-text-color);
       }
 
       .warning-icon {
@@ -56,7 +57,7 @@ import { MatButtonModule } from '@angular/material/button';
       .dialog-content {
         padding: 20px 24px;
         font: var(--mat-body-medium-font);
-        color: var(--mdc-theme-on-surface-variant);
+        color: var(--mdc-dialog-supporting-text-color);
       }
 
       .dialog-actions {
@@ -68,6 +69,7 @@ import { MatButtonModule } from '@angular/material/button';
 
       mat-divider {
         margin: 0 !important;
+        border-top-color: var(--mdc-dialog-divider-color);
       }
 
       button {
