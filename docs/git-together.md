@@ -1,5 +1,7 @@
 # Git Together
 
+Authors: Mason Drabik, Riley Warmuth, Wyatt Smith
+
 ## Backend
 
 The backend of Git together features a bunch of new API routes.
