@@ -1,6 +1,7 @@
 from typing import Annotated, TypeAlias, List
 from fastapi import Depends
 from pytest import Session
+from backend.database import db_session
 from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
@@ -20,6 +21,12 @@ from backend.entities.coworking.initial_form_entity import InitialFormEntity
 
 
 class GitTogetherService:
+
+    def __init__(
+        self,
+        connection: Session = Depends(db_session),
+    ):
+        self._connection = connection
 
     def initial_form(self, formResponses: InitialForm, session: Session):
         """This adds a new initial form to db"""
