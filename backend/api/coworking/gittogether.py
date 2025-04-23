@@ -163,7 +163,7 @@ def delete_specifc_answer(
     service.delete_student_specifc_answer(pid, clas, session=session)
 
 
-@api.delete("/teacher/coursepairings", tags=["Coworking"])
+@api.delete("/teacher/del/coursepairings", tags=["Coworking"])
 def delete_specifc_class(service: GitTogetherServiceDI, clas: str, session: SessionDI):
     service.delete_class_specifc_answer(clas, session=session)
 
