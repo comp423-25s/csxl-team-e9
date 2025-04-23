@@ -3,6 +3,8 @@
 import pytest
 from unittest.mock import create_autospec
 from sqlalchemy.orm import Session
+
+from backend.services.coworking.gittogether import GitTogetherService
 from ...services import (
     PermissionService,
     UserService,
@@ -97,3 +99,9 @@ def article_svc(session: Session):
 def application_svc(session: Session):
     """ApplicationService fixture."""
     return ApplicationService(session, PermissionService(session))
+
+
+@pytest.fixture()
+def gt_svc(session: Session):
+    """GittogetherService fixture."""
+    return GitTogetherService(session)

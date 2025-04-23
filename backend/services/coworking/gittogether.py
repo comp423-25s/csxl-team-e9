@@ -1,6 +1,7 @@
 from typing import Annotated, TypeAlias, List
 from fastapi import Depends
 from pytest import Session
+from backend.database import db_session
 from backend.entities.coworking.specific_form_entity import SpecificFormEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
@@ -21,7 +22,14 @@ from backend.entities.coworking.initial_form_entity import InitialFormEntity
 
 class GitTogetherService:
 
+    def __init__(
+        self,
+        connection: Session = Depends(db_session),
+    ):
+        self._connection = connection
+
     def initial_form(self, formResponses: InitialForm, session: Session):
+        """This adds a new initial form to db"""
         entity = InitialFormEntity(
             one=formResponses.one,
             two=formResponses.two,
@@ -40,6 +48,7 @@ class GitTogetherService:
         session.commit()
 
     def class_specific_form(self, formResponse: FormResponse, session: Session):
+        """This adds a new specific form to db"""
         entity = SpecificFormEntity(
             value=formResponse.value,
             pid=formResponse.pid,
@@ -59,7 +68,7 @@ class GitTogetherService:
         session.commit()
 
     def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
-        # checks to see if user requesting partner has filled out initial form
+        """gets a user's matches"""
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
 
@@ -107,16 +116,19 @@ class GitTogetherService:
         return "no matches"
 
     def delete_student_specifc_answer(self, pid: int, clas: str, session: Session):
+        """Removes answer from specific form db based on pid and clas"""
         entry = session.query(SpecificFormEntity).filter_by(pid=pid, clas=clas).first()
         if entry:
             session.delete(entry)
             session.commit()
 
     def delete_class_specifc_answer(self, clas: str, session: Session):
+        """Deletes all specific answers for a class"""
         session.query(SpecificFormEntity).filter_by(clas=clas).delete()
         session.commit()
 
     def get_student_course_list(self, pid: int, session: Session):
+        """Gets all courses a student has filled out the specific form for"""
         entries = session.query(SpecificFormEntity).filter_by(pid=pid)
         results = []
         for r in entries:
@@ -126,6 +138,7 @@ class GitTogetherService:
     def get_teacher_pairings_list(
         self, clas: str, openai: OpenAIService, session: Session
     ):
+        """Gets list of pairings for a teacher for a specific class"""
         entries = session.query(SpecificFormEntity).filter_by(clas=clas)
 
         results = ""
