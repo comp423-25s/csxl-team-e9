@@ -70,7 +70,6 @@ class GitTogetherService:
         ):
             raise SpecificFormError("Fill out class specifc form first")
         # call get stored matches first
-
         matches = self.get_stored_matches(pid, clas, session)
         values = self.get_list_of_matches(matches, session)
         if values:
@@ -125,15 +124,6 @@ class GitTogetherService:
             raise ValueError("No JSON array found in OpenAI response.")
 
         raw_pairs = json.loads(match.group(0))
-
-        # pairings = []
-        # for pair in raw_pairs:
-        #     for k, v in pair.items():
-        #         pairings.append(Pairing(pid1=int(k), pid2=int(v)))
-
-        # Either one of these loops work, one creates a pairing object with pid1 and pid2 as the pairing. The other is a dictionary
-        # with pid1:pid2 whichever one is easier just use that.
-
         pairings = {}
         for pair in raw_pairs:
             for k, v in pair.items():
