@@ -22,25 +22,6 @@ export class GitTogetherMatchesComponent {
     }
   };
 
-  // Course-specific example matches
-  courseMatches: { [key: string]: any[] } = {
-    COMP110: [
-      {
-        name: 'Alex Johnson',
-        contact: 'ajohnson@unc.edu',
-        score: 88,
-        compatibility: {
-          deadlineProximity: 4,
-          workStyle: 4,
-          leadershipComfort: 3,
-          meetingFrequency: 4,
-          conflictResolution: 3
-        },
-        bio: 'First-year student excited about learning Python and data science basics.'
-      }
-    ]
-  };
-
   matches: any[] = [];
   selectedCourse: string = '';
   courseName: string = '';
@@ -113,22 +94,61 @@ export class GitTogetherMatchesComponent {
         this.profile.pid
       );
       if (data !== 'no matches') {
-        this.matches = [
-          {
-            name: data.name,
-            contact: data.contactInformation,
-            score: data.compatibility,
+        this.matches = [];
+        data.forEach((match: any) => {
+          this.matches.push({
+            name: match.name,
+            contact: match.contactInformation,
+            score: match.compatibility,
             compatibility: {
-              deadlineProximity: data.initialAnswers.one,
-              workStyle: data.initialAnswers.two,
-              leadershipComfort: data.initialAnswers.three,
-              meetingFrequency: data.initialAnswers.four,
-              conflictResolution: data.initialAnswers.five
+              deadlineProximity: match.initialAnswers.one,
+              workStyle: match.initialAnswers.two,
+              leadershipComfort: match.initialAnswers.three,
+              meetingFrequency: match.initialAnswers.four,
+              conflictResolution: match.initialAnswers.five
             },
-            bio: data.bio,
-            reasoning: data.reasoning
-          }
-        ];
+            bio: match.bio,
+            reasoning: match.reasoning
+          });
+        });
+      }
+      this.isloading = false;
+    } catch (error: any) {
+      console.log(error.error.detail);
+      if (error.error.detail === 'Fill out Initial Form First.') {
+        this.iffilled = false;
+      } else if (error.error.detail === 'Fill out Specific Form.') {
+        this.sffilled = false;
+      }
+    }
+  }
+
+  async getNewMatches(courseCode: string) {
+    try {
+      const data = await this.matchService.get_new_matches(
+        courseCode,
+        this.profile.pid
+      );
+      console.log(data);
+      if (data !== 'no matches around') {
+        this.matches.push({
+          name: data.name,
+          contact: data.contactInformation,
+          score: data.compatibility,
+          compatibility: {
+            deadlineProximity: data.initialAnswers.one,
+            workStyle: data.initialAnswers.two,
+            leadershipComfort: data.initialAnswers.three,
+            meetingFrequency: data.initialAnswers.four,
+            conflictResolution: data.initialAnswers.five
+          },
+          bio: data.bio,
+          reasoning: data.reasoning
+        });
+      } else {
+        this.snackBar.open('No new matches available!', 'Close', {
+          duration: 3000
+        });
       }
       this.isloading = false;
     } catch (error: any) {
