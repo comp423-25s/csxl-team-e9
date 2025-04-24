@@ -165,8 +165,8 @@ class GitTogetherService:
         session.query(InitialFormEntity).delete()
         session.commit()
 
-    # helper functions to get stored matches
     def get_stored_matches(self, pid: int, clas: str, session: Session):
+        """Gets stored matches from DB based on pid and class"""
         data = session.query(MatchEntity).filter_by(pid_one=pid, course=clas)
         values = []
         for d in data:
@@ -181,8 +181,8 @@ class GitTogetherService:
             )
         return values
 
-    # gets all specific answers for stored pairings
     def get_list_of_matches(self, data: list[Pairing], session: Session):
+        """Gets all specific form answers for a list of Pairings"""
         values = []
         for d in data:
             s = (
@@ -203,7 +203,6 @@ class GitTogetherService:
             values.append(match)
         return values
 
-    # gets best possible match and then adds to matches entity
     def get_chatGPT_response(
         self,
         clas: str,
@@ -211,6 +210,7 @@ class GitTogetherService:
         openai: OpenAIService,
         session: Session,
     ):
+        """Gets best possible match and then adds to matches entity"""
         userAnswer = (
             session.query(SpecificFormEntity).filter_by(clas=clas, pid=pid).first()
         )
