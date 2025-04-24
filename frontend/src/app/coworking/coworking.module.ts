@@ -47,6 +47,7 @@ import { CourseSelectionComponent } from './git-together/course-selection/course
 import { TeacherPairingsComponent } from './git-together/teacher-pairings/teacher-pairings.component';
 import { TeacherPairingsMatchesComponent } from './git-together/teacher-pairings-matches/teacher-pairings-matches.component';
 import { ConfirmDeleteDialog } from './git-together/teacher-pairings/confirm-delete-dialog.component';
+import { ConfirmDeleteDialogComponent } from './git-together/teacher-pairings-matches/confirm-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ConfirmDeleteDialog } from './git-together/teacher-pairings/confirm-del
     CourseSelectionComponent,
     TeacherPairingsComponent,
     TeacherPairingsMatchesComponent,
-    ConfirmDeleteDialog
+    ConfirmDeleteDialog,
+    ConfirmDeleteDialogComponent
   ],
   imports: [
     CommonModule,
