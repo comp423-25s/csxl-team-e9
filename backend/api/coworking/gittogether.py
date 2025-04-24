@@ -129,6 +129,30 @@ def get_matches(
         )
 
 
+@api.get("/new/matches", tags=["Coworking"])
+def get_new_matches(
+    clas: str,
+    pid: int,
+    service: GitTogetherServiceDI,
+    openai: OpenAIServiceDI,
+    session: SessionDI,
+):
+    try:
+        return service.get_chatGPT_response(
+            clas=clas, pid=pid, openai=openai, session=session
+        )
+    except InitialFormError:
+        raise HTTPException(
+            status_code=403,
+            detail="Fill out Initial Form First.",
+        )
+    except SpecificFormError:
+        raise HTTPException(
+            status_code=403,
+            detail="Fill out Specific Form.",
+        )
+
+
 @api.get("/initialanswers", tags=["Coworking"])
 def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     return service.get_initial_form_answers(session=session)
@@ -156,6 +180,7 @@ def get_teacher_course_pairings(
     return service.get_teacher_pairings_list(clas=clas, openai=openai, session=session)
 
 
+# delete from matches
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
 def delete_specifc_answer(
     service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI

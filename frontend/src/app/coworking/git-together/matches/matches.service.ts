@@ -7,6 +7,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 })
 export class MatchesService {
   private apiUrl = '/api/coworking/gittogether/matches';
+  private newMatchapiURL = '/api/coworking/gittogether/new/matches';
   private deleteURL = '/api/coworking/gittogether';
   constructor(private http: HttpClient) {}
   async get_matches(clas: string, pid: number): Promise<any> {
@@ -16,7 +17,16 @@ export class MatchesService {
         params
       })
     );
-    console.log(data);
+    return data;
+  }
+
+  async get_new_matches(clas: string, pid: number): Promise<any> {
+    const params = new HttpParams().set('clas', clas).set('pid', pid);
+    const data = await firstValueFrom(
+      this.http.get<MatchesService>(this.newMatchapiURL, {
+        params
+      })
+    );
     return data;
   }
 
