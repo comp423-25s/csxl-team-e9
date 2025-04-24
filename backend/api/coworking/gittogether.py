@@ -180,12 +180,18 @@ def get_teacher_course_pairings(
     return service.get_teacher_pairings_list(clas=clas, openai=openai, session=session)
 
 
-# delete from matches
 @api.delete("/del{pid}/{clas}", tags=["Coworking"])
 def delete_specifc_answer(
-    service: GitTogetherServiceDI, pid: str, clas: str, session: SessionDI
+    service: GitTogetherServiceDI, pid: int, clas: str, session: SessionDI
 ):
     service.delete_student_specifc_answer(pid, clas, session=session)
+
+
+@api.delete("/del/studentmatch", tags=["Coworking"])
+def delete_match(
+    service: GitTogetherServiceDI, pid: int, clas: str, pid_two: int, session: SessionDI
+):
+    service.delete_match(pid, clas, pid_two, session)
 
 
 @api.delete("/teacher/del/coursepairings", tags=["Coworking"])

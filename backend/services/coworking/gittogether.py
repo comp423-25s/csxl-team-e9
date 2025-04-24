@@ -106,6 +106,15 @@ class GitTogetherService:
         session.query(MatchEntity).filter_by(clas=clas).delete()
         session.commit()
 
+    def delete_match(self, pid: int, clas: str, pid_two: int, session: Session):
+        """Deletes a match based on pids and class"""
+        session.query(MatchEntity).filter(
+            MatchEntity.pid_one == pid,
+            MatchEntity.pid_two == pid_two,
+            MatchEntity.course == clas,
+        ).delete()
+        session.commit()
+
     def get_student_course_list(self, pid: int, session: Session):
         """Gets all courses a student has filled out the specific form for"""
         entries = session.query(SpecificFormEntity).filter_by(pid=pid)
@@ -147,23 +156,6 @@ class GitTogetherService:
                 pairings[int(k)] = int(v)
 
         return pairings
-
-    # the following aren't really used in the web app, more so just good to have for testing
-    def get_initial_form_answers(self, session: Session):
-        entries = session.query(InitialFormEntity).all()
-        return entries
-
-    def get_specific_form_answers(self, session: Session):
-        entries = session.query(SpecificFormEntity).all()
-        return entries
-
-    def clear_specific_answers(self, session: Session):
-        session.query(SpecificFormEntity).delete()
-        session.commit()
-
-    def clearIA(self, session: Session):
-        session.query(InitialFormEntity).delete()
-        session.commit()
 
     def get_stored_matches(self, pid: int, clas: str, session: Session):
         """Gets stored matches from DB based on pid and class"""
@@ -271,3 +263,20 @@ class GitTogetherService:
         if match.bio != "":
             return match
         return "no matches around"
+
+    # the following aren't really used in the web app, more so just good to have for testing
+    def get_initial_form_answers(self, session: Session):
+        entries = session.query(InitialFormEntity).all()
+        return entries
+
+    def get_specific_form_answers(self, session: Session):
+        entries = session.query(SpecificFormEntity).all()
+        return entries
+
+    def clear_specific_answers(self, session: Session):
+        session.query(SpecificFormEntity).delete()
+        session.commit()
+
+    def clearIA(self, session: Session):
+        session.query(InitialFormEntity).delete()
+        session.commit()
