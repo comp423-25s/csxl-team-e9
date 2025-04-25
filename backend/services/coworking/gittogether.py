@@ -124,7 +124,7 @@ class GitTogetherService:
         session.commit()
 
     def delete_teacher_match(self, pid: int, clas: str, pid_two: int, session: Session):
-        """Deletes a match based on pids and class"""
+        """Deletes a teacher match based on pids and class"""
         session.query(TeacherMatchEntity).filter(
             TeacherMatchEntity.pid_one == pid,
             TeacherMatchEntity.pid_two == pid_two,
