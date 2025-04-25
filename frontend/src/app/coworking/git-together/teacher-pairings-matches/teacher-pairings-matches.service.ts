@@ -29,10 +29,17 @@ export class TeacherPairingsService {
     return firstValueFrom(this.http.delete<any>(this.pairingsUrl, { params }));
   }
 
-  async deleteSingleMatch(clas: string, matchId: number): Promise<any> {
+  async deleteSingleMatch(
+    clas: string,
+    pid1: number,
+    pid2: number
+  ): Promise<any> {
     const params = new HttpParams()
       .set('clas', clas)
-      .set('match_id', matchId.toString());
-    return firstValueFrom(this.http.delete<any>(this.pairingsUrl, { params }));
+      .set('pid', pid1.toString())
+      .set('pid_two', pid2.toString());
+    return firstValueFrom(
+      this.http.delete<any>(`${this.baseUrl}/del/teachermatch`, { params })
+    );
   }
 }

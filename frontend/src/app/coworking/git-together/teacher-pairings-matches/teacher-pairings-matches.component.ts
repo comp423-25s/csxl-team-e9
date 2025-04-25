@@ -136,8 +136,8 @@ export class TeacherPairingsMatchesComponent {
       if (result) {
         try {
           this.isLoading = true;
-          await this.TPsvc.deleteSingleMatch(this.selectedCourse, pid1);
-          await this.TPsvc.deleteSingleMatch(this.selectedCourse, pid2);
+          // Now using the correct endpoint and parameters
+          await this.TPsvc.deleteSingleMatch(this.selectedCourse, pid1, pid2);
           this.snackBar.open('Match deleted successfully', 'Close', {
             duration: 3000
           });
