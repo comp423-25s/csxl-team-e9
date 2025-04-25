@@ -32,6 +32,7 @@ from backend.test.services.coworking import (
     initial_form_data,
     matches_data,
     specific_form_data,
+    teacher_matches_data,
 )
 
 __authors__ = ["Kris Jordan", "Ajay Gandecha"]
@@ -74,6 +75,7 @@ with Session(engine) as session:
     initial_form_data.insert_fake_data(session)
     specific_form_data.insert_fake_data(session)
     matches_data.insert_fake_data(session)
+    teacher_matches_data.insert_fake_data(session)
 
     # Commit changes to the database
     session.commit()

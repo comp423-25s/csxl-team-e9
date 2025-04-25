@@ -5,3 +5,4 @@ from .seat_entity import SeatEntity
 from .initial_form_entity import InitialFormEntity
 from .specific_form_entity import SpecificFormEntity
 from .matches_entity import MatchEntity
+from .teacher_matches_entity import TeacherMatchEntity
