@@ -12,13 +12,7 @@ class TeacherMatchEntity(EntityBase):
     pid_one: Mapped[int] = mapped_column(Integer)
     pid_two: Mapped[int] = mapped_column(Integer)
     course: Mapped[String] = mapped_column(String(16))
-    __table_args__ = (
-        PrimaryKeyConstraint(
-            "pid_one",
-            "course",
-            "pid_two",
-        ),
-    )
+    __table_args__ = (PrimaryKeyConstraint("pid_one", "course"),)
 
     @classmethod
     def from_model(cls, model: TeacherPairing) -> Self:
