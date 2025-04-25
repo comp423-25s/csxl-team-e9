@@ -87,6 +87,10 @@ export class GitTogetherMatchesComponent {
     return 'warn';
   }
 
+  deleteMatch() {
+    this.matches.pop();
+  }
+
   async getMatches(courseCode: string) {
     try {
       const data = await this.matchService.get_matches(
@@ -146,9 +150,13 @@ export class GitTogetherMatchesComponent {
           reasoning: data.reasoning
         });
       } else {
-        this.snackBar.open('No new matches available!', 'Close', {
-          duration: 3000
-        });
+        this.snackBar.open(
+          'No new matches available! Try checking again later!',
+          'Close',
+          {
+            duration: 3000
+          }
+        );
       }
       this.isloading = false;
     } catch (error: any) {

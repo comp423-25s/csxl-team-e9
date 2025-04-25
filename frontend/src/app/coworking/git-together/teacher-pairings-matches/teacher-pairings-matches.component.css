@@ -49,20 +49,14 @@ th {
   position: sticky;
   top: 0;
   z-index: 2;
-  border-bottom: 1px solid var(--mat-app-on-surface);
 }
 
 td {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--mat-app-on-surface);
 }
 
 tr:last-child td {
   border-bottom: none;
-}
-
-tr:hover {
-  background-color: rgba(var(--mdc-theme-primary-rgb), 0.04);
 }
 
 .mat-spinner {

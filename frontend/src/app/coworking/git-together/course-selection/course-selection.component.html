@@ -11,7 +11,8 @@
   <div class="course-selector">
     <mat-form-field appearance="fill">
       <mat-label>Select a course</mat-label>
-      <mat-select [(value)]="selectedCourse">
+      <mat-select 
+        [(value)]="selectedCourse">
         @for (course of courses; track course) {
           <mat-option [value]="course">
            {{course}}
@@ -19,6 +20,7 @@
         }
       </mat-select>
     </mat-form-field>
+  </div>
 
    
     <div class="action-buttons">
@@ -42,8 +44,7 @@
         View Matches
       </button>
     </div>
-    
-  </div>
+
 } @else{
   <p>Loading</p>
 }

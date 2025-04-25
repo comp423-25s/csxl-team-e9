@@ -50,20 +50,28 @@ export class CourseSelectionComponent implements OnInit {
     ]);
   }
 
+  checkCourses() {
+    if (this.courses.length === 0) {
+      console.log(this.courses.length);
+      this.snackBar.open(
+        'No courses available! Please fill out a course specific form!',
+        'Close',
+        {
+          duration: 5000
+        }
+      );
+      return;
+    }
+  }
+
   async getCourses() {
     const results =
       (await this.courseService.get_courses(this.profile.pid)) ?? [];
     this.courses = results;
+    this.checkCourses();
   }
 
   async deleteCoursePreferences() {
-    if (!this.selectedCourse) {
-      this.snackBar.open('Please select a course first', 'Close', {
-        duration: 3000
-      });
-      return;
-    }
-
     try {
       await this.matchesService.deleteSpecificAnswer(
         this.profile.pid,
