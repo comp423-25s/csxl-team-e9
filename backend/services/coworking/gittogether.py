@@ -73,7 +73,7 @@ class GitTogetherService:
             existing.update(formResponse)
         session.commit()
 
-    def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
+    def get_matches(self, clas: str, pid: int, session: Session):
         """gets a user's matches"""
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
