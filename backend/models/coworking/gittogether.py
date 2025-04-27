@@ -35,6 +35,8 @@ class Match(BaseModel):
     compatibility: int = 0
     reasoning: str = ""
     initialAnswers: InitialForm = InitialForm()
+    pfp: str | None = ""
+    pid: int = 0
 
 
 class InitialFormError(Exception):

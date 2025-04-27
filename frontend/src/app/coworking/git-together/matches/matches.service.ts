@@ -35,4 +35,14 @@ export class MatchesService {
       this.http.delete(`${this.deleteURL}/del${pid}/${clas}`)
     );
   }
+
+  async deleteMatch(pid1: number, pid2: number, clas: string): Promise<any> {
+    const params = new HttpParams()
+      .set('pid', pid1)
+      .set('clas', clas)
+      .set('pid_two', pid2);
+    return firstValueFrom(
+      this.http.delete(`${this.deleteURL}/del/studentmatch`, { params })
+    );
+  }
 }

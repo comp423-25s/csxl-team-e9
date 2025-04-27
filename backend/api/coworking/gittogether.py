@@ -114,9 +114,13 @@ def get_matches(
     service: GitTogetherServiceDI,
     openai: OpenAIServiceDI,
     session: SessionDI,
+    userService: UserSvc,
 ):
     try:
-        return service.get_matches(clas=clas, pid=pid, openai=openai, session=session)
+        results = service.get_matches(
+            clas=clas, pid=pid, openai=openai, session=session, usersvc=userService
+        )
+        return results
     except InitialFormError:
         raise HTTPException(
             status_code=403,

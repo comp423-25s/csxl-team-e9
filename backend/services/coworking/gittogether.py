@@ -22,14 +22,13 @@ import json
 import re
 from backend.services.openai import OpenAIService
 from backend.entities.coworking.initial_form_entity import InitialFormEntity
+from backend.services import UserService
+from ...models import User
 
 
 class GitTogetherService:
 
-    def __init__(
-        self,
-        connection: Session = Depends(db_session),
-    ):
+    def __init__(self, connection: Session = Depends(db_session)):
         self._connection = connection
 
     def initial_form(self, formResponses: InitialForm, session: Session):
@@ -71,7 +70,14 @@ class GitTogetherService:
             existing.update(formResponse)
         session.commit()
 
-    def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
+    def get_matches(
+        self,
+        clas: str,
+        pid: int,
+        openai: OpenAIService,
+        session: Session,
+        usersvc: UserService,
+    ):
         """gets a user's matches"""
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
@@ -83,7 +89,7 @@ class GitTogetherService:
             raise SpecificFormError("Fill out class specifc form first")
         # call get stored matches first
         matches = self.get_stored_matches(pid, clas, session)
-        values = self.get_list_of_matches(matches, session)
+        values = self.get_list_of_matches(matches, session, usersvc)
         if values:
             return values
         return "no matches"
@@ -173,7 +179,9 @@ class GitTogetherService:
             )
         return values
 
-    def get_list_of_matches(self, data: list[Pairing], session: Session):
+    def get_list_of_matches(
+        self, data: list[Pairing], session: Session, usersvc: UserService
+    ):
         """Gets all specific form answers for a list of Pairings"""
         values = []
         for d in data:
@@ -184,6 +192,11 @@ class GitTogetherService:
             )
             iA = session.query(InitialFormEntity).filter_by(pid=d.pidTwo).first()
             initialFormAnswers = iA.to_model()
+            try:
+                avatar: str = usersvc.get_by_id(s.pid).github_avatar if s else None
+            except Exception as e:
+                print(f"Error getting user by ID {s.pid}: {e}")
+                avatar: str = None
             match = Match(
                 name=s.first_name,
                 contactInformation=s.contact_information,
@@ -191,6 +204,8 @@ class GitTogetherService:
                 compatibility=d.compatibility,
                 reasoning=d.reasoning,
                 initialAnswers=initialFormAnswers,
+                pfp=avatar,
+                pid=s.pid,
             )
             values.append(match)
         return values
@@ -247,6 +262,7 @@ class GitTogetherService:
                         compatibility=result.compatibility,
                         reasoning=result.reasoning,
                         initialAnswers=initialFormAnswers,
+                        pid=r.pid,
                     )
                     match_pid = r.pid
             # add match to saved matches
