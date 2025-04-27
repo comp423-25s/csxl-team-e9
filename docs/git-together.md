@@ -9,12 +9,13 @@ The backend of Git together features several new API routes. (prefix: /api/cowor
 - / : POST - Allows students to send their answers to the initial form
 - /specific : POST - Allows students to send their answers to the specific form
 - /matches : GET - Allows students to get their matches for a given class
-- /initialanswers : GET - Allows students to view their initial answers
-- /specificanswers : GET - Allows students to view thier inital answers
+- /new/matches : GET - Allows students to find new matches using OpenAI's API
 - /student/courses : GET - Allows a student to view a list of entered courses
 - /teacher/coursepairings: GET - Allows instructors to view pairings for a given class
 - /del{pid}/{clas} : DELETE - Allows students to delete a specific form submission
-- /teacher/del/coursepairings : DELETE - Allows instructors to delete pairings for a class
+- /del/studentmatch : DELETE - Allows a student to delete a previous match
+- /del/teachermatch : DELETE - Allows a teacher to delete a previous match between students
+- /teacher/del/teacherpairings : DELETE - Allows instructors to delete pairings for a class
 - /is-ambassador : GET - Allows authentication into instructor/ambassador view
 
 The Backend also relies on new models including InitialFormAnswer, SpecifcFormAnswer, Match, and Pairing. InitialFormAnswer and SpecificFormAnswer store information for the different forms that are filled out. Match stores information about a students match for a given class, and Pairing contains the two pids of a given pairing for a class.
@@ -25,7 +26,7 @@ The AI integration that takes place in Git Together is when pairing is required.
 
 ## Database
 
-The database for Git Together required two new entities to store the answers for initial form answers and specific form answers. Whenever a match is requested these entities are accessed and the needed information is sent to the correct place. In the future we will store matches, to lower requests to OpenAI.
+The database for Git Together required four new entities to store the answers for the initial form and the specific form, as well as past student matches and past teacher matches. Whenever a match is requested these entities are accessed and the needed information is sent to the correct place. Whenever a student or teacher wants to view their matches the correct entity is accessed and the past matches show up.
 
 ## Frontend
 
