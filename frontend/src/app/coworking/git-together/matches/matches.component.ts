@@ -87,6 +87,22 @@ export class GitTogetherMatchesComponent {
     return 'warn';
   }
 
+  async deleteMatch(pid: number) {
+    try {
+      const data = await this.matchService.deleteMatch(
+        this.profile.pid,
+        pid,
+        this.selectedCourse
+      );
+      this.snackBar.open(`Deleted match successfully!`, 'Close', {
+        duration: 2000
+      });
+      this.matches = this.matches.filter((match) => match.pid !== pid);
+    } catch (error: any) {
+      console.log(error.error.detail);
+    }
+  }
+
   async getMatches(courseCode: string) {
     try {
       const data = await this.matchService.get_matches(
@@ -108,9 +124,12 @@ export class GitTogetherMatchesComponent {
               conflictResolution: match.initialAnswers.five
             },
             bio: match.bio,
-            reasoning: match.reasoning
+            reasoning: match.reasoning,
+            pfp: match.pfp,
+            pid: match.pid
           });
         });
+        this.matches.sort((a, b) => b.score - a.score);
       }
       this.isloading = false;
     } catch (error: any) {
@@ -131,7 +150,7 @@ export class GitTogetherMatchesComponent {
       );
       console.log(data);
       if (data !== 'no matches around') {
-        this.matches.push({
+        this.matches.unshift({
           name: data.name,
           contact: data.contactInformation,
           score: data.compatibility,
@@ -143,12 +162,18 @@ export class GitTogetherMatchesComponent {
             conflictResolution: data.initialAnswers.five
           },
           bio: data.bio,
-          reasoning: data.reasoning
+          reasoning: data.reasoning,
+          pfp: data.pfp,
+          pid: data.pid
         });
       } else {
-        this.snackBar.open('No new matches available!', 'Close', {
-          duration: 3000
-        });
+        this.snackBar.open(
+          'No new matches available! Try checking again later!',
+          'Close',
+          {
+            duration: 3000
+          }
+        );
       }
       this.isloading = false;
     } catch (error: any) {

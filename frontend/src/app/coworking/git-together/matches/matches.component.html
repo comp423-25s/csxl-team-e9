@@ -5,14 +5,15 @@
     <button mat-icon-button class="back-button" (click)="navigateToCourseSelection()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h2>Your GitTogether Matches</h2>
+    <mat-card-title>Your GitTogether Matches</mat-card-title>
     @if(selectedCourse){
-    <p  class="course-title">Showing matches for <strong>{{courseName}} ({{selectedCourse}})</strong></p>
+    <mat-card-subtitle>Showing matches for <strong>{{courseName}} ({{selectedCourse}})</strong></mat-card-subtitle>
     <button 
-            mat-raised-button 
+            mat-stroked-button 
             color="primary"
             (click)="getNewMatches(selectedCourse)"
             class="contact-button">
+            <mat-icon>person_add</mat-icon>
             New Match
           </button>
     }
@@ -26,33 +27,49 @@
     <div class="matches-list"> 
       @for (match of matches; track match){
       <mat-card class="match-card">
-        <mat-card-header>
-          <div mat-card-avatar class="match-avatar">
-            <mat-icon>person</mat-icon>
-          </div>
+        <mat-card-header class="match-card-header">
+          <mat-card-header class="headersub">
+          @if (match.pfp) {
+            <img mat-card-avatar class="user-avatar" [src]="match.pfp" />
+            } @else if (match.name) {
+            <p mat-card-avatar class="user-avatar secondary-background">
+              {{ match.name.charAt(0) }}
+            </p>
+            }
           <mat-card-title>{{match.name}}</mat-card-title>
           <mat-card-subtitle>
             <span class="match-score">Match Score: {{match.score}}%</span>
             <span class="course-chip">{{selectedCourse}}</span>
           </mat-card-subtitle>
         </mat-card-header>
-        
+          <button 
+            mat-icon-button
+            color="warn"
+            aria-label="Delete match"
+            class="delete-button"
+            (click)="deleteMatch(match.pid)"
+            >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-header>
+        <br/>
         <mat-card-content>
           @if (match.bio){
-          <div class="match-bio" >
-            <mat-icon class="bio-icon">info</mat-icon>
-            <p>{{match.bio}}</p>
+          <div class="match-bio">
+            <mat-icon class="comment-icon">mode_comment</mat-icon>
+            <mat-card-subtitle>{{match.bio}}</mat-card-subtitle>
           </div>
         }
           
-          <h3 class="compatibility-title">Compatibility Breakdown</h3>
+            <mat-card-subtitle>Compatibility Breakdown</mat-card-subtitle>
+            <br/>
           <div class="compatibility-details">
             <ng-container>
               @for (item of compatibilityItems(match.compatibility); track item.label) {
                 <div class="compatibility-item">
                   <div class="compatibility-header">
-                    <span class="label">{{ item.label }}</span>
-                    <span class="value">{{ item.value }}/5</span>
+                    <span>{{ item.label }}</span>
+                    <span class="value"> {{ item.value }}/5</span>
                   </div>
                   <mat-progress-bar 
                     mode="determinate" 
@@ -64,17 +81,17 @@
             </ng-container>
           </div>
           <br/>
-          <br/>
           @if (match.reasoning){
             <div class="match-bio" >
-              <p>Our reasoning: {{match.reasoning}}</p>
+              <mat-icon class="brain-icon">network_intelligence</mat-icon>
+              <mat-card-subtitle>AI reasoning: {{match.reasoning}}</mat-card-subtitle>
             </div>
           }
         </mat-card-content>
         
         <mat-card-actions>
           <button 
-            mat-raised-button 
+            mat-stroked-button 
             color="primary"
             (click)="contactMatch(match.contact)"
             class="contact-button">
@@ -90,7 +107,7 @@
     <div class="no-matches">
       <mat-icon class="no-matches-icon">search_off</mat-icon>
       <h3>No matches found yet</h3>
-      <p>Try adjusting your preferences or check back later.</p>
+      <p>Try Clicking New Match!</p>
     </div>
   }
 } @else {
@@ -99,13 +116,19 @@
   </button>
   <br/>
   <br/>
-  @if (iffilled) {
-    <p>Please fill out the specific form for {{selectedCourse}}. Then return to this page.</p>
-  } @else {
-    <p>Please fill out the initial form.</p>
-  }
 }
   } @else {
-    <p>Fetching your best match!</p>
+    @if (!iffilled) {
+      <div class="back">
+      <button mat-icon-button (click)="navigateToCourseSelection()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <p>Please fill out the initial preference form. Then return to this page.</p>
+      <br/>
+    </div>
+    }
+      @else {
+      <p>Fetching Your Matches</p>
+    }
   }
 </mat-card>
