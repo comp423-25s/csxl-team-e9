@@ -65,5 +65,11 @@ class Pairing(BaseModel):
     reasoning: str = ""
 
 
+class TeacherPairing(BaseModel):
+    pidOne: int
+    pidTwo: int
+    clas: str
+
+
 class GPTResponse(BaseModel):
     answer: str
