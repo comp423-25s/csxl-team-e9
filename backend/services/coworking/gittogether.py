@@ -12,6 +12,7 @@ from backend.models.coworking.gittogether import (
     FormResponse,
     GPTResponse,
     InitialForm,
+    InitialFormAnswer,
     Match,
     Pairing,
     SpecificFormError,
@@ -235,7 +236,10 @@ class GitTogetherService:
                 .first()
             )
             iA = session.query(InitialFormEntity).filter_by(pid=d.pidTwo).first()
-            initialFormAnswers = iA.to_model()
+            if iA:
+                initialFormAnswers = iA.to_model()
+            else:
+                initialFormAnswers = InitialForm(pid=d.pidTwo)
             try:
                 avatar: str = usersvc.get_by_id(s.pid).github_avatar if s else None
             except Exception as e:
@@ -275,8 +279,6 @@ class GitTogetherService:
         previous_matches = []
         for t in temp_previous_matches:
             previous_matches.append(t.pid_two)
-        print(previous_matches)
-
         results = (
             session.query(SpecificFormEntity)
             .filter(
@@ -298,7 +300,10 @@ class GitTogetherService:
 
                 if result.compatibility > match.compatibility:
                     iA = session.query(InitialFormEntity).filter_by(pid=r.pid).first()
-                    initialFormAnswers = iA.to_model()
+                    if iA:
+                        initialFormAnswers = iA.to_model()
+                    else:
+                        initialFormAnswers = InitialForm(pid=pid)
                     match = Match(
                         name=r.first_name,
                         contactInformation=r.contact_information,
