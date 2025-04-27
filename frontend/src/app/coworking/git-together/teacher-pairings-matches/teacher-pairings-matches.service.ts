@@ -8,6 +8,7 @@ import { firstValueFrom } from 'rxjs';
 export class TeacherPairingsService {
   private baseUrl = '/api/coworking/gittogether';
   private pairingsUrl = `${this.baseUrl}/teacher/coursepairings`;
+  private deleteURL = `${this.baseUrl}/teacher/del/teacherpairings`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +27,7 @@ export class TeacherPairingsService {
 
   async deleteMatches(clas: string): Promise<any> {
     const params = new HttpParams().set('clas', clas);
-    return firstValueFrom(this.http.delete<any>(this.pairingsUrl, { params }));
+    return firstValueFrom(this.http.delete<any>(this.deleteURL, { params }));
   }
 
   async deleteSingleMatch(

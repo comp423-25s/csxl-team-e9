@@ -102,13 +102,6 @@ class GitTogetherService:
         ).delete(synchronize_session=False)
         session.commit()
 
-    def delete_class_specifc_answer(self, clas: str, session: Session):
-        """Deletes all specific answers and matches for a class"""
-        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
-        session.query(MatchEntity).filter_by(course=clas).delete()
-        session.query(TeacherMatchEntity).filter_by(course=clas).delete()
-        session.commit()
-
     def delete_teacher_course_pairings(self, clas: str, session: Session):
         """Deletes all teacher matches for a class"""
         session.query(TeacherMatchEntity).filter_by(course=clas).delete()

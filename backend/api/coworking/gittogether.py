@@ -201,11 +201,6 @@ def delete_teacher_match(
     service.delete_teacher_match(pid, clas, pid_two, session)
 
 
-@api.delete("/teacher/del/coursepairings", tags=["Coworking"])
-def delete_specifc_class(service: GitTogetherServiceDI, clas: str, session: SessionDI):
-    service.delete_class_specifc_answer(clas, session=session)
-
-
 @api.delete("/teacher/del/teacherpairings", tags=["Coworking"])
 def delete_teacher_pairings(
     service: GitTogetherServiceDI, clas: str, session: SessionDI
