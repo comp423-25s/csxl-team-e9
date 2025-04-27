@@ -193,3 +193,14 @@
   left: 2rem;
   top: 2rem;
 }
+
+.back{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.back p{
+  padding-top: 1rem;
+}

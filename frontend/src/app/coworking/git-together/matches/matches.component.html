@@ -119,7 +119,13 @@
 }
   } @else {
     @if (!iffilled) {
+      <div class="back">
+      <button mat-icon-button (click)="navigateToCourseSelection()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
       <p>Please fill out the initial preference form. Then return to this page.</p>
+      <br/>
+    </div>
     }
       @else {
       <p>Fetching Your Matches</p>
