@@ -194,19 +194,18 @@ def delete_match(
     service.delete_match(pid, clas, pid_two, session)
 
 
-@api.delete("/teacher/del/coursepairings", tags=["Coworking"])
-def delete_specifc_class(service: GitTogetherServiceDI, clas: str, session: SessionDI):
-    service.delete_class_specifc_answer(clas, session=session)
+@api.delete("/del/teachermatch", tags=["Coworking"])
+def delete_teacher_match(
+    service: GitTogetherServiceDI, pid: int, clas: str, pid_two: int, session: SessionDI
+):
+    service.delete_teacher_match(pid, clas, pid_two, session)
 
 
-@api.delete("/dIA", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI, session: SessionDI):
-    service.clearIA(session=session)
-
-
-@api.delete("/dSA", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI, session: SessionDI):
-    service.clear_specific_answers(session=session)
+@api.delete("/teacher/del/teacherpairings", tags=["Coworking"])
+def delete_teacher_pairings(
+    service: GitTogetherServiceDI, clas: str, session: SessionDI
+):
+    service.delete_teacher_course_pairings(clas, session=session)
 
 
 @api.get("/is-ambassador", tags=["Coworking"], response_model=bool)

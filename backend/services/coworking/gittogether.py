@@ -7,6 +7,7 @@ from fastapi import Depends
 from pytest import Session
 from backend.entities.coworking.matches_entity import MatchEntity
 from backend.entities.coworking.specific_form_entity import SpecificFormEntity
+from backend.entities.coworking.teacher_matches_entity import TeacherMatchEntity
 from backend.models.coworking.gittogether import (
     FormResponse,
     GPTResponse,
@@ -17,6 +18,7 @@ from backend.models.coworking.gittogether import (
     InitialFormError,
     MatchResponse,
     StudentAnswer,
+    TeacherPairing,
 )
 import json
 import re
@@ -71,7 +73,7 @@ class GitTogetherService:
             existing.update(formResponse)
         session.commit()
 
-    def get_matches(self, clas: str, pid: int, openai: OpenAIService, session: Session):
+    def get_matches(self, clas: str, pid: int, session: Session):
         """gets a user's matches"""
         if session.query(InitialFormEntity).filter_by(pid=pid).first() == None:
             raise InitialFormError("Fill out initial form first")
@@ -100,10 +102,9 @@ class GitTogetherService:
         ).delete(synchronize_session=False)
         session.commit()
 
-    def delete_class_specifc_answer(self, clas: str, session: Session):
-        """Deletes all specific answers for a class"""
-        session.query(SpecificFormEntity).filter_by(clas=clas).delete()
-        session.query(MatchEntity).filter_by(clas=clas).delete()
+    def delete_teacher_course_pairings(self, clas: str, session: Session):
+        """Deletes all teacher matches for a class"""
+        session.query(TeacherMatchEntity).filter_by(course=clas).delete()
         session.commit()
 
     def delete_match(self, pid: int, clas: str, pid_two: int, session: Session):
@@ -112,6 +113,15 @@ class GitTogetherService:
             MatchEntity.pid_one == pid,
             MatchEntity.pid_two == pid_two,
             MatchEntity.course == clas,
+        ).delete()
+        session.commit()
+
+    def delete_teacher_match(self, pid: int, clas: str, pid_two: int, session: Session):
+        """Deletes a teacher match based on pids and class"""
+        session.query(TeacherMatchEntity).filter(
+            TeacherMatchEntity.pid_one == pid,
+            TeacherMatchEntity.pid_two == pid_two,
+            TeacherMatchEntity.course == clas,
         ).delete()
         session.commit()
 
@@ -128,34 +138,68 @@ class GitTogetherService:
     ):
         """Gets list of pairings for a teacher for a specific class"""
 
-        entries = session.query(SpecificFormEntity).filter_by(clas=clas)
+        stored_matches = self.get_stored_teacher_pairings(clas, session)
+        found = []
+        pairings = {}
+        for m in stored_matches:
+            if m.pidOne != -1 and m.pidTwo != -1:
+                pairings[m.pidOne] = m.pidTwo
+                found.append(m.pidOne)
+                found.append(m.pidTwo)
+
+        entries = (
+            session.query(SpecificFormEntity)
+            .filter(
+                SpecificFormEntity.clas == clas,
+                ~SpecificFormEntity.pid.in_(found),
+            )
+            .all()
+        )
 
         results = ""
         for r in entries:
             results += f"{r.pid}: {r.value}; "
+        if results != "":
 
-        system_prompt = (
-            "You are trying to form the best partners for a group programming project. Based on this group of answers, "
-            "please pair everyone as best you can, ensuring there is a 1-to-1 unique pairing. Each id is followed by their answer, "
-            "separated by a semicolon. "
-            'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}], if there is an odd number of answers make the other pair pid -1.'
-        )
+            system_prompt = (
+                "You are trying to form the best partners for a group programming project. Based on this group of answers, "
+                "please pair everyone as best you can, ensuring there is a 1-to-1 unique pairing. Each id is followed by their answer, "
+                "separated by a semicolon. "
+                'Return the result as JSON in this format: [{"1": "2"}, {"3": "4"}], if there is an odd number of answers make the other pair pid -1.'
+            )
 
-        user_prompt = "Here are the answers: " + results
+            user_prompt = "Here are the answers: " + results
 
-        result = openai.prompt(system_prompt, user_prompt, response_model=GPTResponse)
+            result = openai.prompt(
+                system_prompt, user_prompt, response_model=GPTResponse
+            )
 
-        match = re.search(r"\[.*\]", result.answer, re.DOTALL)
-        if not match:
-            raise ValueError("No JSON array found in OpenAI response.")
+            match = re.search(r"\[.*\]", result.answer, re.DOTALL)
+            if not match:
+                raise ValueError("No JSON array found in OpenAI response.")
 
-        raw_pairs = json.loads(match.group(0))
-        pairings = {}
-        for pair in raw_pairs:
-            for k, v in pair.items():
-                pairings[int(k)] = int(v)
+            raw_pairs = json.loads(match.group(0))
+
+            for pair in raw_pairs:
+                for k, v in pair.items():
+                    pairings[int(k)] = int(v)
+                    session.add(
+                        TeacherMatchEntity(pid_one=int(k), pid_two=int(v), course=clas)
+                    )
+                    session.commit()
 
         return pairings
+
+    def get_stored_teacher_pairings(self, clas: str, session: Session):
+        """Gets stored teacher matches first"""
+        entries = session.query(TeacherMatchEntity).filter_by(course=clas)
+        val = []
+        for pair in entries:
+            if pair.pid_one != -1 and pair.pid_two != -1:
+                val.append(
+                    TeacherPairing(pidOne=pair.pid_one, pidTwo=pair.pid_two, clas=clas)
+                )
+        return val
 
     def get_stored_matches(self, pid: int, clas: str, session: Session):
         """Gets stored matches from DB based on pid and class"""
@@ -272,11 +316,3 @@ class GitTogetherService:
     def get_specific_form_answers(self, session: Session):
         entries = session.query(SpecificFormEntity).all()
         return entries
-
-    def clear_specific_answers(self, session: Session):
-        session.query(SpecificFormEntity).delete()
-        session.commit()
-
-    def clearIA(self, session: Session):
-        session.query(InitialFormEntity).delete()
-        session.commit()
