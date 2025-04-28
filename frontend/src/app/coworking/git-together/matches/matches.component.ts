@@ -130,6 +130,8 @@ export class GitTogetherMatchesComponent {
           });
         });
         this.matches.sort((a, b) => b.score - a.score);
+      } else {
+        this.getNewMatches(courseCode);
       }
       this.isloading = false;
     } catch (error: any) {
