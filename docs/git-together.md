@@ -12,9 +12,9 @@ The backend of Git together features several new API routes. (prefix: /api/cowor
 - /new/matches : GET - Allows students to find new matches using OpenAI's API
 - /student/courses : GET - Allows a student to view a list of entered courses
 - /teacher/coursepairings: GET - Allows instructors to view pairings for a given class using OpenAI's API and previously stored pairings
-- /del{pid}/{clas} : DELETE - Allows students to delete a specific form submission
+- /del{pid}/{clas} : DELETE - Allows students to delete a specific form submission and all matches associated with it
 - /del/studentmatch : DELETE - Allows a student to delete a previous match
-- /del/teachermatch : DELETE - Allows a teacher to delete a previous match between students
+- /del/teachermatch : DELETE - Allows a teacher to delete a previous pairing between students
 - /teacher/del/teacherpairings : DELETE - Allows instructors to delete pairings for a class
 - /is-ambassador : GET - Allows authentication into instructor/ambassador view
 
