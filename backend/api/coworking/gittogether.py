@@ -5,7 +5,6 @@ from backend.services.coworking.gittogether import GitTogetherService
 from backend.models.coworking.gittogether import (
     FormResponse,
     InitialForm,
-    Match,
     SpecificFormError,
     InitialFormError,
 )
@@ -19,7 +18,7 @@ __authors__ = ["Mason"]
 __copyright__ = "Copyright 2023"
 __license__ = "MIT"
 
-from ...models.coworking import FormResponse, Match, InitialForm
+from ...models.coworking import FormResponse, InitialForm
 
 GitTogetherServiceDI: TypeAlias = Annotated[GitTogetherService, Depends()]
 
@@ -39,7 +38,12 @@ openapi_tags = {
 }
 
 
-@api.post("/", tags=["Coworking"])
+@api.post(
+    "/",
+    tags=["Coworking"],
+    summary="""Create initial form answer""",
+    description="""Individual fills our the initial form to give baseline answers for partner work""",
+)
 def initial_form(
     formResponses: Annotated[
         InitialForm,
@@ -65,7 +69,7 @@ def initial_form(
                         "pid": 0,
                     }
                 },
-            }
+            },
         ),
     ],
     service: GitTogetherServiceDI,
@@ -74,7 +78,12 @@ def initial_form(
     return service.initial_form(formResponses=formResponses, session=session)
 
 
-@api.post("/specific", tags=["Coworking"])
+@api.post(
+    "/specific",
+    tags=["Coworking"],
+    summary="Create specifc form answer",
+    description="Creates a new class specific form answer",
+)
 def class_specific_form(
     formResponse: Annotated[
         FormResponse,
@@ -107,18 +116,22 @@ def class_specific_form(
     return service.class_specific_form(formResponse=formResponse, session=session)
 
 
-@api.get("/matches", tags=["Coworking"])
+@api.get(
+    "/matches",
+    tags=["Coworking"],
+    summary="Get student matches",
+    description="Gets all stored matches for a specified student and class",
+)
 def get_matches(
     clas: str,
     pid: int,
     service: GitTogetherServiceDI,
-    openai: OpenAIServiceDI,
     session: SessionDI,
     userService: UserSvc,
 ):
     try:
         results = service.get_matches(
-            clas=clas, pid=pid, openai=openai, session=session, usersvc=userService
+            clas=clas, pid=pid, session=session, usersvc=userService
         )
         return results
     except InitialFormError:
@@ -133,7 +146,12 @@ def get_matches(
         )
 
 
-@api.get("/new/matches", tags=["Coworking"])
+@api.get(
+    "/new/matches",
+    tags=["Coworking"],
+    summary="Get new match",
+    description="Creates a new student match using OpenAI that is then stored and returned",
+)
 def get_new_matches(
     clas: str,
     pid: int,
@@ -157,12 +175,12 @@ def get_new_matches(
         )
 
 
-@api.get("/initialanswers", tags=["Coworking"])
-def get_answers(service: GitTogetherServiceDI, session: SessionDI):
-    return service.get_initial_form_answers(session=session)
-
-
-@api.get("/specificanswers", tags=["Coworking"])
+@api.get(
+    "/specificanswers",
+    tags=["Coworking"],
+    summary="Get all class specific answers",
+    description="Gets every class specific answers",
+)
 def get_answers(service: GitTogetherServiceDI, session: SessionDI):
     return service.get_specific_form_answers(session=session)
 
@@ -174,7 +192,12 @@ def get_student_course_answer(
     return service.get_student_course_list(pid, session=session)
 
 
-@api.get("/teacher/coursepairings", tags=["Coworking"])
+@api.get(
+    "/teacher/coursepairings",
+    tags=["Coworking"],
+    summary="Get teacher course pairings",
+    description="Gets stored teacher pairings and if students aren't already paired, adds and stores new pairings using OpenAI",
+)
 def get_teacher_course_pairings(
     service: GitTogetherServiceDI,
     clas: str,
@@ -184,35 +207,61 @@ def get_teacher_course_pairings(
     return service.get_teacher_pairings_list(clas=clas, openai=openai, session=session)
 
 
-@api.delete("/del{pid}/{clas}", tags=["Coworking"])
+@api.delete(
+    "/del{pid}/{clas}",
+    tags=["Coworking"],
+    summary="Delete a class specific answer",
+    description="Deletes a class specific answer for a student and all matches associated with it ",
+)
 def delete_specifc_answer(
     service: GitTogetherServiceDI, pid: int, clas: str, session: SessionDI
 ):
     service.delete_student_specifc_answer(pid, clas, session=session)
 
 
-@api.delete("/del/studentmatch", tags=["Coworking"])
+@api.delete(
+    "/del/studentmatch",
+    tags=["Coworking"],
+    summary="Delete student match",
+    description="Deletes a match between two specified students",
+)
 def delete_match(
     service: GitTogetherServiceDI, pid: int, clas: str, pid_two: int, session: SessionDI
 ):
     service.delete_match(pid, clas, pid_two, session)
 
 
-@api.delete("/del/teachermatch", tags=["Coworking"])
+@api.delete(
+    "/del/teachermatch",
+    tags=["Coworking"],
+    summary="Delete teacher pairing",
+    description="Deletes a pairing between two specified students",
+)
 def delete_teacher_match(
     service: GitTogetherServiceDI, pid: int, clas: str, pid_two: int, session: SessionDI
 ):
     service.delete_teacher_match(pid, clas, pid_two, session)
 
 
-@api.delete("/teacher/del/teacherpairings", tags=["Coworking"])
+@api.delete(
+    "/teacher/del/teacherpairings",
+    tags=["Coworking"],
+    summary="Delete teacher pairings",
+    description="Deletes all pairings between two students for a specified class",
+)
 def delete_teacher_pairings(
     service: GitTogetherServiceDI, clas: str, session: SessionDI
 ):
     service.delete_teacher_course_pairings(clas, session=session)
 
 
-@api.get("/is-ambassador", tags=["Coworking"], response_model=bool)
+@api.get(
+    "/is-ambassador",
+    tags=["Coworking"],
+    response_model=bool,
+    summary="Get is ambassador",
+    description="Checks to see if a user is an ambassador or not",
+)
 def check_if_ambassador(
     id: str,
     roleService: RoleSvc,

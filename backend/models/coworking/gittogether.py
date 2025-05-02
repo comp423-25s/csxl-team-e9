@@ -1,9 +1,9 @@
-from datetime import datetime
 from pydantic import BaseModel
-from backend.models.user import User
 
 
 class InitialForm(BaseModel):
+    """This holds student answers for basic questions about work preferences"""
+
     one: int = 1
     two: int = 1
     three: int = 1
@@ -12,15 +12,9 @@ class InitialForm(BaseModel):
     pid: int = 1
 
 
-class InitialFormAnswer(BaseModel):
-    one: int = 1
-    two: int = 1
-    three: int = 1
-    four: int = 1
-    five: int = 1
-
-
 class FormResponse(BaseModel):
+    """This holds class specific answers and contact information for a student"""
+
     value: str = ""
     pid: int = 0
     contact_info: str = ""
@@ -29,6 +23,8 @@ class FormResponse(BaseModel):
 
 
 class Match(BaseModel):
+    """This holds all the information necessary for a match"""
+
     name: str = ""
     contactInformation: str = ""
     bio: str = ""
@@ -40,24 +36,27 @@ class Match(BaseModel):
 
 
 class InitialFormError(Exception):
+    """Raised if a student hasn't filled out the initial form yet"""
+
     pass
 
 
 class SpecificFormError(Exception):
+    """Raised if there is an error filling out the class specifc form"""
+
     pass
 
 
 class MatchResponse(BaseModel):
+    """GPT response model for a match"""
+
     compatibility: int
     reasoning: str
 
 
-class StudentAnswer(BaseModel):
-    pid: int
-    value: str
-
-
 class Pairing(BaseModel):
+    """Model used to store match information for persistent storage"""
+
     pidOne: int
     pidTwo: int
     clas: str
@@ -66,10 +65,14 @@ class Pairing(BaseModel):
 
 
 class TeacherPairing(BaseModel):
+    """Model used to store teacher pairings information for persistent storage"""
+
     pidOne: int
     pidTwo: int
     clas: str
 
 
 class GPTResponse(BaseModel):
+    """GPT response model for teacher pairings"""
+
     answer: str

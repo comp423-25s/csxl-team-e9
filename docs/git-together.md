@@ -18,7 +18,7 @@ The backend of Git together features several new API routes. (prefix: /api/cowor
 - /teacher/del/teacherpairings : DELETE - Allows instructors to delete pairings for a class
 - /is-ambassador : GET - Allows authentication into instructor/ambassador view
 
-The Backend also relies on new models including InitialFormAnswer, SpecifcFormAnswer, Match, and Pairing. InitialFormAnswer and SpecificFormAnswer store information for the different forms that are filled out. Match stores information about a students match for a given class, and Pairing contains the two pids of a given pairing for a class.
+The Backend also relies on new models including InitialFormAnswer, SpecifcFormAnswer, Match, and Pairing. InitialFormAnswer stores the answers to the basic questions about work style that a user fills out. SpecificFormAnswer store information for when a student fills out the class specific form. Match stores information about a students match for a given class, and Pairing contains the two pids of a given pairing for a class.
 
 ## AI Integration
 
@@ -26,7 +26,7 @@ The AI integration that takes place in Git Together is when pairing is required.
 
 ## Database
 
-The database for Git Together required four new entities to store the answers for the initial form and the specific form, as well as past student matches and past teacher matches. Whenever a match is requested these entities are accessed and the needed information is sent to the correct place. Whenever a student or teacher wants to view their matches the correct entity is accessed and the past matches show up.
+The database for Git Together required four new entities to store the answers for the initial form and the specific form, as well as past student matches and past teacher matches. The form entities store all student answers to the given form. The Match entity stores the two pids, class, compatibility score and reasoning. Whenever a match is requested from the frontend the initital form, specific form and match entities are all accessed based on the user's pid, the data is then combined to display all of the information for a given match. When a teacher wants to create matches the specific form entity is accessed and teacher pairings are created based off those answers.
 
 ## Frontend
 

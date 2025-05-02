@@ -2,7 +2,6 @@ from fastapi import Depends
 from pytest import Session
 from backend.database import db_session
 from operator import or_
-from typing import Annotated, TypeAlias, List
 from fastapi import Depends
 from pytest import Session
 from backend.entities.coworking.matches_entity import MatchEntity
@@ -12,13 +11,11 @@ from backend.models.coworking.gittogether import (
     FormResponse,
     GPTResponse,
     InitialForm,
-    InitialFormAnswer,
     Match,
     Pairing,
     SpecificFormError,
     InitialFormError,
     MatchResponse,
-    StudentAnswer,
     TeacherPairing,
 )
 import json
@@ -26,7 +23,6 @@ import re
 from backend.services.openai import OpenAIService
 from backend.entities.coworking.initial_form_entity import InitialFormEntity
 from backend.services import UserService
-from ...models import User
 
 
 class GitTogetherService:
@@ -77,7 +73,6 @@ class GitTogetherService:
         self,
         clas: str,
         pid: int,
-        openai: OpenAIService,
         session: Session,
         usersvc: UserService,
     ):
@@ -330,10 +325,7 @@ class GitTogetherService:
         return "no matches around"
 
     # the following aren't really used in the web app, more so just good to have for testing
-    def get_initial_form_answers(self, session: Session):
-        entries = session.query(InitialFormEntity).all()
-        return entries
-
     def get_specific_form_answers(self, session: Session):
+        """Returns all class specific answers"""
         entries = session.query(SpecificFormEntity).all()
         return entries
