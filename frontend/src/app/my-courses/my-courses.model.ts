@@ -124,6 +124,8 @@ export interface OfficeHourTicketOverviewJson {
   description: string;
   creators: PublicProfile[];
   caller: PublicProfile | undefined;
+  has_concerns: boolean | undefined;
+  caller_notes: string | undefined;
 }
 
 export interface OfficeHourTicketOverview {
@@ -136,6 +138,8 @@ export interface OfficeHourTicketOverview {
   description: string;
   creators: PublicProfile[];
   caller: PublicProfile | undefined;
+  has_concerns: boolean | undefined;
+  caller_notes: string | undefined;
 }
 
 export interface OfficeHourQueueOverviewJson {
@@ -223,6 +227,8 @@ export interface UpdatedCourseSite {
   section_ids: number[];
   gtas: PublicProfile[];
   utas: PublicProfile[];
+  minimum_ticket_cooldown: number | null;
+  max_tickets_per_day: number | null;
 }
 
 export interface CourseSite {

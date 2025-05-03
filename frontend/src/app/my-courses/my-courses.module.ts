@@ -55,6 +55,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { StatisticsComponent } from './course/statistics/statistics.component';
 import { OfficeHoursStatisticsCardWidget } from './widgets/office-hours-statistics-card/office-hours-statistics-card.widget';
 import { TicketDetailsDialog } from './dialogs/ticket-details/ticket-details.dialog';
+import { CloseTicketDialog } from './course/office-hours/widgets/close-ticket-dialog/close-ticket.dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -78,7 +81,8 @@ import { TicketDetailsDialog } from './dialogs/ticket-details/ticket-details.dia
     ImportRosterDialog,
     DeleteRecurringEventDialog,
     TicketDetailsDialog,
-    OfficeHoursStatisticsCardWidget
+    OfficeHoursStatisticsCardWidget,
+    CloseTicketDialog
   ],
   imports: [
     CommonModule,
@@ -105,7 +109,9 @@ import { TicketDetailsDialog } from './dialogs/ticket-details/ticket-details.dia
     MatDatepickerModule,
     MatNativeDateModule,
     MatRadioModule,
-    MatCheckbox
+    MatCheckbox,
+    MatSlideToggleModule,
+    MatSliderModule
   ],
   providers: [MatDatepickerModule]
 })
