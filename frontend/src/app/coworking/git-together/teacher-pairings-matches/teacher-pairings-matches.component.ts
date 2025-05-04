@@ -62,7 +62,6 @@ export class TeacherPairingsMatchesComponent {
       this.pairings = await this.TPsvc.getTeacherCoursePairings(
         this.selectedCourse
       );
-
       this.matches = [];
       const processedPairs = new Set<number>();
       let pairNumber = 1;
@@ -101,7 +100,6 @@ export class TeacherPairingsMatchesComponent {
         message: `Are you sure you want to delete ALL pairings/submissions for ${this.selectedCourse}? This action cannot be undone.`
       }
     });
-
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
         try {
@@ -110,7 +108,7 @@ export class TeacherPairingsMatchesComponent {
           this.snackBar.open('All matches deleted successfully', 'Close', {
             duration: 3000
           });
-          this.loadMatches();
+          this.matches = [];
         } catch (error) {
           console.error('Error deleting matches:', error);
           this.snackBar.open('Failed to delete matches', 'Close', {
@@ -121,6 +119,7 @@ export class TeacherPairingsMatchesComponent {
         }
       }
     });
+    console.log('dekete');
   }
 
   async deleteSingleMatch(pid1: number, pid2: number) {
