@@ -23,23 +23,20 @@ from ..fixtures import gt_svc
 
 SessionDI: TypeAlias = Annotated[Session, Depends(db_session)]
 
+
 def test_initial_form(gt_svc: GitTogetherService, session: SessionDI):
     """Test that initial form submission works correctly."""
     form = InitialForm(
-        pid=1, 
-        one=1,  # Changed to integer
-        two=2, 
-        three=3, 
-        four=4, 
-        five=5
+        pid=1, one=1, two=2, three=3, four=4, five=5  # Changed to integer
     )
     gt_svc.initial_form(form, session)
-    
+
     # Check the form was saved
     entity = session.query(InitialFormEntity).filter_by(pid=1).first()
     assert entity is not None
     assert entity.one == 1
     assert entity.five == 5
+
 
 def test_initial_form(gt_svc: GitTogetherService, session: SessionDI):
     """Test that initial form submission works correctly."""
@@ -76,7 +73,6 @@ def test_get_matches_without_initial_form(
     gt_svc: GitTogetherService, session: SessionDI
 ):
     """Test that trying to get matches without initial form raises error."""
-    mock_openai = create_autospec(OpenAIService)
     mock_usersvc = create_autospec(UserService)
 
     with pytest.raises(InitialFormError, match="Fill out initial form first"):
@@ -87,7 +83,6 @@ def test_get_matches_without_specific_form(
     gt_svc: GitTogetherService, session: SessionDI
 ):
     """Test that trying to get matches without specific form raises error."""
-    mock_openai = create_autospec(OpenAIService)
     mock_usersvc = create_autospec(UserService)
 
     # Submit initial form but not specific form
@@ -101,27 +96,23 @@ def test_get_matches_no_matches_found(gt_svc: GitTogetherService, session: Sessi
     """Test getting matches when no matches exist."""
     mock_openai = create_autospec(OpenAIService)
     mock_usersvc = create_autospec(UserService)
-    
+
     # Setup test data
     gt_svc.initial_form(InitialForm(pid=1), session)
     gt_svc.class_specific_form(
         FormResponse(
-            value="Hello", 
-            pid=1, 
-            contact_info="none", 
-            clas="COMP110", 
-            first_name="Test"
+            value="Hello", pid=1, contact_info="none", clas="COMP110", first_name="Test"
         ),
-        session
+        session,
     )
-    
+
     # No other users in the system, should return "no matches"
     result = gt_svc.get_matches("COMP110", 1, mock_openai, session, mock_usersvc)
     assert result == "no matches"
 
+
 def test_get_matches_no_matches_found(gt_svc: GitTogetherService, session: SessionDI):
     """Test getting matches when no matches exist."""
-    mock_openai = create_autospec(OpenAIService)
     mock_usersvc = create_autospec(UserService)
 
     # Setup test data
@@ -130,19 +121,23 @@ def test_get_matches_no_matches_found(gt_svc: GitTogetherService, session: Sessi
         FormResponse(
             value="Hello", pid=1, contact_info="none", clas="COMP110", first_name="Test"
         ),
-        session
+        session,
     )
 
     # No other users in the system, should return "no matches"
     result = gt_svc.get_matches("COMP110", 1, session, mock_usersvc)
     assert result == "no matches"
 
-def test_delete_nonexistent_specific_answer(gt_svc: GitTogetherService, session: SessionDI):
+
+def test_delete_nonexistent_specific_answer(
+    gt_svc: GitTogetherService, session: SessionDI
+):
     """Test that deleting a non-existent answer doesn't cause errors."""
     # Try to delete something that doesn't exist
     gt_svc.delete_student_specifc_answer(999, "NONEXISTENT", session)
-    
+
     # No exception should be raised
+
 
 def test_delete_specific_answer(gt_svc: GitTogetherService, session: SessionDI):
     """Test that deleting a specific answer works correctly."""
@@ -179,6 +174,8 @@ def test_delete_nonexistent_specific_answer(
     gt_svc.delete_student_specifc_answer(999, "NONEXISTENT", session)
 
     # No exception should be raised
+
+
 def test_get_stored_matches(gt_svc: GitTogetherService, session: SessionDI):
     """Test that stored matches can be retrieved."""
     # Add test match
@@ -252,9 +249,8 @@ def test_get_teacher_pairings_list_with_existing(
             contact_info="test1@email.com",
             clas="COMP110",
             first_name="Student1",
-
         ),
-        session
+        session,
     )
     gt_svc.class_specific_form(
         FormResponse(
@@ -264,20 +260,23 @@ def test_get_teacher_pairings_list_with_existing(
             clas="COMP110",
             first_name="Student2",
         ),
-        session
+        session,
     )
-    
+
     # Manually add a match (since we're not testing GPT here)
     from backend.entities.coworking.matches_entity import MatchEntity
-    session.add(MatchEntity(
-        pid_one=1,
-        pid_two=2,
-        course="COMP110",
-        compatibility=80,
-        reasoning="Test match"
-    ))
+
+    session.add(
+        MatchEntity(
+            pid_one=1,
+            pid_two=2,
+            course="COMP110",
+            compatibility=80,
+            reasoning="Test match",
+        )
+    )
     session.commit()
-    
+
     # Get matches
     matches = gt_svc.get_stored_matches(1, "COMP110", session)
     assert len(matches) == 1
@@ -295,38 +294,43 @@ def test_get_teacher_pairings_list_with_existing(
     mock_openai.prompt.assert_not_called()
 
 
-def test_get_teacher_pairings_list_with_existing(gt_svc: GitTogetherService, session: SessionDI):
+def test_get_teacher_pairings_list_with_existing(
+    gt_svc: GitTogetherService, session: SessionDI
+):
     """Test getting teacher pairings when some pairings already exist."""
     mock_openai = create_autospec(OpenAIService)
-    
+
     # Add some specific forms
     gt_svc.class_specific_form(
         FormResponse(
-            value="Answer1", pid=1, contact_info="test1@email.com", 
-            clas="COMP110", first_name="Student1"
+            value="Answer1",
+            pid=1,
+            contact_info="test1@email.com",
+            clas="COMP110",
+            first_name="Student1",
         ),
-        session
+        session,
     )
     gt_svc.class_specific_form(
         FormResponse(
-            value="Answer2", pid=2, contact_info="test2@email.com", 
-            clas="COMP110", first_name="Student2"
+            value="Answer2",
+            pid=2,
+            contact_info="test2@email.com",
+            clas="COMP110",
+            first_name="Student2",
         ),
-        session
+        session,
     )
-    
+
     # Manually add a teacher pairing
-    session.add(TeacherMatchEntity(
-        pid_one=1,
-        pid_two=2,
-        course="COMP110"
-    ))
+    session.add(TeacherMatchEntity(pid_one=1, pid_two=2, course="COMP110"))
     session.commit()
-    
+
     # Should return existing pairings without calling OpenAI
     pairings = gt_svc.get_teacher_pairings_list("COMP110", mock_openai, session)
     assert pairings == {1: 2}
     mock_openai.prompt.assert_not_called()
+
 
 def test_get_teacher_pairings_list_with_new_students(
     gt_svc: GitTogetherService, session: SessionDI
