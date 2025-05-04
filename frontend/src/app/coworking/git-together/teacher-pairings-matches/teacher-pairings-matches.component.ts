@@ -140,7 +140,12 @@ export class TeacherPairingsMatchesComponent {
           this.snackBar.open('Match deleted successfully', 'Close', {
             duration: 3000
           });
-          this.loadMatches();
+          this.matches = this.matches
+            .filter((pair) => !(pair.pid1 === pid1 && pair.pid2 === pid2))
+            .map((pair, index) => ({
+              ...pair,
+              pairNumber: index + 1
+            }));
         } catch (error) {
           console.error('Error deleting match:', error);
           this.snackBar.open('Failed to delete match', 'Close', {
