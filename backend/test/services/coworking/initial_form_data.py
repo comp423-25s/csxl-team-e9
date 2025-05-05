@@ -23,9 +23,13 @@ __license__ = "MIT"
 root = InitialForm(one=1, two=1, three=1, four=1, five=1, pid=123456789)
 mason = InitialForm(one=1, two=2, three=3, four=4, five=5, pid=0)
 rhonda = InitialForm(one=1, two=2, three=3, four=4, five=5, pid=999999999)
+riley = InitialForm(one=1, two=2, three=3, four=4, five=5, pid=18)
+wyatt = InitialForm(one=2, two=1, three=5, four=4, five=5, pid=27)
+kris = InitialForm(one=3, two=1, three=3, four=5, five=5, pid=36)
+luke = InitialForm(one=3, two=1, three=3, four=5, five=5, pid=45)
 
 
-users = [root, rhonda, mason]
+users = [root, rhonda, mason, luke, kris, wyatt, riley]
 
 
 def insert_fake_data(session: Session):

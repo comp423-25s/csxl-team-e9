@@ -35,7 +35,7 @@ wyatt = FormResponse(
     pid=27,
     contact_info="wyatt@unc.edu",
     clas="COMP110",
-    first_name="wyatt",
+    first_name="Wyatt",
 )
 
 kris = FormResponse(
