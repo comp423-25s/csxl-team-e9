@@ -10,39 +10,36 @@ export class MatchesService {
   private newMatchapiURL = '/api/coworking/gittogether/new/matches';
   private deleteURL = '/api/coworking/gittogether';
   constructor(private http: HttpClient) {}
-  async get_matches(clas: string, pid: number): Promise<any> {
+
+  get_matches(clas: string, pid: number): Observable<any> {
     const params = new HttpParams().set('clas', clas).set('pid', pid);
-    const data = await firstValueFrom(
-      this.http.get<MatchesService>(this.apiUrl, {
-        params
-      })
-    );
-    return data;
+    return this.http.get<MatchesService>(this.apiUrl, {
+      params
+    });
   }
 
-  async get_new_matches(clas: string, pid: number): Promise<any> {
+  get_new_matches(clas: string, pid: number): Observable<any> {
     const params = new HttpParams().set('clas', clas).set('pid', pid);
-    const data = await firstValueFrom(
-      this.http.get<MatchesService>(this.newMatchapiURL, {
-        params
-      })
-    );
-    return data;
+    return this.http.get<MatchesService>(this.newMatchapiURL, {
+      params
+    });
   }
 
-  async deleteSpecificAnswer(pid: number, clas: string): Promise<any> {
-    return firstValueFrom(
-      this.http.delete(`${this.deleteURL}/del${pid}/${clas}`)
-    );
+  deleteSpecificAnswer(pid: number, clas: string): Observable<any> {
+    return this.http.delete(`${this.deleteURL}/del${pid}/${clas}`);
   }
 
-  async deleteMatch(pid1: number, pid2: number, clas: string): Promise<any> {
+  deleteMatch(pid1: number, pid2: number, clas: string): any {
     const params = new HttpParams()
       .set('pid', pid1)
       .set('clas', clas)
       .set('pid_two', pid2);
-    return firstValueFrom(
-      this.http.delete(`${this.deleteURL}/del/studentmatch`, { params })
-    );
+    let returnVal;
+    this.http
+      .delete(`${this.deleteURL}/del/studentmatch`, { params })
+      .subscribe((x) => {
+        returnVal = x;
+      });
+    return returnVal;
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,35 +12,23 @@ export class TeacherPairingsService {
 
   constructor(private http: HttpClient) {}
 
-  async getTeacherCoursePairings(clas: string): Promise<any> {
+  getTeacherCoursePairings(clas: string): Observable<any> {
     const params = new HttpParams().set('clas', clas);
-    try {
-      const response = await firstValueFrom(
-        this.http.get<any>(this.pairingsUrl, { params })
-      );
-      return response;
-    } catch (error) {
-      console.error('Error fetching pairings:', error);
-      throw error;
-    }
+    return this.http.get<any>(this.pairingsUrl, { params });
   }
 
-  async deleteMatches(clas: string): Promise<any> {
+  deleteMatches(clas: string): Observable<any> {
     const params = new HttpParams().set('clas', clas);
-    return firstValueFrom(this.http.delete<any>(this.deleteURL, { params }));
+    return this.http.delete<any>(this.deleteURL, { params });
   }
 
-  async deleteSingleMatch(
-    clas: string,
-    pid1: number,
-    pid2: number
-  ): Promise<any> {
+  deleteSingleMatch(clas: string, pid1: number, pid2: number): Observable<any> {
     const params = new HttpParams()
       .set('clas', clas)
       .set('pid', pid1.toString())
       .set('pid_two', pid2.toString());
-    return firstValueFrom(
-      this.http.delete<any>(`${this.baseUrl}/del/teachermatch`, { params })
-    );
+    return this.http.delete<any>(`${this.baseUrl}/del/teachermatch`, {
+      params
+    });
   }
 }

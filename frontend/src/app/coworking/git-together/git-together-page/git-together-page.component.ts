@@ -35,15 +35,15 @@ export class GitTogetherPageComponent implements OnInit {
     this.profile = data.profile;
   }
 
-  async ngOnInit() {
-    if (
-      this.profile.id !== null &&
-      (await this.pageService.is_ambassador(this.profile.id))
-    ) {
-      this.navigateToTeacherPairings();
-    } else {
-      console.log('Not an ambassador');
-    }
+  ngOnInit() {
+    this.profile.id != null &&
+      this.pageService
+        .is_ambassador(this.profile.id)
+        .subscribe((isAmbassador) => {
+          if (isAmbassador) {
+            this.navigateToTeacherPairings();
+          }
+        });
   }
 
   navigateToPreferences() {

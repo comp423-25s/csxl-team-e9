@@ -56,12 +56,15 @@ export class TeacherPairingsMatchesComponent {
     this.router.navigate(['/coworking/git-together/teacher-pairings']);
   }
 
-  async loadMatches() {
+  loadMatches() {
     try {
       this.isLoading = true;
-      this.pairings = await this.TPsvc.getTeacherCoursePairings(
-        this.selectedCourse
+      this.TPsvc.getTeacherCoursePairings(this.selectedCourse).subscribe(
+        (data) => {
+          this.pairings = data;
+        }
       );
+
       this.matches = [];
       const processedPairs = new Set<number>();
       let pairNumber = 1;
@@ -94,21 +97,22 @@ export class TeacherPairingsMatchesComponent {
     }
   }
 
-  async deleteAllMatches() {
+  deleteAllMatches() {
     const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
       data: {
         message: `Are you sure you want to delete ALL pairings/submissions for ${this.selectedCourse}? This action cannot be undone.`
       }
     });
-    dialogRef.afterClosed().subscribe(async (result) => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         try {
           this.isLoading = true;
-          await this.TPsvc.deleteMatches(this.selectedCourse);
+          this.TPsvc.deleteMatches(this.selectedCourse);
           this.snackBar.open('All matches deleted successfully', 'Close', {
             duration: 3000
           });
-          this.matches = [];
+          this.loadMatches();
         } catch (error) {
           console.error('Error deleting matches:', error);
           this.snackBar.open('Failed to delete matches', 'Close', {
@@ -119,10 +123,9 @@ export class TeacherPairingsMatchesComponent {
         }
       }
     });
-    console.log('dekete');
   }
 
-  async deleteSingleMatch(pid1: number, pid2: number) {
+  deleteSingleMatch(pid1: number, pid2: number) {
     const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
       data: {
         title: 'Delete Match',
@@ -131,21 +134,15 @@ export class TeacherPairingsMatchesComponent {
       }
     });
 
-    dialogRef.afterClosed().subscribe(async (result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         try {
           this.isLoading = true;
-          // Now using the correct endpoint and parameters
-          await this.TPsvc.deleteSingleMatch(this.selectedCourse, pid1, pid2);
+          this.TPsvc.deleteSingleMatch(this.selectedCourse, pid1, pid2);
           this.snackBar.open('Match deleted successfully', 'Close', {
             duration: 3000
           });
-          this.matches = this.matches
-            .filter((pair) => !(pair.pid1 === pid1 && pair.pid2 === pid2))
-            .map((pair, index) => ({
-              ...pair,
-              pairNumber: index + 1
-            }));
+          this.loadMatches();
         } catch (error) {
           console.error('Error deleting match:', error);
           this.snackBar.open('Failed to delete match', 'Close', {

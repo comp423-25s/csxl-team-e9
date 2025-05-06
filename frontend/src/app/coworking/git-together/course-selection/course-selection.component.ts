@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Profile } from 'src/app/models.module';
 import { profileResolver } from 'src/app/profile/profile.resolver';
 import { CourseSelectionService } from './course-selection.service';
-import { ProfileService } from 'src/app/profile/profile.service';
 import { MatchesService } from '../matches/matches.service'; // Assuming you have this service
 
 @Component({
@@ -22,8 +21,8 @@ export class CourseSelectionComponent implements OnInit {
   profile: Profile;
   selectedCourse: string = '';
   loading: boolean = true;
-  async ngOnInit() {
-    await this.getCourses();
+  ngOnInit() {
+    this.getCourses();
     this.loading = false;
   }
   courses = [];
@@ -64,26 +63,26 @@ export class CourseSelectionComponent implements OnInit {
     }
   }
 
-  async getCourses() {
-    const results =
-      (await this.courseService.get_courses(this.profile.pid)) ?? [];
-    this.courses = results;
-    this.checkCourses();
+  getCourses() {
+    this.courseService.get_courses(this.profile.pid).subscribe((x) => {
+      this.courses = x;
+      this.checkCourses();
+    });
   }
 
-  async deleteCoursePreferences() {
+  deleteCoursePreferences() {
     try {
-      await this.matchesService.deleteSpecificAnswer(
+      this.matchesService.deleteSpecificAnswer(
         this.profile.pid,
         this.selectedCourse
       );
-      await this.getCourses();
+      this.getCourses();
       this.snackBar.open('Course preferences deleted successfully', 'Close', {
         duration: 3000,
         panelClass: ['success-snackbar']
       });
-    } catch (err: unknown) {
-      console.error('Error deleting course preferences:', err);
+    } catch (error) {
+      console.error('Error deleting course preferences:', error);
       this.snackBar.open('Failed to delete course preferences', 'Close', {
         duration: 3000,
         panelClass: ['error-snackbar']
